@@ -69,7 +69,7 @@ function comn(index, options) {
 
 var newline = '";\n',
     includeProcess = 'var process = require("process");\n',
-    includeBuffer = 'var Buffer = require("buffer");\n',
+    includeBuffer = 'var Buffer = require("buffer").Buffer;\n',
     includeFilename = 'var __filename = module.id = module.filename = "',
     includeDirname = 'var __dirname =  module.dirname = "';
 

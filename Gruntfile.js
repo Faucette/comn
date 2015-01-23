@@ -22,7 +22,8 @@ module.exports = function(grunt) {
                 "Gruntfile.js",
                 "src/**/*.js",
                 "test/**/*.js",
-                "!test/**/*.min.js"
+                "!test/**/*.min.js",
+                "!test/**/*.browserify.js"
             ]
         }
     });
