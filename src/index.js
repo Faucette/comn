@@ -45,8 +45,8 @@ function comn(index, options) {
 
         dependency.content = dependency.content.replace(graph.reInclude, function(match, fnType, dependencyPath) {
             var opts = resolve(dependencyPath, parentDir, options),
-                id = opts.moduleName ? opts.moduleName : opts.fullPath,
-                dependency = hash[id];
+                id = opts && (opts.moduleName ? opts.moduleName : opts.fullPath) || false,
+                dependency = id && hash[id] || false;
 
             if (fnType === "require.resolve") {
                 if (!dependency) {
