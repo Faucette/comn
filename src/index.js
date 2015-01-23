@@ -75,7 +75,14 @@ var newline = '";\n',
 
 function beforeParse(content, cleanContent, dependency, graph) {
     var moduleName = dependency.moduleName,
+        fullPath = dependency.fullPath,
         relativePath, relativeDir;
+
+    if (filePath.ext(fullPath) === ".json") {
+        dependency.isJSON = true;
+        dependency.content = content;
+        return cleanContent;
+    }
 
     if (moduleName !== "process" && reProcess.test(cleanContent)) {
         content = includeProcess + content;
@@ -86,13 +93,13 @@ function beforeParse(content, cleanContent, dependency, graph) {
         cleanContent = includeBuffer + cleanContent;
     }
     if (reFilename.test(cleanContent)) {
-        relativePath = relative(graph.root, dependency.fullPath);
+        relativePath = relative(graph.root, fullPath);
 
         content = includeFilename + relativePath + newline + content;
         cleanContent = includeFilename + relativePath + newline + cleanContent;
     }
     if (reDirname.test(cleanContent)) {
-        relativeDir = filePath.dir(relativePath || relative(graph.root, dependency.fullPath));
+        relativeDir = filePath.dir(relativePath || relative(graph.root, fullPath));
 
         content = includeDirname + relativeDir + newline + content;
         cleanContent = includeDirname + relativeDir + newline + cleanContent;
