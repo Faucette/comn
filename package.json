@@ -1,0 +1,57 @@
+{
+  "name": "comn",
+  "version": "0.0.1",
+  "description": "commonjs compiler for the browser and node.js",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/nathanfaucett/comn.git"
+  },
+  "main": "src/index.js",
+  "keywords": [
+    "comn",
+    "comn.js"
+  ],
+  "author": "Nathan Faucett",
+  "license": "BSD-2-Clause",
+  "readmeFilename": "README.md",
+  "devDependencies": {
+    "grunt": "^0.4.5",
+    "grunt-contrib-jshint": "^0.10.0",
+    "grunt-jsbeautifier": "^0.2.7",
+    "mocha": "^2.1.0"
+  },
+  "dependencies": {
+    "resolve": "nathanfaucett/resolve",
+    "parse_dependency_tree": "nathanfaucett/parse_dependency_tree",
+
+    "file_path": "nathanfaucett/file_path",
+    "trim": "nathanfaucett/trim",
+    "template": "nathanfaucett/template",
+    "map": "nathanfaucett/map",
+    "for_each": "nathanfaucett/for_each",
+
+    "assert": "~1.1.0",
+    "buffer": "^2.3.0",
+    "process": "^0.8.0",
+    "querystring-es3": "~0.2.0",
+    "browserify-zlib": "~0.1.2",
+    "console-browserify": "^1.1.0",
+    "constants-browserify": "~0.0.1",
+    "crypto-browserify": "^3.0.0",
+    "domain-browser": "~1.1.0",
+    "events": "~1.0.0",
+    "http-browserify": "^1.4.0",
+    "https-browserify": "~0.0.0",
+    "os-browserify": "~0.1.1",
+    "path-browserify": "~0.0.0",
+    "punycode": "~1.2.3",
+    "readable-stream": "^1.0.33-1",
+    "string_decoder": "~0.10.0",
+    "stream-browserify": "^1.0.0",
+    "timers-browserify": "^1.0.1",
+    "tty-browserify": "~0.0.0",
+    "util": "~0.10.1",
+    "url": "~0.10.1",
+    "vm-browserify": "~0.0.1"
+  }
+}

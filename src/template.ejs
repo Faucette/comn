@@ -1,0 +1,40 @@
+(function(dependencies, global) {
+    var cache = [];
+
+    function require(path) {
+        var module = cache[path],
+            callback, exports;
+
+        if (module === undefined) {
+            callback = dependencies[path];
+            exports = {};
+
+            cache[path] = module = {
+                exports: exports,
+                require: require
+            };
+
+            callback.call(exports, require, exports, module, global);
+        }
+
+        return module.exports;
+    }
+
+    require.resolve = function(path) {
+        return path;
+    };
+
+    if (typeof(define) === "function" && define.amd) {
+        define([], function() {
+            return require(0);
+        });
+    } else if (typeof(module) !== "undefined" && module.exports) {
+        module.exports = require(0);
+    } else {
+        <% if (exportName) { %>
+            global.<%= exportName %> = require(0);
+        <% } else { %>
+            require(0);
+        <% } %>
+    }
+}(<%= dependencies %>, (new Function("return this;"))()));
