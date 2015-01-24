@@ -6,6 +6,9 @@
     "type": "git",
     "url": "https://github.com/nathanfaucett/comn.git"
   },
+  "bin": {
+    "comn": "bin/index.js"
+  },
   "main": "src/index.js",
   "keywords": [
     "comn",
@@ -21,10 +24,13 @@
     "mocha": "^2.1.0"
   },
   "dependencies": {
+    "argv": "nathanfaucett/argv",
+
     "resolve": "nathanfaucett/resolve",
     "parse_dependency_tree": "nathanfaucett/parse_dependency_tree",
 
     "file_path": "nathanfaucett/file_path",
+    "file_utils": "nathanfaucett/file_utils",
     "trim": "nathanfaucett/trim",
     "template": "nathanfaucett/template",
     "map": "nathanfaucett/map",
