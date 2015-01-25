@@ -29,6 +29,8 @@ function comn(index, options) {
     var graph, array, hash, root;
 
     options = options || {};
+
+    options.exts = options.exts || ["js", "json"];
     options.builtin = options.builtin || builtin;
     options.encoding = options.encoding || "utf-8";
     options.beforeParse = beforeParse;
