@@ -9,6 +9,7 @@ var fs = require("fs"),
     resolve = require("resolve"),
     parseDependencyTree = require("parse_dependency_tree"),
 
+    emptyPath = require.resolve("./_empty.js"),
     builtin = require("./builtin");
 
 
@@ -31,9 +32,14 @@ function comn(index, options) {
     options = options || {};
 
     options.exts = options.exts || ["js", "json"];
+    options.ignore = options.ignore || [];
     options.builtin = options.builtin || builtin;
     options.encoding = options.encoding || "utf-8";
     options.beforeParse = beforeParse;
+
+    forEach(options.ignore, function(value) {
+        options.builtin[value] = emptyPath;
+    });
 
     graph = parseDependencyTree(index, options);
 
