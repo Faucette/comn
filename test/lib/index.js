@@ -1,3 +1,6 @@
+var file = require("./file");
+
+
 require.async("./math", function(math) {
     var test = require("./test");
 
@@ -8,3 +11,5 @@ require.async("./math", function(math) {
 
     console.log(math, test(true));
 });
+
+console.log(file);
