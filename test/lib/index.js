@@ -1,9 +1,10 @@
-var lib = module.exports;
+require.async("./math", function(math) {
+    var test = require("./test");
 
-lib.add = require("./add");
-lib.sub = require("./sub");
+    require.async("./mod", function(mod) {
+        mod.set("asdf");
+        console.log(mod.get());
+    });
 
-console.log(process);
-console.log(Buffer);
-console.log(__filename);
-console.log(__dirname);
+    console.log(math, test(true));
+});

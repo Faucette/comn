@@ -5,16 +5,19 @@ var fs = require("fs"),
     template = require("template"),
     map = require("map"),
     forEach = require("for_each"),
+    extend = require("extend"),
+    isFunction = require("is_function"),
 
     resolve = require("resolve"),
     parseDependencyTree = require("parse_dependency_tree"),
 
-    emptyPath = require.resolve("./_empty.js"),
     builtin = require("./builtin");
 
 
 var helpers = resolve.helpers,
+
     renderTemplate = template(fs.readFileSync(__dirname + "/template.ejs").toString("utf-8")),
+    renderDefineTemplate = template(fs.readFileSync(__dirname + "/define_template.ejs").toString("utf-8")),
 
     reBuffer = /\bBuffer\b/,
     reProcess = /\bprocess\b/,
@@ -27,15 +30,21 @@ module.exports = comn;
 
 
 function comn(index, options) {
-    var graph, array, hash, root;
+    var results = {},
+        emptyPath = builtin._empty,
+        graph, modules, hash, root, renameModule;
 
     options = options || {};
 
     options.exts = options.exts || ["js", "json"];
     options.ignore = options.ignore || [];
-    options.builtin = options.builtin || builtin;
+    options.builtin = extend({}, options.builtin || builtin);
     options.encoding = options.encoding || "utf-8";
     options.beforeParse = beforeParse;
+
+    renameModule = options.renameModule = isFunction(options.renameModule) ? options.renameModule : function(value) {
+        return value;
+    };
 
     forEach(options.ignore, function(value) {
         options.builtin[value] = emptyPath;
@@ -43,36 +52,48 @@ function comn(index, options) {
 
     graph = parseDependencyTree(index, options);
 
-    array = graph.array;
+    modules = graph.modules;
     hash = graph.hash;
     root = graph.root;
     options.throwError = false;
 
-    forEach(array, function(dependency) {
+    forEach(graph.array, function(dependency) {
         var parentDir = filePath.dir(dependency.fullPath);
 
         dependency.content = dependency.content.replace(graph.reInclude, function(match, fnType, dependencyPath) {
             var opts = resolve(dependencyPath, parentDir, options),
                 id = opts && (opts.moduleName ? opts.moduleName : opts.fullPath) || false,
-                dependency = id && hash[id] || false;
+                dep = id && hash[id] || false;
 
             if (fnType === "require.resolve") {
-                if (!dependency) {
+                if (!dep) {
                     return match;
                 } else {
                     return replaceString(match, dependencyPath, relative(root, opts.fullPath));
                 }
             }
 
-            if (!dependency) {
+            if (!dep) {
                 return match;
             }
 
-            return replaceString(match, dependencyPath, dependency.index, true);
+            return replaceString(match, dependencyPath, dep.index, true);
         });
     });
 
-    return render(array, options);
+    forEach(modules, function(module) {
+        module.moduleFileName = renameModule(module.moduleFileName);
+    });
+
+    forEach(modules, function(module, index) {
+        if (index === 0) {
+            results[module.moduleFileName] = render(modules, module.dependencies, options);
+        } else {
+            results[module.moduleFileName] = renderDefine(module.index, module.dependencies);
+        }
+    });
+
+    return results;
 }
 
 var newline = '";\n',
@@ -118,21 +139,33 @@ function beforeParse(content, cleanContent, dependency, graph) {
     return cleanContent;
 }
 
-function render(dependencies, options) {
+function render(modules, dependencies, options) {
     return renderTemplate({
-        dependencies: "[\n" + map(dependencies, renderDependency).join(",\n") + "]",
+        dependencies: "{\n" + map(dependencies, renderDependency).join(",\n") + "}",
+        modules: "{\n" + map(modules, renderModulePath).join(",\n") + "}",
         exportName: trim(options.exportName)
+    });
+}
+
+function renderDefine(index, dependencies) {
+    return renderDefineTemplate({
+        index: index,
+        dependencies: "{\n" + map(dependencies, renderDependency).join(",\n") + "}"
     });
 }
 
 function renderDependency(dependency) {
     return [
-        'function(require, exports, module, global) {',
+        dependency.index + ': function(require, exports, module, global) {',
         '',
         dependency.isJSON ? "module.exports = " + dependency.content : dependency.content,
         '',
         '}'
     ].join("\n");
+}
+
+function renderModulePath(dependency) {
+    return dependency.index + ': "' + dependency.moduleFileName + '"';
 }
 
 function replaceString(str, oldValue, value, removeQuotes) {
