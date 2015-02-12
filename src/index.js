@@ -87,7 +87,7 @@ function comn(index, options) {
 
     forEach(modules, function(module, index) {
         if (index === 0) {
-            results[module.moduleFileName] = render(modules, module.dependencies, options);
+            results[module.moduleFileName] = render(modules.slice(1), module.dependencies, options);
         } else {
             results[module.moduleFileName] = renderDefine(module.index, module.dependencies);
         }
