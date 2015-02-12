@@ -41,6 +41,7 @@ function comn(index, options) {
     options.builtin = extend({}, options.builtin || builtin);
     options.encoding = options.encoding || "utf-8";
     options.beforeParse = beforeParse;
+    options.parseAsync = true;
 
     renameModule = options.renameModule = isFunction(options.renameModule) ? options.renameModule : function(value) {
         return value;
@@ -60,12 +61,12 @@ function comn(index, options) {
     forEach(graph.array, function(dependency) {
         var parentDir = filePath.dir(dependency.fullPath);
 
-        dependency.content = dependency.content.replace(graph.reInclude, function(match, fnType, dependencyPath) {
+        dependency.content = dependency.content.replace(graph.reInclude, function(match, includeName, functionName, dependencyPath) {
             var opts = resolve(dependencyPath, parentDir, options),
                 id = opts && (opts.moduleName ? opts.moduleName : opts.fullPath) || false,
                 dep = id && hash[id] || false;
 
-            if (fnType === "require.resolve") {
+            if (functionName === "resolve") {
                 if (!dep) {
                     return match;
                 } else {
