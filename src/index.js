@@ -41,7 +41,7 @@ function comn(index, options) {
     options.builtin = extend({}, options.builtin || builtin);
     options.encoding = options.encoding || "utf-8";
     options.beforeParse = beforeParse;
-    options.parseAsync = true;
+    options.parseAsync = options.parseAsync != null ? !!options.parseAsync : true;
 
     renameModule = options.renameModule = isFunction(options.renameModule) ? options.renameModule : function(value) {
         return value;
@@ -144,7 +144,8 @@ function render(modules, dependencies, options) {
     return renderTemplate({
         dependencies: "{\n" + map(dependencies, renderDependency).join(",\n") + "}",
         modules: "{\n" + map(modules, renderModulePath).join(",\n") + "}",
-        exportName: trim(options.exportName)
+        exportName: trim(options.exportName),
+        parseAsync: options.parseAsync
     });
 }
 

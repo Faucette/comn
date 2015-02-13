@@ -24,9 +24,18 @@
         return path;
     };
 
+    <% if (parseAsync === true) { %>
+
     require.async = function(index, callback) {
-        var path = modules[index],
-            node = document.createElement("script");
+        var exports = cache[index],
+            path, node;
+
+        if (exports) {
+            return exports;
+        }
+
+        path = modules[index];
+        node = document.createElement("script");
 
         function onload() {
             callback(require(index));
@@ -58,6 +67,8 @@
             }
         }
     };
+
+    <% } %>
 
     if (typeof(define) === "function" && define.amd) {
         define([], function() {
