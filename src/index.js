@@ -6,7 +6,6 @@ var fs = require("fs"),
     map = require("map"),
     forEach = require("for_each"),
     extend = require("extend"),
-    isFunction = require("is_function"),
 
     resolve = require("resolve"),
     parseDependencyTree = require("parse_dependency_tree"),
@@ -17,7 +16,6 @@ var fs = require("fs"),
 var helpers = resolve.helpers,
 
     renderTemplate = template(fs.readFileSync(__dirname + "/template.ejs").toString("utf-8")),
-    renderDefineTemplate = template(fs.readFileSync(__dirname + "/define_template.ejs").toString("utf-8")),
 
     reBuffer = /\bBuffer\b/,
     reProcess = /\bprocess\b/,
@@ -29,48 +27,45 @@ var helpers = resolve.helpers,
 module.exports = comn;
 
 
-function comn(index, options) {
-    var results = {},
-        emptyPath = builtin._empty,
-        graph, modules, hash, root, renameModule;
+function comn(index, opts) {
+    var emptyPath = builtin._empty,
+        tree, childHash, rootDirectory, options;
 
-    options = options || {};
+    opts = opts || {};
 
-    options.exts = options.exts || ["js", "json"];
-    options.ignore = options.ignore || [];
-    options.builtin = extend({}, options.builtin || builtin);
-    options.encoding = options.encoding || "utf-8";
-    options.beforeParse = beforeParse;
-    options.parseAsync = options.parseAsync != null ? !!options.parseAsync : true;
+    opts.extensions = opts.extensions || opts.exts || ["js", "json"];
+    opts.ignore = opts.ignore || [];
+    opts.builtin = extend({}, opts.builtin || builtin);
+    opts.beforeParse = beforeParse;
 
-    renameModule = options.renameModule = isFunction(options.renameModule) ? options.renameModule : function(value) {
-        return value;
-    };
+    if (opts.node) {
+        opts.builtin = {};
+    }
 
-    forEach(options.ignore, function(value) {
-        options.builtin[value] = emptyPath;
+    forEach(opts.ignore, function(value) {
+        opts.builtin[value] = emptyPath;
     });
 
-    graph = parseDependencyTree(index, options);
+    tree = parseDependencyTree(index, opts);
+    options = tree.options;
 
-    modules = graph.modules;
-    hash = graph.hash;
-    root = graph.root;
+    childHash = tree.childHash;
+    rootDirectory = tree.rootDirectory;
     options.throwError = false;
 
-    forEach(graph.array, function(dependency) {
+    forEach(tree.children, function(dependency) {
         var parentDir = filePath.dir(dependency.fullPath);
 
-        dependency.content = dependency.content.replace(graph.reInclude, function(match, includeName, functionName, dependencyPath) {
+        dependency.content = dependency.content.replace(options.reInclude, function(match, includeName, functionName, dependencyPath) {
             var opts = resolve(dependencyPath, parentDir, options),
-                id = opts && (opts.moduleName ? opts.moduleName : opts.fullPath) || false,
-                dep = id && hash[id] || false;
+                id = opts ? (opts.moduleName ? opts.moduleName : opts.fullPath) : false,
+                dep = id ? childHash[id] : false;
 
             if (functionName === "resolve") {
                 if (!dep) {
                     return match;
                 } else {
-                    return replaceString(match, dependencyPath, relative(root, opts.fullPath));
+                    return replaceString(match, dependencyPath, relative(rootDirectory, opts.fullPath));
                 }
             }
 
@@ -82,19 +77,7 @@ function comn(index, options) {
         });
     });
 
-    forEach(modules, function(module) {
-        module.moduleFileName = renameModule(module.moduleFileName);
-    });
-
-    forEach(modules, function(module, index) {
-        if (index === 0) {
-            results[module.moduleFileName] = render(modules.slice(1), module.dependencies, options);
-        } else {
-            results[module.moduleFileName] = renderDefine(module.index, module.dependencies);
-        }
-    });
-
-    return results;
+    return render(tree.children, options);
 }
 
 var newline = '";\n',
@@ -103,7 +86,7 @@ var newline = '";\n',
     includeFilename = 'var __filename = module.id = module.filename = "',
     includeDirname = 'var __dirname =  module.dirname = "';
 
-function beforeParse(content, cleanContent, dependency, graph) {
+function beforeParse(content, cleanContent, dependency, tree) {
     var moduleName = dependency.moduleName,
         fullPath = dependency.fullPath,
         relativePath, relativeDir;
@@ -123,13 +106,13 @@ function beforeParse(content, cleanContent, dependency, graph) {
         cleanContent = includeBuffer + cleanContent;
     }
     if (reFilename.test(cleanContent)) {
-        relativePath = relative(graph.root, fullPath);
+        relativePath = relative(tree.rootDirectory, fullPath);
 
         content = includeFilename + relativePath + newline + content;
         cleanContent = includeFilename + relativePath + newline + cleanContent;
     }
     if (reDirname.test(cleanContent)) {
-        relativeDir = filePath.dir(relativePath || relative(graph.root, fullPath));
+        relativeDir = filePath.dir(relativePath || relative(tree.rootDirectory, fullPath));
 
         content = includeDirname + relativeDir + newline + content;
         cleanContent = includeDirname + relativeDir + newline + cleanContent;
@@ -140,34 +123,22 @@ function beforeParse(content, cleanContent, dependency, graph) {
     return cleanContent;
 }
 
-function render(modules, dependencies, options) {
+function render(dependencies, options) {
     return renderTemplate({
-        dependencies: "{\n" + map(dependencies, renderDependency).join(",\n") + "}",
-        modules: "{\n" + map(modules, renderModulePath).join(",\n") + "}",
+        dependencies: "[\n" + map(dependencies, renderDependency).join(",\n") + "]",
         exportName: trim(options.exportName),
-        parseAsync: options.parseAsync
-    });
-}
-
-function renderDefine(index, dependencies) {
-    return renderDefineTemplate({
-        index: index,
-        dependencies: "{\n" + map(dependencies, renderDependency).join(",\n") + "}"
+        async: options.async
     });
 }
 
 function renderDependency(dependency) {
     return [
-        dependency.index + ': function(require, exports, module, global) {',
+        'function(require, exports, module, global) {',
         '',
         dependency.isJSON ? "module.exports = " + dependency.content : dependency.content,
         '',
         '}'
     ].join("\n");
-}
-
-function renderModulePath(dependency) {
-    return dependency.index + ': "' + dependency.moduleFileName + '"';
 }
 
 function replaceString(str, oldValue, value, removeQuotes) {

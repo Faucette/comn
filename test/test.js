@@ -5,7 +5,7 @@ var fs = require("fs"),
 
 describe("comn(index : FilePath String, options : Object)", function() {
     it("should compile dependencies into one file", function() {
-        var modules = comn(__dirname + "/lib/index", {
+        var out = comn(__dirname + "/lib/index", {
             renameModule: function(filename) {
                 var ext = filePath.ext(filename),
                     name = filePath.base(filename, ext);
@@ -14,8 +14,6 @@ describe("comn(index : FilePath String, options : Object)", function() {
             exportName: "lib"
         });
 
-        for (var key in modules) {
-            fs.writeFileSync(__dirname + "/lib/" + key, modules[key]);
-        }
+        fs.writeFileSync(__dirname + "/lib/dest/index.min.js", out);
     });
 });

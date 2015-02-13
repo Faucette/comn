@@ -39,7 +39,6 @@
     "for_each": "nathanfaucett/for_each",
     "http-browserify": "^1.4.0",
     "https-browserify": "~0.0.0",
-    "is_function": "git://github.com/nathanfaucett/is_function",
     "map": "nathanfaucett/map",
     "os-browserify": "~0.1.1",
     "parse_dependency_tree": "nathanfaucett/parse_dependency_tree",

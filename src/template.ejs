@@ -1,15 +1,15 @@
 (function(dependencies, modules, global) {
-    var cache = {};
+    var cache = [];
 
-    function require(path) {
-        var module = cache[path],
+    function require(index) {
+        var module = cache[index],
             callback, exports;
 
         if (module === undefined) {
-            callback = dependencies[path];
+            callback = dependencies[index];
             exports = {};
 
-            cache[path] = module = {
+            cache[index] = module = {
                 exports: exports,
                 require: require
             };
@@ -24,53 +24,6 @@
         return path;
     };
 
-    <% if (parseAsync === true) { %>
-
-    require.async = function(index, callback) {
-        var module = cache[index],
-            path, node;
-
-        if (module) {
-            callback(module.exports);
-            return;
-        }
-
-        path = modules[index];
-        node = document.createElement("script");
-
-        function onload() {
-            callback(require(index));
-        }
-
-        node.type = "application/javascript";
-        node.charset = "utf-8";
-        node.async = true;
-
-        if (node.attachEvent) {
-            node.attachEvent("onreadystatechange", onload);
-        } else if (node.addEventListener) {
-            node.addEventListener("load", onload, false);
-        } else {
-            node.onreadystatechange = onload;
-        }
-
-        node.src = path;
-        document.head.appendChild(node);
-    };
-
-    global.__define__ = function(index, moduleDependencies) {
-        var key;
-        if (modules[index]) {
-            for (key in moduleDependencies) {
-                if (!dependencies[key]) {
-                    dependencies[key] = moduleDependencies[key];
-                }
-            }
-        }
-    };
-
-    <% } %>
-
     if (typeof(define) === "function" && define.amd) {
         define([], function() {
             return require(0);
@@ -84,4 +37,4 @@
         require(0);
         <% } %>
     }
-}(<%= dependencies %>, <%= modules %>, (new Function("return this;"))()));
+}(<%= dependencies %>, (new Function("return this;"))()));
