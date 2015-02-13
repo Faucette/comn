@@ -1,4 +1,4 @@
-(function(dependencies, modules, global) {
+(function(dependencies, global) {
     var cache = [];
 
     function require(index) {
