@@ -10,8 +10,8 @@ app.init = function() {
 
     mod.set("asdf");
 
-    console.log(mod.get(), test(true));
+    console.log(mod.get());
+    console.log(test(true));
 };
-
 
 console.log(folder);

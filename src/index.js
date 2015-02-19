@@ -29,7 +29,7 @@ module.exports = comn;
 
 function comn(index, opts) {
     var emptyPath = builtin._empty,
-        tree, childHash, rootDirectory, options;
+        tree, childHash, rootDirectory, options, currentMappings, lastMappings;
 
     opts = opts || {};
 
@@ -53,15 +53,31 @@ function comn(index, opts) {
     rootDirectory = tree.rootDirectory;
     options.throwError = false;
 
+    currentMappings = null;
+    lastMappings = null;
+
     forEach(tree.children, function(dependency) {
         var parentDir = filePath.dir(dependency.fullPath);
 
+        lastMappings = currentMappings;
+        if (dependency.mappings) {
+            currentMappings = dependency.mappings;
+        }
         dependency.content = dependency.content.replace(
             options.reInclude,
             function(match, includeName, functionName, dependencyPath) {
-                var opts = resolve(dependencyPath, parentDir, options),
-                    id = opts ? (opts.moduleName ? opts.moduleName : opts.fullPath) : false,
-                    dep = id ? childHash[id] : false;
+                var opts, id, dep;
+
+                if (currentMappings && currentMappings[dependencyPath]) {
+                    opts = {
+                        fullPath: currentMappings[dependencyPath]
+                    };
+                } else {
+                    opts = resolve(dependencyPath, parentDir, options);
+                }
+
+                id = opts ? (opts.moduleName ? opts.moduleName : opts.fullPath) : false;
+                dep = id ? childHash[id] : false;
 
                 if (functionName === "resolve") {
                     if (!dep) {
@@ -78,6 +94,7 @@ function comn(index, opts) {
                 return replaceString(match, dependencyPath, dep.index, true);
             }
         );
+        currentMappings = lastMappings;
     });
 
     return render(tree.children, options);
