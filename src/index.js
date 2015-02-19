@@ -35,7 +35,7 @@ function comn(index, opts) {
 
     opts.extensions = opts.extensions || opts.exts || ["js", "json"];
     opts.ignore = opts.ignore || [];
-    opts.builtin = extend({}, opts.builtin || builtin);
+    opts.builtin = extend({}, builtin, opts.builtin);
     opts.beforeParse = beforeParse;
 
     if (opts.node) {
@@ -56,25 +56,28 @@ function comn(index, opts) {
     forEach(tree.children, function(dependency) {
         var parentDir = filePath.dir(dependency.fullPath);
 
-        dependency.content = dependency.content.replace(options.reInclude, function(match, includeName, functionName, dependencyPath) {
-            var opts = resolve(dependencyPath, parentDir, options),
-                id = opts ? (opts.moduleName ? opts.moduleName : opts.fullPath) : false,
-                dep = id ? childHash[id] : false;
+        dependency.content = dependency.content.replace(
+            options.reInclude,
+            function(match, includeName, functionName, dependencyPath) {
+                var opts = resolve(dependencyPath, parentDir, options),
+                    id = opts ? (opts.moduleName ? opts.moduleName : opts.fullPath) : false,
+                    dep = id ? childHash[id] : false;
 
-            if (functionName === "resolve") {
+                if (functionName === "resolve") {
+                    if (!dep) {
+                        return match;
+                    } else {
+                        return replaceString(match, dependencyPath, relative(rootDirectory, opts.fullPath));
+                    }
+                }
+
                 if (!dep) {
                     return match;
-                } else {
-                    return replaceString(match, dependencyPath, relative(rootDirectory, opts.fullPath));
                 }
-            }
 
-            if (!dep) {
-                return match;
+                return replaceString(match, dependencyPath, dep.index, true);
             }
-
-            return replaceString(match, dependencyPath, dep.index, true);
-        });
+        );
     });
 
     return render(tree.children, options);
@@ -84,7 +87,7 @@ var newline = '";\n',
     includeProcess = 'var process = require("process");\n',
     includeBuffer = 'var Buffer = require("buffer").Buffer;\n',
     includeFilename = 'var __filename = module.id = module.filename = "',
-    includeDirname = 'var __dirname =  module.dirname = "';
+    includeDirname = 'var __dirname = module.dirname = "';
 
 function beforeParse(content, cleanContent, dependency, tree) {
     var moduleName = dependency.moduleName,
