@@ -5,7 +5,9 @@
         var module = cache[index],
             callback, exports;
 
-        if (module === undefined) {
+        if (module !== undefined) {
+            return module.exports;
+        } else {
             callback = dependencies[index];
             exports = {};
 
@@ -15,9 +17,8 @@
             };
 
             callback.call(exports, require, exports, module, global);
+            return module.exports;
         }
-
-        return module.exports;
     }
 
     require.resolve = function(path) {
