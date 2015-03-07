@@ -81,7 +81,7 @@ function comn(index, opts) {
         );
     });
 
-    return render(tree.children, options);
+    return render(tree.children, opts);
 }
 
 var newline = '";\n',
@@ -130,8 +130,7 @@ function beforeParse(content, cleanContent, dependency, tree) {
 function render(dependencies, options) {
     return renderTemplate({
         dependencies: "[\n" + map(dependencies, renderDependency).join(",\n") + "]",
-        exportName: trim(options.exportName),
-        async: options.async
+        exportName: trim(options.exportName)
     });
 }
 
