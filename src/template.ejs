@@ -1,4 +1,4 @@
-(function(dependencies, global) {
+(function(dependencies, undefined, global) {
     var cache = [];
 
     function require(index) {
@@ -38,4 +38,4 @@
         require(0);
         <% } %>
     }
-}(<%= dependencies %>, (new Function("return this;"))()));
+}(<%= dependencies %>, void 0, (new Function("return this;"))()));
