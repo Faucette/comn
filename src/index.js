@@ -12,6 +12,7 @@ var fs = require("fs"),
     extend = require("extend"),
 
     DependencyTree = require("dependency_tree"),
+    getDependencyId = require("dependency_tree/src/utils/getDependencyId"),
 
     builtin = require("./builtin");
 
@@ -106,7 +107,7 @@ function replacePaths(tree, dependencies, reInclude, options) {
         options.mappings = dependency.mappings;
         dependency.content = dependency.content.replace(reInclude, function onReplace(match, includeName, functionName, dependencyPath) {
             var resolved = resolve(dependencyPath, dependency.fullPath, options),
-                id = resolved ? resolved.fullPath : false,
+                id = resolved ? getDependencyId(resolved, isNodeModule(dependencyPath)) : false,
                 dep = id ? dependencyHash[id] : false;
 
             if (functionName === "resolve") {
