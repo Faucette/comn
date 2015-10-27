@@ -49,6 +49,7 @@ function comn(indexPath, options, callback) {
 
     if (options.node) {
         options.builtin = {};
+        options.packageType = "main";
     }
 
     arrayForEach(options.ignore, function(value) {
@@ -102,6 +103,7 @@ function replacePaths(tree, dependencies, reInclude, options) {
     var dependencyHash = tree.dependencyHash;
 
     arrayForEach(dependencies, function forEachDependency(dependency) {
+        options.mappings = dependency.mappings;
         dependency.content = dependency.content.replace(reInclude, function onReplace(match, includeName, functionName, dependencyPath) {
             var resolved = resolve(dependencyPath, dependency.fullPath, options),
                 id = resolved ? resolved.fullPath : false,
@@ -138,8 +140,12 @@ function rename(path, dirname, options) {
     if (options.rename) {
         return options.rename(path, filePath.relative(dirname, path), dirname, options);
     } else {
-        return filePath.basename(path);
+        return baseRename(filePath.relative(dirname, path));
     }
+}
+
+function baseRename(relative) {
+    return relative.replace(/\//g, "_");
 }
 
 var newline = '";\n',
@@ -150,7 +156,8 @@ var newline = '";\n',
 
 function beforeParse(dependency) {
     var content = dependency.content,
-        moduleName = dependency.name,
+        pkg = dependency.pkg,
+        moduleName = pkg && pkg.name,
         fullPath = dependency.fullPath,
         relativePath, relativeDir;
 

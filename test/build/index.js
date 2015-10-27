@@ -56,7 +56,7 @@
 
             node.src = chunks[index];
 
-            document.body.appendChild(node);
+            document.head.appendChild(node);
         }
     };
 
@@ -110,7 +110,6 @@ log(a());
 },
 function(require, exports, module, undefined, global) {
 
-var process = require(1);
 // shim for using process in browser
 
 var process = module.exports = {};

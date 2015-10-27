@@ -3,10 +3,10 @@ var fs = require("fs"),
     comn = require("..");
 
 
-tape("comn(index : FilePath String, options : Object)", function(assert) {
+tape("comn(index : FilePath String, options : Object, callback: Function)", function(assert) {
     comn(__dirname + "/lib/index.js", {
-        rename: function rename(path, base /*, dirname, options */ ) {
-            return "build/" + base.replace(/\//g, "_");
+        rename: function rename(path, relative /*, dirname, options */ ) {
+            return "build/" + relative.replace(/\//g, "_");
         }
     }, function onComn(error, out) {
         var path;
@@ -21,6 +21,19 @@ tape("comn(index : FilePath String, options : Object)", function(assert) {
                     fs.writeFileSync(__dirname + "/" + path, out[path]);
                 }
             }
+            assert.end();
+        }
+    });
+});
+
+tape("comn(index : FilePath String, options : Object, callback: Function)", function(assert) {
+    comn(__dirname + "/socket_io-client.js", {
+        exportName: "io"
+    }, function onComn(error, out) {
+        if (error) {
+            assert.end(error);
+        } else {
+            fs.writeFileSync(__dirname + "/build/socket_io-client.js", out);
             assert.end();
         }
     });
