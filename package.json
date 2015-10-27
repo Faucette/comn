@@ -31,6 +31,7 @@
   },
   "dependencies": {
     "argv": "git://github.com/nathanfaucett/argv.git",
+    "dependency_tree": "git://github.com/nathanfaucett/dependency_tree.git",
     "array-for_each": "git://github.com/nathanfaucett/array-for_each.git",
     "array-map": "git://github.com/nathanfaucett/array-map.git",
     "assert": "~1.1.0",
@@ -47,8 +48,6 @@
     "http-browserify": "^1.4.0",
     "https-browserify": "~0.0.0",
     "is_function": "git://github.com/nathanfaucett/is_function.git",
-    "map": "git://github.com/nathanfaucett/map.git",
-    "object-for_each": "git://github.com/nathanfaucett/object-for_each.git",
     "os-browserify": "~0.1.1",
     "path-browserify": "~0.0.0",
     "process": "^0.8.0",
@@ -64,7 +63,6 @@
     "tty-browserify": "~0.0.0",
     "url": "~0.10.1",
     "util": "~0.10.1",
-    "values": "git://github.com/nathanfaucett/values.git",
     "vm-browserify": "~0.0.1"
   }
 }
