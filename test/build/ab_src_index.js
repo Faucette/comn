@@ -1,8 +1,8 @@
-__COMN_DEFINE__(3, [
-[3, function(require, exports, module, undefined, global) {
+__COMN_DEFINE__(4, [
+[4, function(require, exports, module, undefined, global) {
 
-var a = require(1),
-    b = require(4);
+var a = require(2),
+    b = require(5);
 
 
 module.exports = ab;
@@ -14,7 +14,7 @@ function ab() {
 
 
 }],
-[4, function(require, exports, module, undefined, global) {
+[5, function(require, exports, module, undefined, global) {
 
 module.exports = b;
 
@@ -25,9 +25,9 @@ function b() {
 
 
 }],
-[5, function(require, exports, module, undefined, global) {
+[6, function(require, exports, module, undefined, global) {
 
-var ab = require(3);
+var ab = require(4);
 
 
 module.exports = abc;

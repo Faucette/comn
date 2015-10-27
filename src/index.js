@@ -45,6 +45,7 @@ function comn(indexPath, options, callback) {
     options.ignore = options.ignore || [];
     options.builtin = extend({}, builtin, options.builtin);
     options.beforeParse = beforeParse;
+    options.packageType = options.packageType || "browser";
 
     if (options.node) {
         options.builtin = {};
