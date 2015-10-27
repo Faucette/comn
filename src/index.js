@@ -1,21 +1,23 @@
 var fs = require("fs"),
 
+    resolve = require("resolve"),
+    isNodeModule = require("resolve/src/utils/isNodeModule"),
+
+    isFunction = require("is_function"),
     filePath = require("file_path"),
     trim = require("trim"),
     template = require("template"),
-    map = require("map"),
-    forEach = require("for_each"),
+    arrayMap = require("array-map"),
+    arrayForEach = require("array-for_each"),
     extend = require("extend"),
 
-    resolve = require("resolve"),
-    parseDependencyTree = require("parse_dependency_tree"),
+    DependencyTree = require("dependency_tree"),
 
     builtin = require("./builtin");
 
 
-var helpers = resolve.helpers,
-
-    renderTemplate = template(fs.readFileSync(__dirname + "/template.ejs").toString("utf-8")),
+var renderTemplate = template(fs.readFileSync(__dirname + "/template.ejs").toString("utf-8")),
+    renderChunkTemplate = template(fs.readFileSync(__dirname + "/chunk.ejs").toString("utf-8")),
 
     reBuffer = /\bBuffer\b/,
     reProcess = /\bprocess\b/,
@@ -27,121 +29,62 @@ var helpers = resolve.helpers,
 module.exports = comn;
 
 
-function comn(index, opts) {
+function comn(indexPath, options, callback) {
     var emptyPath = builtin._empty,
-        tree, childHash, rootDirectory, options;
+        out = {},
+        tree, dirname, reInclude;
 
-    opts = opts || {};
-
-    opts.extensions = opts.extensions || opts.exts || ["js", "json"];
-    opts.ignore = opts.ignore || [];
-    opts.builtin = extend({}, builtin, opts.builtin);
-    opts.beforeParse = beforeParse;
-
-    if (opts.node) {
-        opts.builtin = {};
+    if (isFunction(options)) {
+        callback = options;
+        options = {};
     }
 
-    forEach(opts.ignore, function(value) {
-        opts.builtin[value] = emptyPath;
+    options = options || {};
+
+    options.extensions = options.extensions || options.exts || ["js", "json"];
+    options.ignore = options.ignore || [];
+    options.builtin = extend({}, builtin, options.builtin);
+    options.beforeParse = beforeParse;
+
+    if (options.node) {
+        options.builtin = {};
+    }
+
+    arrayForEach(options.ignore, function(value) {
+        options.builtin[value] = emptyPath;
     });
 
-    tree = parseDependencyTree(index, opts);
-    options = tree.options;
+    tree = new DependencyTree(indexPath, options);
+    extend(options, tree.options);
 
-    childHash = tree.childHash;
-    rootDirectory = tree.rootDirectory;
-    options.throwError = false;
+    dirname = filePath.dirname(tree.fullPath);
+    reInclude = tree.options.reInclude;
 
-    forEach(tree.children, function(dependency) {
-        var parentDir = filePath.dir(dependency.fullPath);
+    tree.parse(function onParse(error) {
+        if (error) {
+            callback(error);
+        } else {
+            if (tree.chunks.length === 1) {
+                replacePaths(tree, tree.dependencies, reInclude, options);
+                callback(undefined, render(tree.dependencies, null, false, options));
+            } else {
+                arrayForEach(tree.chunks, function forEachChunk(chunk, index) {
 
-        options.mappings = dependency.mappings;
-        dependency.content = dependency.content.replace(
-            options.reInclude,
-            function(match, includeName, functionName, dependencyPath) {
-                var opts = resolve(dependencyPath, parentDir, options),
-                    id = opts ? (opts.moduleName ? opts.moduleName : opts.fullPath) : false,
-                    dep = id ? childHash[id] : false;
+                    replacePaths(tree, chunk.dependencies, reInclude, options);
 
-                if (functionName === "resolve") {
-                    if (!dep) {
-                        return match;
+                    if (index === 0) {
+                        out[rename(chunk.fullPath, dirname, options)] = render(chunk.dependencies, mapChunks(tree.chunks, dirname, options), options.parseAsync, options);
                     } else {
-                        return replaceString(match, dependencyPath, relative(rootDirectory, opts.fullPath));
+                        out[rename(chunk.fullPath, dirname, options)] = renderChunk(chunk.dependencies[0].index, chunk.dependencies);
                     }
-                }
+                });
 
-                if (!dep) {
-                    return match;
-                }
-
-                return replaceString(match, dependencyPath, dep.index, true);
+                callback(undefined, out);
             }
-        );
+        }
     });
 
-    return render(tree.children, opts);
-}
-
-var newline = '";\n',
-    includeProcess = 'var process = require("process");\n',
-    includeBuffer = 'var Buffer = require("buffer").Buffer;\n',
-    includeFilename = 'var __filename = module.id = module.filename = "',
-    includeDirname = 'var __dirname = module.dirname = "';
-
-function beforeParse(content, cleanContent, dependency, tree) {
-    var moduleName = dependency.moduleName,
-        fullPath = dependency.fullPath,
-        relativePath, relativeDir;
-
-    if (filePath.ext(fullPath) === ".json") {
-        dependency.isJSON = true;
-        dependency.content = content;
-        return cleanContent;
-    }
-
-    if (moduleName !== "process" && reProcess.test(cleanContent)) {
-        content = includeProcess + content;
-        cleanContent = includeProcess + cleanContent;
-    }
-    if (moduleName !== "buffer" && reBuffer.test(cleanContent)) {
-        content = includeBuffer + content;
-        cleanContent = includeBuffer + cleanContent;
-    }
-    if (reFilename.test(cleanContent)) {
-        relativePath = relative(tree.rootDirectory, fullPath);
-
-        content = includeFilename + relativePath + newline + content;
-        cleanContent = includeFilename + relativePath + newline + cleanContent;
-    }
-    if (reDirname.test(cleanContent)) {
-        relativeDir = filePath.dir(relativePath || relative(tree.rootDirectory, fullPath));
-
-        content = includeDirname + relativeDir + newline + content;
-        cleanContent = includeDirname + relativeDir + newline + cleanContent;
-    }
-
-    dependency.content = content;
-
-    return cleanContent;
-}
-
-function render(dependencies, options) {
-    return renderTemplate({
-        dependencies: "[\n" + map(dependencies, renderDependency).join(",\n") + "]",
-        exportName: trim(options.exportName)
-    });
-}
-
-function renderDependency(dependency) {
-    return [
-        'function(require, exports, module, global) {',
-        '',
-        dependency.isJSON ? "module.exports = " + dependency.content : dependency.content,
-        '',
-        '}'
-    ].join("\n");
+    return tree;
 }
 
 function replaceString(str, oldValue, value, removeQuotes) {
@@ -154,8 +97,117 @@ function replaceString(str, oldValue, value, removeQuotes) {
     }
 }
 
+function replacePaths(tree, dependencies, reInclude, options) {
+    var dependencyHash = tree.dependencyHash;
+
+    arrayForEach(dependencies, function forEachDependency(dependency) {
+        dependency.content = dependency.content.replace(reInclude, function onReplace(match, includeName, functionName, dependencyPath) {
+            var resolved = resolve(dependencyPath, dependency.fullPath, options),
+                id = resolved ? resolved.fullPath : false,
+                dep = id ? dependencyHash[id] : false;
+
+            if (functionName === "resolve") {
+                if (!dep) {
+                    return match;
+                } else {
+                    return replaceString(match, dependencyPath, relative(rootDirectory, resolved.fullPath));
+                }
+            } else {
+                if (!dep) {
+                    return match;
+                } else {
+                    return replaceString(match, dependencyPath, dep.index, true);
+                }
+            }
+        });
+    });
+}
+
+function mapChunks(chunks, dirname, options) {
+    var out = {};
+
+    arrayForEach(chunks.slice(1), function forEachChunk(chunk) {
+        out[chunk.dependencies[0].index] = rename(chunk.fullPath, dirname, options);
+    });
+
+    return out;
+}
+
+function rename(path, dirname, options) {
+    if (options.rename) {
+        return options.rename(path, filePath.relative(dirname, path), dirname, options);
+    } else {
+        return filePath.basename(path);
+    }
+}
+
+var newline = '";\n',
+    includeProcess = 'var process = require("process");\n',
+    includeBuffer = 'var Buffer = require("buffer").Buffer;\n',
+    includeFilename = 'var __filename = module.id = module.filename = "',
+    includeDirname = 'var __dirname = module.dirname = "';
+
+function beforeParse(dependency) {
+    var content = dependency.content,
+        moduleName = dependency.name,
+        fullPath = dependency.fullPath,
+        relativePath, relativeDir;
+
+    if (filePath.ext(fullPath) === ".json") {
+        dependency.isJSON = true;
+        dependency.content = content;
+    } else {
+        if (moduleName !== "process" && reProcess.test(content)) {
+            content = includeProcess + content;
+        }
+        if (moduleName !== "buffer" && reBuffer.test(content)) {
+            content = includeBuffer + content;
+        }
+        if (reFilename.test(content)) {
+            relativePath = relative(tree.rootDirectory, fullPath);
+            content = includeFilename + relativePath + newline + content;
+        }
+        if (reDirname.test(content)) {
+            relativeDir = filePath.dir(relativePath || relative(tree.rootDirectory, fullPath));
+            content = includeDirname + relativeDir + newline + content;
+        }
+
+        dependency.content = content;
+    }
+}
+
+function render(dependencies, chunks, parseAsync, options) {
+    return renderTemplate({
+        dependencies: "[\n" + arrayMap(dependencies, renderDependency).join(",\n") + "]",
+        parseAsync: parseAsync,
+        chunks: chunks ? JSON.stringify(chunks, null, 4) : "null",
+        exportName: trim(options.exportName)
+    });
+}
+
+function renderChunk(index, dependencies) {
+    return renderChunkTemplate({
+        index: index,
+        dependencies: "[\n" + arrayMap(dependencies, renderChunkDependency).join(",\n") + "]"
+    });
+}
+
+function renderChunkDependency(dependency) {
+    return "[" + dependency.index + ", " + renderDependency(dependency) + "]";
+}
+
+function renderDependency(dependency) {
+    return [
+        'function(require, exports, module, undefined, global) {',
+        '',
+        dependency.isJSON ? 'module.exports = ' + dependency.content + ';' : dependency.content,
+        '',
+        '}'
+    ].join("\n");
+}
+
 function ensureRelative(path) {
-    return helpers.isNotRelative(path) ? "./" + path : path;
+    return isNodeModule(path) ? "./" + path : path;
 }
 
 function relative(dir, path) {

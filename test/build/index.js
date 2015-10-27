@@ -26,7 +26,7 @@
         return path;
     };
 
-    <% if (parseAsync) { %>
+    
     require.async = function async(index, callback) {
         var module = cache[index],
             node;
@@ -70,15 +70,7 @@
             dependencies[dep[0]] = dep[1];
         }
     };
-    <% } else { %>
-
-    require.async = function async(index, callback) {
-        global.setTimeout(function onTimeout() {
-            callback(require(index));
-        });
-    };
-
-    <% } %>
+    
 
     if (typeof(define) === "function" && define.amd) {
         define([], function() {
@@ -87,10 +79,52 @@
     } else if (typeof(module) !== "undefined" && module.exports) {
         module.exports = require(0);
     } else {
-        <% if (exportName) { %>
-        global.<%= exportName %> = require(0);
-        <% } else { %>
+        
         require(0);
-        <% } %>
+        
     }
-}(<%= dependencies %>, <%= chunks %>, void(0), (new Function("return this;"))()));
+}([
+function(require, exports, module, undefined, global) {
+
+var a = require(1),
+    log;
+
+
+require.async(3, function(ab) {
+    var abc = require(5);
+
+    if (ab() === "ab") {
+        log(abc());
+    }
+});
+
+
+log = require(2);
+log(a());
+
+
+},
+function(require, exports, module, undefined, global) {
+
+module.exports = a;
+
+
+function a() {
+    return "a";
+}
+
+
+},
+function(require, exports, module, undefined, global) {
+
+module.exports = log;
+
+
+function log() {
+    console.log.apply(console, arguments);
+}
+
+
+}], {
+    "3": "build/ab_src_index.js"
+}, void(0), (new Function("return this;"))()));

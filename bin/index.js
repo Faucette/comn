@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 
-var comn = require("../src/index"),
+var comn = require(".."),
     fileUtils = require("file_utils"),
     argv = require("argv");
 
@@ -15,14 +15,23 @@ var options = argv({
 if (!options.file) {
     throw new Error("input file require");
 }
+
 if (!options.out) {
     throw new Error("out file require");
 }
 
-
-fileUtils.writeFileSync(
-    options.out, comn(options.file, {
-        exportName: options.exportName,
-        ignore: options.ignore
-    })
-);
+comn(options.file, {
+    exportName: options.exportName,
+    parseAsync: false,
+    ignore: options.ignore
+}, function onComn(error, out) {
+    if (error) {
+        throw error;
+    } else {
+        fileUtils.writeFile(options.out, out, function onWriteFile(error) {
+            if (error) {
+                throw error;
+            }
+        });
+    }
+})

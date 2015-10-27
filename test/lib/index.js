@@ -1,8 +1,15 @@
-var app = require("./app");
+var a = require("./a"),
+    log;
 
 
-app.init();
+require.async("./ab", function(ab) {
+    var abc = require("./abc");
+
+    if (ab() === "ab") {
+        log(abc());
+    }
+});
 
 
-var math = require("./math");
-console.log(math.add(10, 5));
+log = require("./log");
+log(a());
