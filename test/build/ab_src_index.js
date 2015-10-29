@@ -1,5 +1,6 @@
 __COMN_DEFINE__(4, [
 [4, function(require, exports, module, undefined, global) {
+/* ab/src/index.js */
 
 var a = require(2),
     b = require(5);
@@ -15,6 +16,7 @@ function ab() {
 
 }],
 [5, function(require, exports, module, undefined, global) {
+/* ab/src/b.js */
 
 module.exports = b;
 
@@ -26,6 +28,7 @@ function b() {
 
 }],
 [6, function(require, exports, module, undefined, global) {
+/* abc.js */
 
 var ab = require(4);
 

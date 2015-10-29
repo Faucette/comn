@@ -85,6 +85,7 @@
     }
 }([
 function(require, exports, module, undefined, global) {
+/* index.js */
 
 var process = require(1);
 var a = require(2),
@@ -109,6 +110,7 @@ log(a());
 
 },
 function(require, exports, module, undefined, global) {
+/* ../../node_modules/process/browser.js */
 
 // shim for using process in browser
 
@@ -200,6 +202,7 @@ process.chdir = function (dir) {
 
 },
 function(require, exports, module, undefined, global) {
+/* a.js */
 
 module.exports = a;
 
@@ -211,6 +214,7 @@ function a() {
 
 },
 function(require, exports, module, undefined, global) {
+/* log/index.js */
 
 module.exports = log;
 

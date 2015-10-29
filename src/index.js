@@ -3,7 +3,6 @@ var fs = require("fs"),
     resolve = require("resolve"),
     isNodeModule = require("resolve/src/utils/isNodeModule"),
 
-    isFunction = require("is_function"),
     filePath = require("file_path"),
     trim = require("trim"),
     template = require("template"),
@@ -30,15 +29,9 @@ var renderTemplate = template(fs.readFileSync(__dirname + "/template.ejs").toStr
 module.exports = comn;
 
 
-function comn(indexPath, options, callback) {
+function comn(indexPath, options) {
     var emptyPath = builtin._empty,
-        out = {},
-        tree, dirname, reInclude;
-
-    if (isFunction(options)) {
-        callback = options;
-        options = {};
-    }
+        tree, dirname, reInclude, out;
 
     options = options || {};
 
@@ -63,31 +56,27 @@ function comn(indexPath, options, callback) {
     dirname = filePath.dirname(tree.fullPath);
     reInclude = tree.options.reInclude;
 
-    tree.parse(function onParse(error) {
-        if (error) {
-            callback(error);
-        } else {
-            if (tree.chunks.length === 1) {
-                replacePaths(tree, tree.dependencies, reInclude, options);
-                callback(undefined, render(tree.dependencies, null, false, options));
+    tree.parse();
+
+    if (tree.chunks.length === 1) {
+        replacePaths(tree, tree.dependencies, reInclude, options);
+        return render(tree.dependencies, null, false, options, tree.dirname);
+    } else {
+        out = {};
+
+        arrayForEach(tree.chunks, function forEachChunk(chunk, index) {
+
+            replacePaths(tree, chunk.dependencies, reInclude, options);
+
+            if (index === 0) {
+                out[rename(chunk.fullPath, dirname, options)] = render(chunk.dependencies, mapChunks(tree.chunks, dirname, options), options.parseAsync, options, tree.dirname);
             } else {
-                arrayForEach(tree.chunks, function forEachChunk(chunk, index) {
-
-                    replacePaths(tree, chunk.dependencies, reInclude, options);
-
-                    if (index === 0) {
-                        out[rename(chunk.fullPath, dirname, options)] = render(chunk.dependencies, mapChunks(tree.chunks, dirname, options), options.parseAsync, options);
-                    } else {
-                        out[rename(chunk.fullPath, dirname, options)] = renderChunk(chunk.dependencies[0].index, chunk.dependencies);
-                    }
-                });
-
-                callback(undefined, out);
+                out[rename(chunk.fullPath, dirname, options)] = renderChunk(chunk.dependencies[0].index, chunk.dependencies, tree.dirname);
             }
-        }
-    });
+        });
 
-    return tree;
+        return out;
+    }
 }
 
 function replaceString(str, oldValue, value, removeQuotes) {
@@ -107,7 +96,8 @@ function replacePaths(tree, dependencies, reInclude, options) {
         options.mappings = dependency.mappings;
         dependency.content = dependency.content.replace(reInclude, function onReplace(match, includeName, functionName, dependencyPath) {
             var resolved = resolve(dependencyPath, dependency.fullPath, options),
-                id = resolved ? getDependencyId(resolved, isNodeModule(dependencyPath)) : false,
+                resolvedModule = resolved.pkg ? resolved : dependency.module,
+                id = resolved ? getDependencyId(resolved, resolvedModule) : false,
                 dep = id ? dependencyHash[id] : false;
 
             if (functionName === "resolve") {
@@ -160,6 +150,7 @@ function beforeParse(dependency) {
         pkg = dependency.pkg,
         moduleName = pkg && pkg.name,
         fullPath = dependency.fullPath,
+        tree = dependency.chunk.tree,
         relativePath, relativeDir;
 
     if (filePath.ext(fullPath) === ".json") {
@@ -173,11 +164,11 @@ function beforeParse(dependency) {
             content = includeBuffer + content;
         }
         if (reFilename.test(content)) {
-            relativePath = relative(tree.rootDirectory, fullPath);
+            relativePath = relative(filePath.dirname(tree.fullPath), fullPath);
             content = includeFilename + relativePath + newline + content;
         }
         if (reDirname.test(content)) {
-            relativeDir = filePath.dir(relativePath || relative(tree.rootDirectory, fullPath));
+            relativeDir = filePath.dir(relativePath || relative(filePath.dirname(tree.fullPath), fullPath));
             content = includeDirname + relativeDir + newline + content;
         }
 
@@ -185,29 +176,34 @@ function beforeParse(dependency) {
     }
 }
 
-function render(dependencies, chunks, parseAsync, options) {
+function render(dependencies, chunks, parseAsync, options, dirname) {
     return renderTemplate({
-        dependencies: "[\n" + arrayMap(dependencies, renderDependency).join(",\n") + "]",
+        dependencies: "[\n" + arrayMap(dependencies, function render(dependency) {
+            return renderDependency(dependency, dirname);
+        }).join(",\n") + "]",
         parseAsync: parseAsync,
         chunks: chunks ? JSON.stringify(chunks, null, 4) : "null",
         exportName: trim(options.exportName)
     });
 }
 
-function renderChunk(index, dependencies) {
+function renderChunk(index, dependencies, dirname) {
     return renderChunkTemplate({
         index: index,
-        dependencies: "[\n" + arrayMap(dependencies, renderChunkDependency).join(",\n") + "]"
+        dependencies: "[\n" + arrayMap(dependencies, function render(dependency) {
+            return renderChunkDependency(dependency, dirname);
+        }).join(",\n") + "]"
     });
 }
 
-function renderChunkDependency(dependency) {
-    return "[" + dependency.index + ", " + renderDependency(dependency) + "]";
+function renderChunkDependency(dependency, dirname) {
+    return "[" + dependency.index + ", " + renderDependency(dependency, dirname) + "]";
 }
 
-function renderDependency(dependency) {
+function renderDependency(dependency, dirname) {
     return [
         'function(require, exports, module, undefined, global) {',
+        '/* ' + filePath.relative(dirname, dependency.fullPath) + ' */',
         '',
         dependency.isJSON ? 'module.exports = ' + dependency.content + ';' : dependency.content,
         '',
