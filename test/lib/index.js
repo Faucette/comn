@@ -2,13 +2,21 @@ var a = require("./a"),
     log;
 
 
-require.async("./ab", function(ab) {
-    var abc = require("./abc");
+var button = document.getElementById("button");
 
-    if (ab() === "ab") {
-        log(abc());
-    }
-});
+
+button.onclick = function onClick() {
+    require.async("./ab", function(ab) {
+        var abc = require("./abc");
+
+        if (ab() === "ab") {
+            log(abc());
+        }
+    });
+    require.async("./ab", function(ab) {
+        log(ab());
+    });
+};
 
 process.nextTick(function() {
     log(a());

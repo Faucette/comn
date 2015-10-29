@@ -60,7 +60,7 @@ function comn(indexPath, options) {
 
     if (tree.chunks.length === 1) {
         replacePaths(tree, tree.dependencies, reInclude, options);
-        return render(tree.dependencies, null, false, options, tree.dirname);
+        return render(tree.dependencies.length, tree.dependencies, null, false, options, tree.dirname);
     } else {
         out = {};
 
@@ -69,7 +69,7 @@ function comn(indexPath, options) {
             replacePaths(tree, chunk.dependencies, reInclude, options);
 
             if (index === 0) {
-                out[rename(chunk.fullPath, dirname, options)] = render(chunk.dependencies, mapChunks(tree.chunks, dirname, options), options.parseAsync, options, tree.dirname);
+                out[rename(chunk.fullPath, dirname, options)] = render(tree.dependencies.length, chunk.dependencies, mapChunks(tree.chunks, dirname, options), options.parseAsync, options, tree.dirname);
             } else {
                 out[rename(chunk.fullPath, dirname, options)] = renderChunk(chunk.dependencies[0].index, chunk.dependencies, tree.dirname);
             }
@@ -176,10 +176,28 @@ function beforeParse(dependency) {
     }
 }
 
-function render(dependencies, chunks, parseAsync, options, dirname) {
+function copyDependencies(dependencies, length) {
+    var result = new Array(length),
+        i = -1,
+        il = dependencies.length - 1,
+        dependency;
+
+    while (i++ < il) {
+        dependency = dependencies[i];
+        result[dependency.index] = dependency;
+    }
+
+    return result;
+}
+
+function render(length, dependencies, chunks, parseAsync, options, dirname) {
     return renderTemplate({
-        dependencies: "[\n" + arrayMap(dependencies, function render(dependency) {
-            return renderDependency(dependency, dirname);
+        dependencies: "[\n" + arrayMap(copyDependencies(dependencies, length), function render(dependency) {
+            if (dependency) {
+                return renderDependency(dependency, dirname);
+            } else {
+                return "null";
+            }
         }).join(",\n") + "]",
         parseAsync: parseAsync,
         chunks: chunks ? JSON.stringify(chunks, null, 4) : "null",
