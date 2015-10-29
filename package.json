@@ -48,7 +48,6 @@
     "file_utils": "git://github.com/nathanfaucett/file_utils.git",
     "http-browserify": "^1.4.0",
     "https-browserify": "~0.0.0",
-    "is_function": "git://github.com/nathanfaucett/is_function.git",
     "os-browserify": "~0.1.1",
     "path-browserify": "~0.0.0",
     "process": "^0.8.0",
