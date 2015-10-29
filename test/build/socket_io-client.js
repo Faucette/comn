@@ -39,9 +39,7 @@
     
 
     require.async = function async(index, callback) {
-        global.setTimeout(function onTimeout() {
-            callback(require(index));
-        });
+        callback(require(index));
     };
 
     
@@ -59,32 +57,25 @@
     }
 }([
 function(require, exports, module, undefined, global) {
-/* socket_io-client.js */
+/* index.js */
+
 
 module.exports = require(1);
 
 
 },
 function(require, exports, module, undefined, global) {
-/* ../node_modules/socket.io-client/index.js */
-
-
-module.exports = require(2);
-
-
-},
-function(require, exports, module, undefined, global) {
-/* ../node_modules/socket.io-client/lib/index.js */
+/* lib/index.js */
 
 
 /**
  * Module dependencies.
  */
 
-var url = require(3);
-var parser = require(4);
-var Manager = require(5);
-var debug = require(6)('socket.io-client');
+var url = require(2);
+var parser = require(3);
+var Manager = require(4);
+var debug = require(5)('socket.io-client');
 
 /**
  * Module exports.
@@ -161,21 +152,21 @@ exports.connect = lookup;
  * @api public
  */
 
-exports.Manager = require(5);
-exports.Socket = require(7);
+exports.Manager = require(4);
+exports.Socket = require(6);
 
 
 },
 function(require, exports, module, undefined, global) {
-/* ../node_modules/socket.io-client/lib/url.js */
+/* lib/url.js */
 
 
 /**
  * Module dependencies.
  */
 
-var parseuri = require(8);
-var debug = require(6)('socket.io-client:url');
+var parseuri = require(7);
+var debug = require(5)('socket.io-client:url');
 
 /**
  * Module exports.
@@ -246,20 +237,20 @@ function url(uri, loc){
 
 },
 function(require, exports, module, undefined, global) {
-/* ../node_modules/socket.io-client/node_modules/socket.io-parser/index.js */
+/* node_modules/socket.io-parser/index.js */
 
-var Buffer = require(9).Buffer;
+var Buffer = require(8).Buffer;
 
 /**
  * Module dependencies.
  */
 
-var debug = require(6)('socket.io-parser');
-var json = require(10);
-var isArray = require(11);
-var Emitter = require(12);
-var binary = require(13);
-var isBuf = require(14);
+var debug = require(5)('socket.io-parser');
+var json = require(9);
+var isArray = require(10);
+var Emitter = require(11);
+var binary = require(12);
+var isBuf = require(13);
 
 /**
  * Protocol version.
@@ -653,24 +644,24 @@ function error(data){
 
 },
 function(require, exports, module, undefined, global) {
-/* ../node_modules/socket.io-client/lib/manager.js */
+/* lib/manager.js */
 
 
 /**
  * Module dependencies.
  */
 
-var url = require(3);
-var eio = require(18);
-var Socket = require(7);
-var Emitter = require(12);
-var parser = require(4);
-var on = require(19);
-var bind = require(20);
-var object = require(21);
-var debug = require(6)('socket.io-client:manager');
-var indexOf = require(22);
-var Backoff = require(23);
+var url = require(2);
+var eio = require(17);
+var Socket = require(6);
+var Emitter = require(11);
+var parser = require(3);
+var on = require(18);
+var bind = require(19);
+var object = require(20);
+var debug = require(5)('socket.io-client:manager');
+var indexOf = require(21);
+var Backoff = require(22);
 
 /**
  * Module exports
@@ -1162,7 +1153,7 @@ Manager.prototype.onreconnect = function(){
 
 },
 function(require, exports, module, undefined, global) {
-/* ../node_modules/socket.io-client/node_modules/debug/debug.js */
+/* node_modules/debug/debug.js */
 
 
 /**
@@ -1305,20 +1296,20 @@ try {
 
 },
 function(require, exports, module, undefined, global) {
-/* ../node_modules/socket.io-client/lib/socket.js */
+/* lib/socket.js */
 
 
 /**
  * Module dependencies.
  */
 
-var parser = require(4);
-var Emitter = require(12);
-var toArray = require(51);
-var on = require(19);
-var bind = require(20);
-var debug = require(6)('socket.io-client:socket');
-var hasBin = require(42);
+var parser = require(3);
+var Emitter = require(11);
+var toArray = require(50);
+var on = require(18);
+var bind = require(19);
+var debug = require(5)('socket.io-client:socket');
+var hasBin = require(41);
 
 /**
  * Module exports.
@@ -1696,7 +1687,7 @@ Socket.prototype.disconnect = function(){
 
 },
 function(require, exports, module, undefined, global) {
-/* ../node_modules/socket.io-client/node_modules/parseuri/index.js */
+/* node_modules/parseuri/index.js */
 
 /**
  * Parses an URI
@@ -1727,7 +1718,7 @@ module.exports = function parseuri(str) {
 
 },
 function(require, exports, module, undefined, global) {
-/* ../node_modules/buffer/index.js */
+/* ../buffer/index.js */
 
 /*!
  * The buffer module from node.js, for the browser.
@@ -1736,9 +1727,9 @@ function(require, exports, module, undefined, global) {
  * @license  MIT
  */
 
-var base64 = require(15)
-var ieee754 = require(16)
-var isArray = require(17)
+var base64 = require(14)
+var ieee754 = require(15)
+var isArray = require(16)
 
 exports.Buffer = Buffer
 exports.SlowBuffer = Buffer
@@ -2785,7 +2776,7 @@ function decodeUtf8Char (str) {
 
 },
 function(require, exports, module, undefined, global) {
-/* ../node_modules/socket.io-client/node_modules/socket.io-parser/node_modules/json3/lib/json3.js */
+/* node_modules/socket.io-parser/node_modules/json3/lib/json3.js */
 
 /*! JSON v3.2.6 | http://bestiejs.github.io/json3 | Copyright 2012-2013, Kit Cambridge | http://kit.mit-license.org */
 ;(function (window) {
@@ -3652,7 +3643,7 @@ function(require, exports, module, undefined, global) {
 
 },
 function(require, exports, module, undefined, global) {
-/* ../node_modules/socket.io-client/node_modules/socket.io-parser/node_modules/isarray/index.js */
+/* node_modules/socket.io-parser/node_modules/isarray/index.js */
 
 module.exports = Array.isArray || function (arr) {
   return Object.prototype.toString.call(arr) == '[object Array]';
@@ -3661,7 +3652,7 @@ module.exports = Array.isArray || function (arr) {
 
 },
 function(require, exports, module, undefined, global) {
-/* ../node_modules/socket.io-client/node_modules/component-emitter/index.js */
+/* node_modules/component-emitter/index.js */
 
 
 /**
@@ -3831,17 +3822,17 @@ Emitter.prototype.hasListeners = function(event){
 
 },
 function(require, exports, module, undefined, global) {
-/* ../node_modules/socket.io-client/node_modules/socket.io-parser/binary.js */
+/* node_modules/socket.io-parser/binary.js */
 
-var Buffer = require(9).Buffer;
+var Buffer = require(8).Buffer;
 /*global Blob,File*/
 
 /**
  * Module requirements
  */
 
-var isArray = require(11);
-var isBuf = require(14);
+var isArray = require(10);
+var isBuf = require(13);
 
 /**
  * Replaces every Buffer | ArrayBuffer in packet with a numbered placeholder.
@@ -3979,9 +3970,9 @@ exports.removeBlobs = function(data, callback) {
 
 },
 function(require, exports, module, undefined, global) {
-/* ../node_modules/socket.io-client/node_modules/socket.io-parser/is-buffer.js */
+/* node_modules/socket.io-parser/is-buffer.js */
 
-var Buffer = require(9).Buffer;
+var Buffer = require(8).Buffer;
 
 module.exports = isBuf;
 
@@ -3999,7 +3990,7 @@ function isBuf(obj) {
 
 },
 function(require, exports, module, undefined, global) {
-/* ../node_modules/buffer/node_modules/base64-js/lib/b64.js */
+/* ../buffer/node_modules/base64-js/lib/b64.js */
 
 var lookup = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/';
 
@@ -4125,7 +4116,7 @@ var lookup = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/';
 
 },
 function(require, exports, module, undefined, global) {
-/* ../node_modules/buffer/node_modules/ieee754/index.js */
+/* ../buffer/node_modules/ieee754/index.js */
 
 exports.read = function (buffer, offset, isLE, mLen, nBytes) {
   var e, m
@@ -4215,7 +4206,7 @@ exports.write = function (buffer, value, offset, isLE, mLen, nBytes) {
 
 },
 function(require, exports, module, undefined, global) {
-/* ../node_modules/buffer/node_modules/is-array/index.js */
+/* ../buffer/node_modules/is-array/index.js */
 
 
 /**
@@ -4254,15 +4245,15 @@ module.exports = isArray || function (val) {
 
 },
 function(require, exports, module, undefined, global) {
-/* ../node_modules/socket.io-client/node_modules/engine.io-client/index.js */
+/* node_modules/engine.io-client/index.js */
 
 
-module.exports =  require(24);
+module.exports =  require(23);
 
 
 },
 function(require, exports, module, undefined, global) {
-/* ../node_modules/socket.io-client/lib/on.js */
+/* lib/on.js */
 
 
 /**
@@ -4292,7 +4283,7 @@ function on(obj, ev, fn) {
 
 },
 function(require, exports, module, undefined, global) {
-/* ../node_modules/socket.io-client/node_modules/component-bind/index.js */
+/* node_modules/component-bind/index.js */
 
 /**
  * Slice reference.
@@ -4321,7 +4312,7 @@ module.exports = function(obj, fn){
 
 },
 function(require, exports, module, undefined, global) {
-/* ../node_modules/socket.io-client/node_modules/object-component/index.js */
+/* node_modules/object-component/index.js */
 
 
 /**
@@ -4410,7 +4401,7 @@ exports.isEmpty = function(obj){
 
 },
 function(require, exports, module, undefined, global) {
-/* ../node_modules/socket.io-client/node_modules/indexof/index.js */
+/* node_modules/indexof/index.js */
 
 
 var indexOf = [].indexOf;
@@ -4425,7 +4416,7 @@ module.exports = function(arr, obj){
 
 },
 function(require, exports, module, undefined, global) {
-/* ../node_modules/socket.io-client/node_modules/backo2/index.js */
+/* node_modules/backo2/index.js */
 
 
 /**
@@ -4516,10 +4507,10 @@ Backoff.prototype.setJitter = function(jitter){
 
 },
 function(require, exports, module, undefined, global) {
-/* ../node_modules/socket.io-client/node_modules/engine.io-client/lib/index.js */
+/* node_modules/engine.io-client/lib/index.js */
 
 
-module.exports = require(25);
+module.exports = require(24);
 
 /**
  * Exports parser
@@ -4527,25 +4518,25 @@ module.exports = require(25);
  * @api public
  *
  */
-module.exports.parser = require(26);
+module.exports.parser = require(25);
 
 
 },
 function(require, exports, module, undefined, global) {
-/* ../node_modules/socket.io-client/node_modules/engine.io-client/lib/socket.js */
+/* node_modules/engine.io-client/lib/socket.js */
 
 /**
  * Module dependencies.
  */
 
-var transports = require(27);
-var Emitter = require(12);
-var debug = require(28)('engine.io-client:socket');
-var index = require(22);
-var parser = require(26);
-var parseuri = require(29);
-var parsejson = require(30);
-var parseqs = require(31);
+var transports = require(26);
+var Emitter = require(11);
+var debug = require(27)('engine.io-client:socket');
+var index = require(21);
+var parser = require(25);
+var parseuri = require(28);
+var parsejson = require(29);
+var parseqs = require(30);
 
 /**
  * Module exports.
@@ -4660,9 +4651,9 @@ Socket.protocol = parser.protocol; // this is an int
  */
 
 Socket.Socket = Socket;
-Socket.Transport = require(32);
-Socket.transports = require(27);
-Socket.parser = require(26);
+Socket.Transport = require(31);
+Socket.transports = require(26);
+Socket.parser = require(25);
 
 /**
  * Creates transport of the given type.
@@ -5243,18 +5234,18 @@ Socket.prototype.filterUpgrades = function (upgrades) {
 
 },
 function(require, exports, module, undefined, global) {
-/* ../node_modules/socket.io-client/node_modules/engine.io-client/node_modules/engine.io-parser/lib/browser.js */
+/* node_modules/engine.io-client/node_modules/engine.io-parser/lib/browser.js */
 
 /**
  * Module dependencies.
  */
 
-var keys = require(41);
-var hasBinary = require(42);
-var sliceBuffer = require(43);
-var base64encoder = require(44);
-var after = require(45);
-var utf8 = require(46);
+var keys = require(40);
+var hasBinary = require(41);
+var sliceBuffer = require(42);
+var base64encoder = require(43);
+var after = require(44);
+var utf8 = require(45);
 
 /**
  * Check if we are running an android browser. That requires us to use
@@ -5311,7 +5302,7 @@ var err = { type: 'error', data: 'parser error' };
  * Create a blob api even for blob builder when vendor prefixes exist
  */
 
-var Blob = require(47);
+var Blob = require(46);
 
 /**
  * Encodes a packet.
@@ -5843,16 +5834,16 @@ exports.decodePayloadAsBinary = function (data, binaryType, callback) {
 
 },
 function(require, exports, module, undefined, global) {
-/* ../node_modules/socket.io-client/node_modules/engine.io-client/lib/transports/index.js */
+/* node_modules/engine.io-client/lib/transports/index.js */
 
 /**
  * Module dependencies
  */
 
-var XMLHttpRequest = require(33);
-var XHR = require(34);
-var JSONP = require(35);
-var websocket = require(36);
+var XMLHttpRequest = require(32);
+var XHR = require(33);
+var JSONP = require(34);
+var websocket = require(35);
 
 /**
  * Export transports.
@@ -5902,7 +5893,7 @@ function polling(opts){
 
 },
 function(require, exports, module, undefined, global) {
-/* ../node_modules/socket.io-client/node_modules/engine.io-client/node_modules/debug/browser.js */
+/* node_modules/engine.io-client/node_modules/debug/browser.js */
 
 
 /**
@@ -5911,7 +5902,7 @@ function(require, exports, module, undefined, global) {
  * Expose `debug()` as the module.
  */
 
-exports = module.exports = require(48);
+exports = module.exports = require(47);
 exports.log = log;
 exports.formatArgs = formatArgs;
 exports.save = save;
@@ -6055,7 +6046,7 @@ exports.enable(load());
 
 },
 function(require, exports, module, undefined, global) {
-/* ../node_modules/socket.io-client/node_modules/engine.io-client/node_modules/parseuri/index.js */
+/* node_modules/engine.io-client/node_modules/parseuri/index.js */
 
 /**
  * Parses an URI
@@ -6100,7 +6091,7 @@ module.exports = function parseuri(str) {
 
 },
 function(require, exports, module, undefined, global) {
-/* ../node_modules/socket.io-client/node_modules/engine.io-client/node_modules/parsejson/index.js */
+/* node_modules/engine.io-client/node_modules/parsejson/index.js */
 
 /**
  * JSON parse.
@@ -6137,7 +6128,7 @@ module.exports = function parsejson(data) {
 
 },
 function(require, exports, module, undefined, global) {
-/* ../node_modules/socket.io-client/node_modules/engine.io-client/node_modules/parseqs/index.js */
+/* node_modules/engine.io-client/node_modules/parseqs/index.js */
 
 /**
  * Compiles a querystring
@@ -6180,14 +6171,14 @@ exports.decode = function(qs){
 
 },
 function(require, exports, module, undefined, global) {
-/* ../node_modules/socket.io-client/node_modules/engine.io-client/lib/transport.js */
+/* node_modules/engine.io-client/lib/transport.js */
 
 /**
  * Module dependencies.
  */
 
-var parser = require(26);
-var Emitter = require(12);
+var parser = require(25);
+var Emitter = require(11);
 
 /**
  * Module exports.
@@ -6345,10 +6336,10 @@ Transport.prototype.onClose = function () {
 
 },
 function(require, exports, module, undefined, global) {
-/* ../node_modules/socket.io-client/node_modules/engine.io-client/lib/xmlhttprequest.js */
+/* node_modules/engine.io-client/lib/xmlhttprequest.js */
 
 // browser shim for xmlhttprequest module
-var hasCORS = require(37);
+var hasCORS = require(36);
 
 module.exports = function(opts) {
   var xdomain = opts.xdomain;
@@ -6387,17 +6378,17 @@ module.exports = function(opts) {
 
 },
 function(require, exports, module, undefined, global) {
-/* ../node_modules/socket.io-client/node_modules/engine.io-client/lib/transports/polling-xhr.js */
+/* node_modules/engine.io-client/lib/transports/polling-xhr.js */
 
 /**
  * Module requirements.
  */
 
-var XMLHttpRequest = require(33);
-var Polling = require(39);
-var Emitter = require(12);
-var inherit = require(40);
-var debug = require(28)('engine.io-client:polling-xhr');
+var XMLHttpRequest = require(32);
+var Polling = require(38);
+var Emitter = require(11);
+var inherit = require(39);
+var debug = require(27)('engine.io-client:polling-xhr');
 
 /**
  * Module exports.
@@ -6777,15 +6768,15 @@ function unloadHandler() {
 
 },
 function(require, exports, module, undefined, global) {
-/* ../node_modules/socket.io-client/node_modules/engine.io-client/lib/transports/polling-jsonp.js */
+/* node_modules/engine.io-client/lib/transports/polling-jsonp.js */
 
 
 /**
  * Module requirements.
  */
 
-var Polling = require(39);
-var inherit = require(40);
+var Polling = require(38);
+var inherit = require(39);
 
 /**
  * Module exports.
@@ -7016,17 +7007,17 @@ JSONPPolling.prototype.doWrite = function (data, fn) {
 
 },
 function(require, exports, module, undefined, global) {
-/* ../node_modules/socket.io-client/node_modules/engine.io-client/lib/transports/websocket.js */
+/* node_modules/engine.io-client/lib/transports/websocket.js */
 
 /**
  * Module dependencies.
  */
 
-var Transport = require(32);
-var parser = require(26);
-var parseqs = require(31);
-var inherit = require(40);
-var debug = require(28)('engine.io-client:websocket');
+var Transport = require(31);
+var parser = require(25);
+var parseqs = require(30);
+var inherit = require(39);
+var debug = require(27)('engine.io-client:websocket');
 
 /**
  * `ws` exposes a WebSocket-compatible interface in
@@ -7034,7 +7025,7 @@ var debug = require(28)('engine.io-client:websocket');
  * in the browser.
  */
 
-var WebSocket = require(50);
+var WebSocket = require(49);
 
 /**
  * Module exports.
@@ -7260,14 +7251,14 @@ WS.prototype.check = function(){
 
 },
 function(require, exports, module, undefined, global) {
-/* ../node_modules/socket.io-client/node_modules/engine.io-client/node_modules/has-cors/index.js */
+/* node_modules/engine.io-client/node_modules/has-cors/index.js */
 
 
 /**
  * Module dependencies.
  */
 
-var global = require(38);
+var global = require(37);
 
 /**
  * Module exports.
@@ -7289,7 +7280,7 @@ try {
 
 },
 function(require, exports, module, undefined, global) {
-/* ../node_modules/socket.io-client/node_modules/engine.io-client/node_modules/has-cors/node_modules/global/index.js */
+/* node_modules/engine.io-client/node_modules/has-cors/node_modules/global/index.js */
 
 
 /**
@@ -7303,17 +7294,17 @@ module.exports = (function () { return this; })();
 
 },
 function(require, exports, module, undefined, global) {
-/* ../node_modules/socket.io-client/node_modules/engine.io-client/lib/transports/polling.js */
+/* node_modules/engine.io-client/lib/transports/polling.js */
 
 /**
  * Module dependencies.
  */
 
-var Transport = require(32);
-var parseqs = require(31);
-var parser = require(26);
-var inherit = require(40);
-var debug = require(28)('engine.io-client:polling');
+var Transport = require(31);
+var parseqs = require(30);
+var parser = require(25);
+var inherit = require(39);
+var debug = require(27)('engine.io-client:polling');
 
 /**
  * Module exports.
@@ -7326,7 +7317,7 @@ module.exports = Polling;
  */
 
 var hasXHR2 = (function() {
-  var XMLHttpRequest = require(33);
+  var XMLHttpRequest = require(32);
   var xhr = new XMLHttpRequest({ xdomain: false });
   return null != xhr.responseType;
 })();
@@ -7554,7 +7545,7 @@ Polling.prototype.uri = function(){
 
 },
 function(require, exports, module, undefined, global) {
-/* ../node_modules/socket.io-client/node_modules/engine.io-client/node_modules/component-inherit/index.js */
+/* node_modules/engine.io-client/node_modules/component-inherit/index.js */
 
 
 module.exports = function(a, b){
@@ -7566,7 +7557,7 @@ module.exports = function(a, b){
 
 },
 function(require, exports, module, undefined, global) {
-/* ../node_modules/socket.io-client/node_modules/engine.io-client/node_modules/engine.io-parser/lib/keys.js */
+/* node_modules/engine.io-client/node_modules/engine.io-parser/lib/keys.js */
 
 
 /**
@@ -7591,15 +7582,15 @@ module.exports = Object.keys || function keys (obj){
 
 },
 function(require, exports, module, undefined, global) {
-/* ../node_modules/socket.io-client/node_modules/has-binary/index.js */
+/* node_modules/has-binary/index.js */
 
-var Buffer = require(9).Buffer;
+var Buffer = require(8).Buffer;
 
 /*
  * Module requirements.
  */
 
-var isArray = require(11);
+var isArray = require(10);
 
 /**
  * Module exports.
@@ -7656,7 +7647,7 @@ function hasBinary(data) {
 
 },
 function(require, exports, module, undefined, global) {
-/* ../node_modules/socket.io-client/node_modules/engine.io-client/node_modules/engine.io-parser/node_modules/arraybuffer.slice/index.js */
+/* node_modules/engine.io-client/node_modules/engine.io-parser/node_modules/arraybuffer.slice/index.js */
 
 /**
  * An abstraction for slicing an arraybuffer even when
@@ -7691,7 +7682,7 @@ module.exports = function(arraybuffer, start, end) {
 
 },
 function(require, exports, module, undefined, global) {
-/* ../node_modules/socket.io-client/node_modules/engine.io-client/node_modules/engine.io-parser/node_modules/base64-arraybuffer/lib/base64-arraybuffer.js */
+/* node_modules/engine.io-client/node_modules/engine.io-parser/node_modules/base64-arraybuffer/lib/base64-arraybuffer.js */
 
 /*
  * base64-arraybuffer
@@ -7756,7 +7747,7 @@ function(require, exports, module, undefined, global) {
 
 },
 function(require, exports, module, undefined, global) {
-/* ../node_modules/socket.io-client/node_modules/engine.io-client/node_modules/engine.io-parser/node_modules/after/index.js */
+/* node_modules/engine.io-client/node_modules/engine.io-parser/node_modules/after/index.js */
 
 module.exports = after
 
@@ -7790,7 +7781,7 @@ function noop() {}
 
 },
 function(require, exports, module, undefined, global) {
-/* ../node_modules/socket.io-client/node_modules/engine.io-client/node_modules/engine.io-parser/node_modules/utf8/utf8.js */
+/* node_modules/engine.io-client/node_modules/engine.io-parser/node_modules/utf8/utf8.js */
 
 /*! https://mths.be/utf8js v2.0.0 by @mathias */
 ;(function(root) {
@@ -8040,7 +8031,7 @@ function(require, exports, module, undefined, global) {
 
 },
 function(require, exports, module, undefined, global) {
-/* ../node_modules/socket.io-client/node_modules/engine.io-client/node_modules/engine.io-parser/node_modules/blob/index.js */
+/* node_modules/engine.io-client/node_modules/engine.io-parser/node_modules/blob/index.js */
 
 /**
  * Create a blob builder even when vendor prefixes exist
@@ -8142,7 +8133,7 @@ module.exports = (function() {
 
 },
 function(require, exports, module, undefined, global) {
-/* ../node_modules/socket.io-client/node_modules/engine.io-client/node_modules/debug/debug.js */
+/* node_modules/engine.io-client/node_modules/debug/debug.js */
 
 
 /**
@@ -8157,7 +8148,7 @@ exports.coerce = coerce;
 exports.disable = disable;
 exports.enable = enable;
 exports.enabled = enabled;
-exports.humanize = require(49);
+exports.humanize = require(48);
 
 /**
  * The currently active debug mode names, and names to skip.
@@ -8345,7 +8336,7 @@ function coerce(val) {
 
 },
 function(require, exports, module, undefined, global) {
-/* ../node_modules/socket.io-client/node_modules/engine.io-client/node_modules/debug/node_modules/ms/index.js */
+/* node_modules/engine.io-client/node_modules/debug/node_modules/ms/index.js */
 
 /**
  * Helpers.
@@ -8462,7 +8453,7 @@ function plural(ms, n, name) {
 
 },
 function(require, exports, module, undefined, global) {
-/* ../node_modules/socket.io-client/node_modules/engine.io-client/node_modules/ws/lib/browser.js */
+/* node_modules/engine.io-client/node_modules/ws/lib/browser.js */
 
 
 /**
@@ -8511,7 +8502,7 @@ if (WebSocket) ws.prototype = WebSocket.prototype;
 
 },
 function(require, exports, module, undefined, global) {
-/* ../node_modules/socket.io-client/node_modules/to-array/index.js */
+/* node_modules/to-array/index.js */
 
 module.exports = toArray
 

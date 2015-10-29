@@ -1,4 +1,4 @@
-__COMN_DEFINE__(4, [
+__COMN_DEFINE__([
 [4, function(require, exports, module, undefined, global) {
 /* ab/src/index.js */
 

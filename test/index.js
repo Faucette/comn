@@ -23,7 +23,7 @@ tape("comn(index : FilePath String, options : Object)", function(assert) {
 });
 
 tape("comn(index : FilePath String, options : Object)", function(assert) {
-    var out = comn(__dirname + "/socket_io-client.js", {
+    var out = comn("socket.io-client", {
         exportName: "io"
     });
 

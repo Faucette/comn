@@ -55,10 +55,8 @@
             node.async = true;
             node.setAttribute("data-module", index);
 
-            function onScriptLoad(e) {
-                var node = e.currentTarget || e.srcElement,
-                    index = node.getAttribute("data-module"),
-                    i = -1,
+            function onLoad() {
+                var i = -1,
                     il = callbacks.length - 1;
 
                 while (i++ < il) {
@@ -67,9 +65,9 @@
             }
 
             if (node.attachEvent && !(node.attachEvent.toString && node.attachEvent.toString().indexOf("[native code") < 0)) {
-                node.attachEvent("onreadystatechange", onScriptLoad);
+                node.attachEvent("onreadystatechange", onLoad);
             } else {
-                node.addEventListener("load", onScriptLoad, false);
+                node.addEventListener("load", onLoad, false);
             }
 
             node.src = chunks[index];
@@ -78,14 +76,18 @@
         }
     };
 
-    global.__COMN_DEFINE__ = function __COMN_DEFINE__(index, deps) {
+    global.__COMN_DEFINE__ = function __COMN_DEFINE__(asyncDependencies) {
         var i = -1,
-            il = deps.length - 1,
-            dep;
+            il = asyncDependencies.length - 1,
+            dependency, index;
 
         while (i++ < il) {
-            dep = deps[i];
-            dependencies[dep[0]] = dep[1];
+            dependency = asyncDependencies[i];
+            index = dependency[0];
+
+            if (dependencies[index] === null) {
+                dependencies[index] = dependency[1];
+            }
         }
     };
     
