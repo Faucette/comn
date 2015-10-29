@@ -1,4 +1,4 @@
-__COMN_DEFINE__([
+__COMN_DEFINE__(document.getElementById("__comn-module-4__"), [
 [4, function(require, exports, module, undefined, global) {
 /* ab/src/index.js */
 

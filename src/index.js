@@ -71,7 +71,7 @@ function comn(indexPath, options) {
             if (index === 0) {
                 out[rename(chunk.fullPath, dirname, options)] = render(tree.dependencies.length, chunk.dependencies, mapChunks(tree.chunks, dirname, options), options.parseAsync, options, tree.dirname);
             } else {
-                out[rename(chunk.fullPath, dirname, options)] = renderChunk(chunk.dependencies, tree.dirname);
+                out[rename(chunk.fullPath, dirname, options)] = renderChunk(chunk.dependencies[0].index, chunk.dependencies, tree.dirname);
             }
         });
 
@@ -205,8 +205,9 @@ function render(length, dependencies, chunks, parseAsync, options, dirname) {
     });
 }
 
-function renderChunk(dependencies, dirname) {
+function renderChunk(index, dependencies, dirname) {
     return renderChunkTemplate({
+        index: index,
         dependencies: "[\n" + arrayMap(dependencies, function render(dependency) {
             return renderChunkDependency(dependency, dirname);
         }).join(",\n") + "]"

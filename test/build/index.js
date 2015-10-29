@@ -1,7 +1,8 @@
 (function(dependencies, chunks, undefined, global) {
     
     var cache = [],
-        cacheCallbacks = {};
+        cacheCallbacks = {},
+        nodes = [];
     
 
     function Module() {
@@ -50,14 +51,16 @@
             node = document.createElement("script");
             callbacks = cacheCallbacks[index] = [callback];
 
+            node.id = "__comn-module-" + index + "__";
             node.type = "text/javascript";
             node.charset = "utf-8";
             node.async = true;
-            node.setAttribute("data-module", index);
 
             function onLoad() {
                 var i = -1,
                     il = callbacks.length - 1;
+
+                nodes.splice(indexOfNode(node), 1);
 
                 while (i++ < il) {
                     callbacks[i](require(index));
@@ -70,26 +73,44 @@
                 node.addEventListener("load", onLoad, false);
             }
 
+            nodes[nodes.length] = node;
             node.src = chunks[index];
 
             document.head.appendChild(node);
         }
     };
 
-    global.__COMN_DEFINE__ = function __COMN_DEFINE__(asyncDependencies) {
+    function indexOfNode(node) {
         var i = -1,
-            il = asyncDependencies.length - 1,
-            dependency, index;
+            il = nodes.length - 1;
 
         while (i++ < il) {
-            dependency = asyncDependencies[i];
-            index = dependency[0];
+            if (nodes[i] === node) {
+                return i;
+            }
+        }
 
-            if (dependencies[index] === null) {
-                dependencies[index] = dependency[1];
+        return -1;
+    }
+
+    global.__COMN_DEFINE__ = function(node, asyncDependencies) {
+        var i, il, dependency, index;
+
+        if (indexOfNode(node) !== -1) {
+            i = -1;
+            il = asyncDependencies.length - 1;
+
+            while (i++ < il) {
+                dependency = asyncDependencies[i];
+                index = dependency[0];
+
+                if (dependencies[index] === null) {
+                    dependencies[index] = dependency[1];
+                }
             }
         }
     };
+
     
 
     if (typeof(define) === "function" && define.amd) {
