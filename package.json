@@ -23,9 +23,11 @@
   "license": "MIT",
   "readmeFilename": "README.md",
   "devDependencies": {
+    "event_listener": "git://github.com/nathanfaucett/event_listener.git",
     "grunt": "^0.4.5",
     "grunt-contrib-jshint": "^0.10.0",
     "grunt-jsbeautifier": "^0.2.7",
+    "is_object": "git://github.com/nathanfaucett/is_object.git",
     "socket.io-client": "^1.3.7",
     "tap-spec": "^4.0.0",
     "tape": "^4.0.0"
@@ -60,7 +62,6 @@
     "url": "~0.11.0",
     "util": "~0.10.1",
     "vm-browserify": "~0.0.1",
-
     "argv": "git://github.com/nathanfaucett/argv.git",
     "array-for_each": "git://github.com/nathanfaucett/array-for_each.git",
     "array-map": "git://github.com/nathanfaucett/array-map.git",

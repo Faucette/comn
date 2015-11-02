@@ -136,7 +136,8 @@ function rename(path, dirname, options) {
 }
 
 function baseRename(relative) {
-    return relative.replace(/\//g, "_");
+    var ext = filePath.extname(relative);
+    return (filePath.dirname(relative).replace(/\./g, "_") + "/" + filePath.basename(relative, ext) + ext).replace(/\//g, "_");
 }
 
 var newline = '";\n',
