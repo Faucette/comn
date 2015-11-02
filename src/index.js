@@ -7,6 +7,7 @@ var fs = require("fs"),
     trim = require("trim"),
     template = require("template"),
     arrayMap = require("array-map"),
+    isAlphanumeric = require("is_alphanumeric"),
     arrayForEach = require("array-for_each"),
     extend = require("extend"),
 
@@ -136,8 +137,28 @@ function rename(path, dirname, options) {
 }
 
 function baseRename(relative) {
-    var ext = filePath.extname(relative);
-    return (filePath.dirname(relative).replace(/\./g, "_") + "/" + filePath.basename(relative, ext) + ext).replace(/\//g, "_");
+    var ext = filePath.extname(relative),
+        cleanPath = removeUntilFirst(relative),
+        dirname = filePath.dirname(cleanPath);
+
+    return (
+        ((dirname !== "." ? dirname.replace(/\./g, "") + "/" : "") +
+            filePath.basename(relative, ext) + ext).replace(/\//g, "_")
+    );
+}
+
+function removeUntilFirst(string) {
+    var length = string.length,
+        i = -1,
+        il = length - 1;
+
+    while (i++ < il) {
+        if (isAlphanumeric(string.charAt(i))) {
+            return string.substr(i, length);
+        }
+    }
+
+    return string;
 }
 
 var newline = '";\n',

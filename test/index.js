@@ -2,7 +2,6 @@ var fs = require("fs"),
     tape = require("tape"),
     comn = require("..");
 
-
 tape("comn(index : FilePath String, options : Object)", function(assert) {
     var out = comn(__dirname + "/test0/index.js", {
             rename: function rename(path, relative /*, dirname, options */ ) {

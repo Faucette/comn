@@ -132,8 +132,11 @@ var eventListener = require(1);
 
 
 eventListener.on(window, "load", function onLoad() {
-    require.async(13, function(mod) {
-        console.log(mod(""), mod({}));
+    require.async(13, function(has) {
+        var a = require(18),
+            ab = require(19);
+
+        console.log(a(), ab(), has({}, "key"));
     });
 });
 
@@ -977,6 +980,12 @@ function isUndefined(value) {
 
 
 },
+null,
+null,
+null,
+null,
+null,
+null,
 null], {
-    "13": "build1/mod.js"
+    "13": "build1/.._.._node_modules_has_src_index.js"
 }, void(0), (new Function("return this;"))()));
