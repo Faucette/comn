@@ -223,7 +223,7 @@ function render(length, dependencies, chunks, parseAsync, options, dirname) {
         }).join(",\n") + "]",
         parseAsync: parseAsync,
         chunks: chunks ? JSON.stringify(chunks, null, 4) : "null",
-        exportName: trim(options.exportName)
+        exportName: trim(options.exportName ? options.exportName + "" : "")
     });
 }
 
