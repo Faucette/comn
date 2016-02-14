@@ -93,11 +93,12 @@ function replaceString(str, oldValue, value, removeQuotes) {
 function replacePaths(tree, dependencies, reInclude, options) {
     var dependencyHash = tree.dependencyHash;
 
+    options.throwError = false;
     arrayForEach(dependencies, function forEachDependency(dependency) {
         options.mappings = dependency.mappings;
         dependency.content = dependency.content.replace(reInclude, function onReplace(match, includeName, functionName, dependencyPath) {
             var resolved = resolve(dependencyPath, dependency.fullPath, options),
-                resolvedModule = resolved.pkg ? resolved : dependency.module,
+                resolvedModule = resolved && resolved.pkg ? resolved : dependency.module,
                 id = resolved ? getDependencyId(resolved, resolvedModule) : false,
                 dep = id ? dependencyHash[id] : false;
 
@@ -116,6 +117,7 @@ function replacePaths(tree, dependencies, reInclude, options) {
             }
         });
     });
+    options.throwError = true;
 }
 
 function mapChunks(chunks, dirname, options) {

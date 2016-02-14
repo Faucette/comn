@@ -23,6 +23,7 @@
   "license": "MIT",
   "readmeFilename": "README.md",
   "devDependencies": {
+    "bufferutil": "^1.2.1",
     "event_listener": "git://github.com/nathanfaucett/event_listener.git",
     "grunt": "^0.4.5",
     "grunt-contrib-jshint": "^0.10.0",
@@ -30,7 +31,8 @@
     "is_object": "git://github.com/nathanfaucett/is_object.git",
     "socket.io-client": "^1.3.7",
     "tap-spec": "^4.0.0",
-    "tape": "^4.0.0"
+    "tape": "^4.0.0",
+    "utf-8-validate": "^1.2.1"
   },
   "dependencies": {
     "argv": "git://github.com/nathanfaucett/argv.git",
