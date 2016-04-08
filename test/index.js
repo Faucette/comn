@@ -1,39 +1,40 @@
 var fs = require("fs"),
     tape = require("tape"),
+    filePath = require("file_path"),
     comn = require("..");
 
-tape("comn(index : FilePath String, options : Object)", function(assert) {
-    var out = comn(__dirname + "/test0/index.js", {
+tape("comn(index : FilePath String, options : Object) some basic asynv chunks", function(assert) {
+    var out = comn(filePath.join(__dirname, "test0", "index.js"), {
             rename: function rename(path, relative /*, dirname, options */ ) {
-                return "build0/" + relative.replace(/\//g, "_");
+                return filePath.join("build0", relative.replace(/\/|\\/g, "_"));
             }
         }),
-        path;
+        key;
 
     if (typeof(out) === "string") {
-        fs.writeFileSync(__dirname + "/build0/index.js", out);
+        fs.writeFileSync(filePath.join(__dirname, "build0", "index.js"), out);
     } else {
-        for (path in out) {
-            fs.writeFileSync(__dirname + "/" + path, out[path]);
+        for (key in out) {
+            fs.writeFileSync(filePath.join(__dirname, key), out[key]);
         }
     }
 
     assert.end();
 });
 
-tape("comn(index : FilePath String, options : Object)", function(assert) {
-    var out = comn(__dirname + "/test1/index.js", {
+tape("comn(index : FilePath String, options : Object) cyclic async deps", function(assert) {
+    var out = comn(filePath.join(__dirname, "test1", "index.js"), {
             rename: function rename(path, relative /*, dirname, options */ ) {
-                return "build1/" + relative.replace(/\//g, "_");
+                return filePath.join("build1", relative.replace(/\/|\\/g, "_"));
             }
         }),
-        path;
+        key;
 
     if (typeof(out) === "string") {
-        fs.writeFileSync(__dirname + "/build1/index.js", out);
+        fs.writeFileSync(filePath.join(__dirname, "build1", "index.js"), out);
     } else {
-        for (path in out) {
-            fs.writeFileSync(__dirname + "/" + path, out[path]);
+        for (key in out) {
+            fs.writeFileSync(filePath.join(__dirname, key), out[key]);
         }
     }
 
@@ -45,7 +46,7 @@ tape("comn(index : FilePath String, options : Object)", function(assert) {
         exportName: "io"
     });
 
-    fs.writeFileSync(__dirname + "/build0/socket_io-client.js", out);
+    fs.writeFileSync(filePath.join(__dirname, "build0", "socket_io-client.js"), out);
 
     assert.end();
 });
