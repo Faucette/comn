@@ -1,18 +1,18 @@
 var fs = require("fs"),
 
-    resolve = require("resolve"),
-    isNodeModule = require("resolve/src/utils/isNodeModule"),
+    resolve = require("@nathanfaucett/resolve"),
+    isNodeModule = require("@nathanfaucett/resolve/src/utils/isNodeModule"),
 
-    filePath = require("file_path"),
-    trim = require("trim"),
-    template = require("template"),
-    arrayMap = require("array-map"),
-    isAlphanumeric = require("is_alphanumeric"),
-    arrayForEach = require("array-for_each"),
-    extend = require("extend"),
+    filePath = require("@nathanfaucett/file_path"),
+    trim = require("@nathanfaucett/trim"),
+    template = require("@nathanfaucett/template"),
+    arrayMap = require("@nathanfaucett/array-map"),
+    isAlphanumeric = require("@nathanfaucett/is_alphanumeric"),
+    arrayForEach = require("@nathanfaucett/array-for_each"),
+    extend = require("@nathanfaucett/extend"),
 
-    DependencyTree = require("dependency_tree"),
-    getDependencyId = require("dependency_tree/src/utils/getDependencyId"),
+    DependencyTree = require("@nathanfaucett/dependency_tree"),
+    getDependencyId = require("@nathanfaucett/dependency_tree/src/utils/getDependencyId"),
 
     builtin = require("./builtin");
 

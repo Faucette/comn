@@ -1,4 +1,4 @@
-var isObject = require("is_object");
+var isObject = require("@nathanfaucett/is_object");
 
 
 var a;

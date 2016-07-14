@@ -1390,11 +1390,11 @@ function(require, exports, module, undefined, global) {
 
 var parser = require(2);
 var Emitter = require(19);
-var toArray = require(224);
+var toArray = require(225);
 var on = require(20);
 var bind = require(21);
 var debug = require(4)('socket.io-client:socket');
-var hasBin = require(225);
+var hasBin = require(226);
 
 /**
  * Module exports.
@@ -5676,7 +5676,7 @@ function Socket(uri, opts){
   this.cert = opts.cert || null;
   this.ca = opts.ca || null;
   this.ciphers = opts.ciphers || null;
-  this.rejectUnauthorized = opts.rejectUnauthorized === undefined ? null : opts.rejectUnauthorized;
+  this.rejectUnauthorized = opts.rejectUnauthorized === undefined ? true : opts.rejectUnauthorized;
 
   // other options for Node.js client
   var freeGlobal = typeof global == 'object' && global;
@@ -10191,7 +10191,7 @@ var util = require(53)
   , WebSocket = require(47)
   , Extensions = require(62)
   , PerMessageDeflate = require(63)
-  , tls = require(197)
+  , tls = require(198)
   , url = require(52);
 
 /**
@@ -10706,8 +10706,8 @@ var Buffer = require(9).Buffer;
 var events = require(64)
   , util = require(53)
   , EventEmitter = events.EventEmitter
-  , ErrorCodes = require(198)
-  , bufferUtil = require(199).BufferUtil
+  , ErrorCodes = require(199)
+  , bufferUtil = require(200).BufferUtil
   , PerMessageDeflate = require(63);
 
 /**
@@ -11035,10 +11035,10 @@ var Buffer = require(9).Buffer;
  */
 
 var util = require(53)
-  , Validation = require(219).Validation
-  , ErrorCodes = require(198)
-  , BufferPool = require(220)
-  , bufferUtil = require(199).BufferUtil
+  , Validation = require(220).Validation
+  , ErrorCodes = require(199)
+  , BufferPool = require(221)
+  , bufferUtil = require(200).BufferUtil
   , PerMessageDeflate = require(63);
 
 /**
@@ -11739,12 +11739,40 @@ function(require, exports, module, undefined, global) {
 // shim for using process in browser
 
 var process = module.exports = {};
+
+// cached from whatever global is present so that test runners that stub it
+// don't break things.  But we need to wrap it in a try catch in case it is
+// wrapped in strict mode code which doesn't define any globals.  It's inside a
+// function because try/catches deoptimize in certain engines.
+
+var cachedSetTimeout;
+var cachedClearTimeout;
+
+(function () {
+  try {
+    cachedSetTimeout = setTimeout;
+  } catch (e) {
+    cachedSetTimeout = function () {
+      throw new Error('setTimeout is not defined');
+    }
+  }
+  try {
+    cachedClearTimeout = clearTimeout;
+  } catch (e) {
+    cachedClearTimeout = function () {
+      throw new Error('clearTimeout is not defined');
+    }
+  }
+} ())
 var queue = [];
 var draining = false;
 var currentQueue;
 var queueIndex = -1;
 
 function cleanUpNextTick() {
+    if (!draining || !currentQueue) {
+        return;
+    }
     draining = false;
     if (currentQueue.length) {
         queue = currentQueue.concat(queue);
@@ -11760,7 +11788,7 @@ function drainQueue() {
     if (draining) {
         return;
     }
-    var timeout = setTimeout(cleanUpNextTick);
+    var timeout = cachedSetTimeout(cleanUpNextTick);
     draining = true;
 
     var len = queue.length;
@@ -11777,7 +11805,7 @@ function drainQueue() {
     }
     currentQueue = null;
     draining = false;
-    clearTimeout(timeout);
+    cachedClearTimeout(timeout);
 }
 
 process.nextTick = function (fun) {
@@ -11789,7 +11817,7 @@ process.nextTick = function (fun) {
     }
     queue.push(new Item(fun, args));
     if (queue.length === 1 && !draining) {
-        setTimeout(drainQueue, 0);
+        cachedSetTimeout(drainQueue, 0);
     }
 };
 
@@ -13270,20 +13298,20 @@ function(require, exports, module, undefined, global) {
 
 'use strict'
 
-exports.randomBytes = exports.rng = exports.pseudoRandomBytes = exports.prng = require(92)
-exports.createHash = exports.Hash = require(93)
-exports.createHmac = exports.Hmac = require(94)
+exports.randomBytes = exports.rng = exports.pseudoRandomBytes = exports.prng = require(89)
+exports.createHash = exports.Hash = require(90)
+exports.createHmac = exports.Hmac = require(91)
 
-var hashes = ['sha1', 'sha224', 'sha256', 'sha384', 'sha512', 'md5', 'rmd160'].concat(Object.keys(require(95)))
+var hashes = ['sha1', 'sha224', 'sha256', 'sha384', 'sha512', 'md5', 'rmd160'].concat(Object.keys(require(92)))
 exports.getHashes = function () {
   return hashes
 }
 
-var p = require(96)
+var p = require(93)
 exports.pbkdf2 = p.pbkdf2
 exports.pbkdf2Sync = p.pbkdf2Sync
 
-var aes = require(97)
+var aes = require(94)
 ;[
   'Cipher',
   'createCipher',
@@ -13299,7 +13327,7 @@ var aes = require(97)
   exports[key] = aes[key]
 })
 
-var dh = require(98)
+var dh = require(95)
 ;[
   'DiffieHellmanGroup',
   'createDiffieHellmanGroup',
@@ -13310,7 +13338,7 @@ var dh = require(98)
   exports[key] = dh[key]
 })
 
-var sign = require(99)
+var sign = require(96)
 ;[
   'createSign',
   'Sign',
@@ -13320,9 +13348,9 @@ var sign = require(99)
   exports[key] = sign[key]
 })
 
-exports.createECDH = require(100)
+exports.createECDH = require(97)
 
-var publicEncrypt = require(101)
+var publicEncrypt = require(98)
 
 ;[
   'publicEncrypt',
@@ -13378,11 +13406,11 @@ var EE = require(64).EventEmitter;
 var inherits = require(71);
 
 inherits(Stream, EE);
-Stream.Readable = require(78);
-Stream.Writable = require(79);
-Stream.Duplex = require(80);
-Stream.Transform = require(81);
-Stream.PassThrough = require(82);
+Stream.Readable = require(77);
+Stream.Writable = require(111);
+Stream.Duplex = require(112);
+Stream.Transform = require(113);
+Stream.PassThrough = require(114);
 
 // Backwards-compat with node 0.4.x
 Stream.Stream = Stream;
@@ -13624,7 +13652,7 @@ function(require, exports, module, undefined, global) {
  * MIT Licensed
  */
 
-var fs = require(197);
+var fs = require(198);
 
 function Options(defaults) {
   var internalValues = {};
@@ -14111,7 +14139,7 @@ function(require, exports, module, undefined, global) {
 
 var Buffer = require(9).Buffer;
 
-var zlib = require(205);
+var zlib = require(206);
 
 var AVAILABLE_WINDOW_BITS = [8, 9, 10, 11, 12, 13, 14, 15];
 var DEFAULT_WINDOW_BITS = 15;
@@ -14500,8 +14528,12 @@ EventEmitter.prototype.emit = function(type) {
       er = arguments[1];
       if (er instanceof Error) {
         throw er; // Unhandled 'error' event
+      } else {
+        // At least give some kind of context to the user
+        var err = new Error('Uncaught, unspecified "error" event. (' + er + ')');
+        err.context = er;
+        throw err;
       }
-      throw TypeError('Uncaught, unspecified "error" event.');
     }
   }
 
@@ -14746,7 +14778,7 @@ function(require, exports, module, undefined, global) {
 /* ../punycode/punycode.js */
 
 var process = require(51);
-/*! https://mths.be/punycode v1.4.0 by @mathias */
+/*! https://mths.be/punycode v1.4.1 by @mathias */
 ;(function(root) {
 
 	/** Detect free variables */
@@ -15234,7 +15266,7 @@ var process = require(51);
 		 * @memberOf punycode
 		 * @type String
 		 */
-		'version': '1.3.2',
+		'version': '1.4.1',
 		/**
 		 * An object of methods to convert from JavaScript's internal character
 		 * representation (UCS-2) to Unicode code points, and back.
@@ -15539,12 +15571,11 @@ function(require, exports, module, undefined, global) {
 
 var Buffer = require(9).Buffer;
 var process = require(51);
-// var Base64 = require('Base64')
 var capability = require(75)
 var inherits = require(71)
 var response = require(76)
-var stream = require(57)
-var toArrayBuffer = require(77)
+var stream = require(77)
+var toArrayBuffer = require(78)
 
 var IncomingMessage = response.IncomingMessage
 var rStates = response.readyStates
@@ -15860,9 +15891,11 @@ module.exports = {
   "205": "Reset Content",
   "206": "Partial Content",
   "207": "Multi-Status",
+  "208": "Already Reported",
+  "226": "IM Used",
   "300": "Multiple Choices",
   "301": "Moved Permanently",
-  "302": "Moved Temporarily",
+  "302": "Found",
   "303": "See Other",
   "304": "Not Modified",
   "305": "Use Proxy",
@@ -15876,17 +15909,18 @@ module.exports = {
   "405": "Method Not Allowed",
   "406": "Not Acceptable",
   "407": "Proxy Authentication Required",
-  "408": "Request Time-out",
+  "408": "Request Timeout",
   "409": "Conflict",
   "410": "Gone",
   "411": "Length Required",
   "412": "Precondition Failed",
-  "413": "Request Entity Too Large",
-  "414": "Request-URI Too Large",
+  "413": "Payload Too Large",
+  "414": "URI Too Long",
   "415": "Unsupported Media Type",
-  "416": "Requested Range Not Satisfiable",
+  "416": "Range Not Satisfiable",
   "417": "Expectation Failed",
   "418": "I'm a teapot",
+  "421": "Misdirected Request",
   "422": "Unprocessable Entity",
   "423": "Locked",
   "424": "Failed Dependency",
@@ -15899,10 +15933,11 @@ module.exports = {
   "501": "Not Implemented",
   "502": "Bad Gateway",
   "503": "Service Unavailable",
-  "504": "Gateway Time-out",
+  "504": "Gateway Timeout",
   "505": "HTTP Version Not Supported",
   "506": "Variant Also Negotiates",
   "507": "Insufficient Storage",
+  "508": "Loop Detected",
   "509": "Bandwidth Limit Exceeded",
   "510": "Not Extended",
   "511": "Network Authentication Required"
@@ -15963,7 +15998,7 @@ var Buffer = require(9).Buffer;
 var process = require(51);
 var capability = require(75)
 var inherits = require(71)
-var stream = require(57)
+var stream = require(77)
 
 var rStates = exports.readyStates = {
 	UNSENT: 0,
@@ -15994,6 +16029,7 @@ var IncomingMessage = exports.IncomingMessage = function (xhr, response, mode) {
 	if (mode === 'fetch') {
 		self._fetchResponse = response
 
+		self.url = response.url
 		self.statusCode = response.status
 		self.statusMessage = response.statusText
 		// backwards compatible version of for (<item> of <iterable>):
@@ -16023,6 +16059,7 @@ var IncomingMessage = exports.IncomingMessage = function (xhr, response, mode) {
 		self._xhr = xhr
 		self._pos = 0
 
+		self.url = xhr.responseURL
 		self.statusCode = xhr.status
 		self.statusMessage = xhr.statusText
 		var headers = xhr.getAllResponseHeaders().split(/\r?\n/)
@@ -16030,10 +16067,16 @@ var IncomingMessage = exports.IncomingMessage = function (xhr, response, mode) {
 			var matches = header.match(/^([^:]+):\s*(.*)/)
 			if (matches) {
 				var key = matches[1].toLowerCase()
-				if (self.headers[key] !== undefined)
+				if (key === 'set-cookie') {
+					if (self.headers[key] === undefined) {
+						self.headers[key] = []
+					}
+					self.headers[key].push(matches[2])
+				} else if (self.headers[key] !== undefined) {
 					self.headers[key] += ', ' + matches[2]
-				else
+				} else {
 					self.headers[key] = matches[2]
+				}
 				self.rawHeaders.push(matches[1], matches[2])
 			}
 		})
@@ -16137,6 +16180,29 @@ IncomingMessage.prototype._onXHRProgress = function () {
 
 },
 function(require, exports, module, undefined, global) {
+/* ../readable-stream/readable.js */
+
+var process = require(51);
+var Stream = (function (){
+  try {
+    return require('st' + 'ream'); // hack to fix a circular dependency issue when used with browserify
+  } catch(_){}
+}());
+exports = module.exports = require(79);
+exports.Stream = Stream || exports;
+exports.Readable = exports;
+exports.Writable = require(80);
+exports.Duplex = require(81);
+exports.Transform = require(82);
+exports.PassThrough = require(83);
+
+if (!process.browser && process.env.READABLE_STREAM === 'disable' && Stream) {
+  module.exports = Stream;
+}
+
+
+},
+function(require, exports, module, undefined, global) {
 /* ../to-arraybuffer/index.js */
 
 var Buffer = require(9).Buffer;
@@ -16171,52 +16237,6 @@ module.exports = function (buf) {
 
 },
 function(require, exports, module, undefined, global) {
-/* ../readable-stream/readable.js */
-
-var Stream = (function (){
-  try {
-    return require('st' + 'ream'); // hack to fix a circular dependency issue when used with browserify
-  } catch(_){}
-}());
-exports = module.exports = require(83);
-exports.Stream = Stream || exports;
-exports.Readable = exports;
-exports.Writable = require(84);
-exports.Duplex = require(85);
-exports.Transform = require(86);
-exports.PassThrough = require(87);
-
-
-},
-function(require, exports, module, undefined, global) {
-/* ../readable-stream/writable.js */
-
-module.exports = require(84)
-
-
-},
-function(require, exports, module, undefined, global) {
-/* ../readable-stream/duplex.js */
-
-module.exports = require(85)
-
-
-},
-function(require, exports, module, undefined, global) {
-/* ../readable-stream/transform.js */
-
-module.exports = require(86)
-
-
-},
-function(require, exports, module, undefined, global) {
-/* ../readable-stream/passthrough.js */
-
-module.exports = require(87)
-
-
-},
-function(require, exports, module, undefined, global) {
 /* ../readable-stream/lib/_stream_readable.js */
 
 var Buffer = require(9).Buffer;
@@ -16226,53 +16246,47 @@ var process = require(51);
 module.exports = Readable;
 
 /*<replacement>*/
-var processNextTick = require(88);
+var processNextTick = require(84);
 /*</replacement>*/
 
-
 /*<replacement>*/
-var isArray = require(11);
-/*</replacement>*/
-
-
-/*<replacement>*/
-var Buffer = require(9).Buffer;
+var isArray = require(17);
 /*</replacement>*/
 
 Readable.ReadableState = ReadableState;
 
-var EE = require(64);
-
 /*<replacement>*/
-var EElistenerCount = function(emitter, type) {
+var EE = require(64).EventEmitter;
+
+var EElistenerCount = function (emitter, type) {
   return emitter.listeners(type).length;
 };
 /*</replacement>*/
 
-
-
 /*<replacement>*/
 var Stream;
-(function (){try{
-  Stream = require('st' + 'ream');
-}catch(_){}finally{
-  if (!Stream)
-    Stream = require(64).EventEmitter;
-}}())
+(function () {
+  try {
+    Stream = require('st' + 'ream');
+  } catch (_) {} finally {
+    if (!Stream) Stream = require(64).EventEmitter;
+  }
+})();
 /*</replacement>*/
 
 var Buffer = require(9).Buffer;
+/*<replacement>*/
+var bufferShim = require(85);
+/*</replacement>*/
 
 /*<replacement>*/
-var util = require(89);
+var util = require(86);
 util.inherits = require(71);
 /*</replacement>*/
 
-
-
 /*<replacement>*/
 var debugUtil = require(53);
-var debug;
+var debug = void 0;
 if (debugUtil && debugUtil.debuglog) {
   debug = debugUtil.debuglog('stream');
 } else {
@@ -16284,9 +16298,22 @@ var StringDecoder;
 
 util.inherits(Readable, Stream);
 
+var hasPrependListener = typeof EE.prototype.prependListener === 'function';
+
+function prependListener(emitter, event, fn) {
+  if (hasPrependListener) return emitter.prependListener(event, fn);
+
+  // This is a brutally ugly hack to make sure that our error handler
+  // is attached before any userland ones.  NEVER DO THIS. This is here
+  // only because this code needs to continue to work with older versions
+  // of Node.js that do not include the prependListener() method. The goal
+  // is to eventually remove this hack.
+  if (!emitter._events || !emitter._events[event]) emitter.on(event, fn);else if (isArray(emitter._events[event])) emitter._events[event].unshift(fn);else emitter._events[event] = [fn, emitter._events[event]];
+}
+
 var Duplex;
 function ReadableState(options, stream) {
-  Duplex = Duplex || require(85);
+  Duplex = Duplex || require(81);
 
   options = options || {};
 
@@ -16294,17 +16321,16 @@ function ReadableState(options, stream) {
   // make all the buffer merging and length checks go away
   this.objectMode = !!options.objectMode;
 
-  if (stream instanceof Duplex)
-    this.objectMode = this.objectMode || !!options.readableObjectMode;
+  if (stream instanceof Duplex) this.objectMode = this.objectMode || !!options.readableObjectMode;
 
   // the point at which it stops calling _read() to fill the buffer
   // Note: 0 is a valid value, means "don't call _read preemptively ever"
   var hwm = options.highWaterMark;
   var defaultHwm = this.objectMode ? 16 : 16 * 1024;
-  this.highWaterMark = (hwm || hwm === 0) ? hwm : defaultHwm;
+  this.highWaterMark = hwm || hwm === 0 ? hwm : defaultHwm;
 
   // cast to ints.
-  this.highWaterMark = ~~this.highWaterMark;
+  this.highWaterMark = ~ ~this.highWaterMark;
 
   this.buffer = [];
   this.length = 0;
@@ -16326,6 +16352,7 @@ function ReadableState(options, stream) {
   this.needReadable = false;
   this.emittedReadable = false;
   this.readableListening = false;
+  this.resumeScheduled = false;
 
   // Crypto is kind of old and crusty.  Historically, its default string
   // encoding is 'binary' so we have to make this configurable.
@@ -16345,8 +16372,7 @@ function ReadableState(options, stream) {
   this.decoder = null;
   this.encoding = null;
   if (options.encoding) {
-    if (!StringDecoder)
-      StringDecoder = require(90).StringDecoder;
+    if (!StringDecoder) StringDecoder = require(87).StringDecoder;
     this.decoder = new StringDecoder(options.encoding);
     this.encoding = options.encoding;
   }
@@ -16354,18 +16380,16 @@ function ReadableState(options, stream) {
 
 var Duplex;
 function Readable(options) {
-  Duplex = Duplex || require(85);
+  Duplex = Duplex || require(81);
 
-  if (!(this instanceof Readable))
-    return new Readable(options);
+  if (!(this instanceof Readable)) return new Readable(options);
 
   this._readableState = new ReadableState(options, this);
 
   // legacy
   this.readable = true;
 
-  if (options && typeof options.read === 'function')
-    this._read = options.read;
+  if (options && typeof options.read === 'function') this._read = options.read;
 
   Stream.call(this);
 }
@@ -16374,13 +16398,13 @@ function Readable(options) {
 // This returns true if the highWaterMark has not been hit yet,
 // similar to how Writable.write() returns true if you should
 // write() some more.
-Readable.prototype.push = function(chunk, encoding) {
+Readable.prototype.push = function (chunk, encoding) {
   var state = this._readableState;
 
   if (!state.objectMode && typeof chunk === 'string') {
     encoding = encoding || state.defaultEncoding;
     if (encoding !== state.encoding) {
-      chunk = new Buffer(chunk, encoding);
+      chunk = bufferShim.from(chunk, encoding);
       encoding = '';
     }
   }
@@ -16389,12 +16413,12 @@ Readable.prototype.push = function(chunk, encoding) {
 };
 
 // Unshift should *always* be something directly out of read()
-Readable.prototype.unshift = function(chunk) {
+Readable.prototype.unshift = function (chunk) {
   var state = this._readableState;
   return readableAddChunk(this, state, chunk, '', true);
 };
 
-Readable.prototype.isPaused = function() {
+Readable.prototype.isPaused = function () {
   return this._readableState.flowing === false;
 };
 
@@ -16410,29 +16434,31 @@ function readableAddChunk(stream, state, chunk, encoding, addToFront) {
       var e = new Error('stream.push() after EOF');
       stream.emit('error', e);
     } else if (state.endEmitted && addToFront) {
-      var e = new Error('stream.unshift() after end event');
-      stream.emit('error', e);
+      var _e = new Error('stream.unshift() after end event');
+      stream.emit('error', _e);
     } else {
-      if (state.decoder && !addToFront && !encoding)
+      var skipAdd;
+      if (state.decoder && !addToFront && !encoding) {
         chunk = state.decoder.write(chunk);
+        skipAdd = !state.objectMode && chunk.length === 0;
+      }
 
-      if (!addToFront)
-        state.reading = false;
+      if (!addToFront) state.reading = false;
 
-      // if we want the data now, just emit it.
-      if (state.flowing && state.length === 0 && !state.sync) {
-        stream.emit('data', chunk);
-        stream.read(0);
-      } else {
-        // update the buffer info.
-        state.length += state.objectMode ? 1 : chunk.length;
-        if (addToFront)
-          state.buffer.unshift(chunk);
-        else
-          state.buffer.push(chunk);
+      // Don't add to the buffer if we've decoded to an empty string chunk and
+      // we're not in object mode
+      if (!skipAdd) {
+        // if we want the data now, just emit it.
+        if (state.flowing && state.length === 0 && !state.sync) {
+          stream.emit('data', chunk);
+          stream.read(0);
+        } else {
+          // update the buffer info.
+          state.length += state.objectMode ? 1 : chunk.length;
+          if (addToFront) state.buffer.unshift(chunk);else state.buffer.push(chunk);
 
-        if (state.needReadable)
-          emitReadable(stream);
+          if (state.needReadable) emitReadable(stream);
+        }
       }
 
       maybeReadMore(stream, state);
@@ -16444,7 +16470,6 @@ function readableAddChunk(stream, state, chunk, encoding, addToFront) {
   return needMoreData(state);
 }
 
-
 // if it's past the high water mark, we can push in some more.
 // Also, if we have no data yet, we can stand some
 // more bytes.  This is to work around cases where hwm=0,
@@ -16453,16 +16478,12 @@ function readableAddChunk(stream, state, chunk, encoding, addToFront) {
 // needReadable was set, then we ought to push more, so that another
 // 'readable' event will be triggered.
 function needMoreData(state) {
-  return !state.ended &&
-         (state.needReadable ||
-          state.length < state.highWaterMark ||
-          state.length === 0);
+  return !state.ended && (state.needReadable || state.length < state.highWaterMark || state.length === 0);
 }
 
 // backwards compatibility.
-Readable.prototype.setEncoding = function(enc) {
-  if (!StringDecoder)
-    StringDecoder = require(90).StringDecoder;
+Readable.prototype.setEncoding = function (enc) {
+  if (!StringDecoder) StringDecoder = require(87).StringDecoder;
   this._readableState.decoder = new StringDecoder(enc);
   this._readableState.encoding = enc;
   return this;
@@ -16487,29 +16508,22 @@ function computeNewHighWaterMark(n) {
 }
 
 function howMuchToRead(n, state) {
-  if (state.length === 0 && state.ended)
-    return 0;
+  if (state.length === 0 && state.ended) return 0;
 
-  if (state.objectMode)
-    return n === 0 ? 0 : 1;
+  if (state.objectMode) return n === 0 ? 0 : 1;
 
   if (n === null || isNaN(n)) {
     // only flow one buffer at a time
-    if (state.flowing && state.buffer.length)
-      return state.buffer[0].length;
-    else
-      return state.length;
+    if (state.flowing && state.buffer.length) return state.buffer[0].length;else return state.length;
   }
 
-  if (n <= 0)
-    return 0;
+  if (n <= 0) return 0;
 
   // If we're asking for more than the target buffer level,
   // then raise the water mark.  Bump up to the next highest
   // power of 2, to prevent increasing it excessively in tiny
   // amounts.
-  if (n > state.highWaterMark)
-    state.highWaterMark = computeNewHighWaterMark(n);
+  if (n > state.highWaterMark) state.highWaterMark = computeNewHighWaterMark(n);
 
   // don't have that much.  return null, unless we've ended.
   if (n > state.length) {
@@ -16525,25 +16539,19 @@ function howMuchToRead(n, state) {
 }
 
 // you can override either this method, or the async _read(n) below.
-Readable.prototype.read = function(n) {
+Readable.prototype.read = function (n) {
   debug('read', n);
   var state = this._readableState;
   var nOrig = n;
 
-  if (typeof n !== 'number' || n > 0)
-    state.emittedReadable = false;
+  if (typeof n !== 'number' || n > 0) state.emittedReadable = false;
 
   // if we're doing read(0) to trigger a readable event, but we
   // already have a bunch of data in the buffer, then just trigger
   // the 'readable' event and move on.
-  if (n === 0 &&
-      state.needReadable &&
-      (state.length >= state.highWaterMark || state.ended)) {
+  if (n === 0 && state.needReadable && (state.length >= state.highWaterMark || state.ended)) {
     debug('read: emitReadable', state.length, state.ended);
-    if (state.length === 0 && state.ended)
-      endReadable(this);
-    else
-      emitReadable(this);
+    if (state.length === 0 && state.ended) endReadable(this);else emitReadable(this);
     return null;
   }
 
@@ -16551,8 +16559,7 @@ Readable.prototype.read = function(n) {
 
   // if we've ended, and we're now clear, then finish it up.
   if (n === 0 && state.ended) {
-    if (state.length === 0)
-      endReadable(this);
+    if (state.length === 0) endReadable(this);
     return null;
   }
 
@@ -16600,8 +16607,7 @@ Readable.prototype.read = function(n) {
     state.reading = true;
     state.sync = true;
     // if the length is currently zero, then we *need* a readable event.
-    if (state.length === 0)
-      state.needReadable = true;
+    if (state.length === 0) state.needReadable = true;
     // call internal read method
     this._read(state.highWaterMark);
     state.sync = false;
@@ -16609,14 +16615,10 @@ Readable.prototype.read = function(n) {
 
   // If _read pushed data synchronously, then `reading` will be false,
   // and we need to re-evaluate how much data we can return to the user.
-  if (doRead && !state.reading)
-    n = howMuchToRead(nOrig, state);
+  if (doRead && !state.reading) n = howMuchToRead(nOrig, state);
 
   var ret;
-  if (n > 0)
-    ret = fromList(n, state);
-  else
-    ret = null;
+  if (n > 0) ret = fromList(n, state);else ret = null;
 
   if (ret === null) {
     state.needReadable = true;
@@ -16627,31 +16629,23 @@ Readable.prototype.read = function(n) {
 
   // If we have nothing in the buffer, then we want to know
   // as soon as we *do* get something into the buffer.
-  if (state.length === 0 && !state.ended)
-    state.needReadable = true;
+  if (state.length === 0 && !state.ended) state.needReadable = true;
 
   // If we tried to read() past the EOF, then emit end on the next tick.
-  if (nOrig !== n && state.ended && state.length === 0)
-    endReadable(this);
+  if (nOrig !== n && state.ended && state.length === 0) endReadable(this);
 
-  if (ret !== null)
-    this.emit('data', ret);
+  if (ret !== null) this.emit('data', ret);
 
   return ret;
 };
 
 function chunkInvalid(state, chunk) {
   var er = null;
-  if (!(Buffer.isBuffer(chunk)) &&
-      typeof chunk !== 'string' &&
-      chunk !== null &&
-      chunk !== undefined &&
-      !state.objectMode) {
+  if (!Buffer.isBuffer(chunk) && typeof chunk !== 'string' && chunk !== null && chunk !== undefined && !state.objectMode) {
     er = new TypeError('Invalid non-string/buffer chunk');
   }
   return er;
 }
-
 
 function onEofChunk(stream, state) {
   if (state.ended) return;
@@ -16677,10 +16671,7 @@ function emitReadable(stream) {
   if (!state.emittedReadable) {
     debug('emitReadable', state.flowing);
     state.emittedReadable = true;
-    if (state.sync)
-      processNextTick(emitReadable_, stream);
-    else
-      emitReadable_(stream);
+    if (state.sync) processNextTick(emitReadable_, stream);else emitReadable_(stream);
   }
 }
 
@@ -16689,7 +16680,6 @@ function emitReadable_(stream) {
   stream.emit('readable');
   flow(stream);
 }
-
 
 // at this point, the user has presumably seen the 'readable' event,
 // and called read() to consume some data.  that may have triggered
@@ -16706,15 +16696,12 @@ function maybeReadMore(stream, state) {
 
 function maybeReadMore_(stream, state) {
   var len = state.length;
-  while (!state.reading && !state.flowing && !state.ended &&
-         state.length < state.highWaterMark) {
+  while (!state.reading && !state.flowing && !state.ended && state.length < state.highWaterMark) {
     debug('maybeReadMore read 0');
     stream.read(0);
     if (len === state.length)
       // didn't get any data, stop spinning.
-      break;
-    else
-      len = state.length;
+      break;else len = state.length;
   }
   state.readingMore = false;
 }
@@ -16723,11 +16710,11 @@ function maybeReadMore_(stream, state) {
 // call cb(er, data) where data is <= n in length.
 // for virtual (non-string, non-buffer) streams, "length" is somewhat
 // arbitrary, and perhaps not very meaningful.
-Readable.prototype._read = function(n) {
+Readable.prototype._read = function (n) {
   this.emit('error', new Error('not implemented'));
 };
 
-Readable.prototype.pipe = function(dest, pipeOpts) {
+Readable.prototype.pipe = function (dest, pipeOpts) {
   var src = this;
   var state = this._readableState;
 
@@ -16745,15 +16732,10 @@ Readable.prototype.pipe = function(dest, pipeOpts) {
   state.pipesCount += 1;
   debug('pipe count=%d opts=%j', state.pipesCount, pipeOpts);
 
-  var doEnd = (!pipeOpts || pipeOpts.end !== false) &&
-              dest !== process.stdout &&
-              dest !== process.stderr;
+  var doEnd = (!pipeOpts || pipeOpts.end !== false) && dest !== process.stdout && dest !== process.stderr;
 
   var endFn = doEnd ? onend : cleanup;
-  if (state.endEmitted)
-    processNextTick(endFn);
-  else
-    src.once('end', endFn);
+  if (state.endEmitted) processNextTick(endFn);else src.once('end', endFn);
 
   dest.on('unpipe', onunpipe);
   function onunpipe(readable) {
@@ -16795,9 +16777,7 @@ Readable.prototype.pipe = function(dest, pipeOpts) {
     // flowing again.
     // So, if this is awaiting a drain, then we just call it now.
     // If we don't know, then assume that we are waiting for one.
-    if (state.awaitDrain &&
-        (!dest._writableState || dest._writableState.needDrain))
-      ondrain();
+    if (state.awaitDrain && (!dest._writableState || dest._writableState.needDrain)) ondrain();
   }
 
   src.on('data', ondata);
@@ -16808,10 +16788,8 @@ Readable.prototype.pipe = function(dest, pipeOpts) {
       // If the user unpiped during `dest.write()`, it is possible
       // to get stuck in a permanently paused state if that write
       // also returned false.
-      if (state.pipesCount === 1 &&
-          state.pipes[0] === dest &&
-          src.listenerCount('data') === 1 &&
-          !cleanedUp) {
+      // => Check whether `dest` is still a piping destination.
+      if ((state.pipesCount === 1 && state.pipes === dest || state.pipesCount > 1 && indexOf(state.pipes, dest) !== -1) && !cleanedUp) {
         debug('false write response, pause', src._readableState.awaitDrain);
         src._readableState.awaitDrain++;
       }
@@ -16825,18 +16803,11 @@ Readable.prototype.pipe = function(dest, pipeOpts) {
     debug('onerror', er);
     unpipe();
     dest.removeListener('error', onerror);
-    if (EElistenerCount(dest, 'error') === 0)
-      dest.emit('error', er);
+    if (EElistenerCount(dest, 'error') === 0) dest.emit('error', er);
   }
-  // This is a brutally ugly hack to make sure that our error handler
-  // is attached before any userland ones.  NEVER DO THIS.
-  if (!dest._events || !dest._events.error)
-    dest.on('error', onerror);
-  else if (isArray(dest._events.error))
-    dest._events.error.unshift(onerror);
-  else
-    dest._events.error = [onerror, dest._events.error];
 
+  // Make sure our error handler is attached before userland ones.
+  prependListener(dest, 'error', onerror);
 
   // Both close and finish should trigger unpipe, but only once.
   function onclose() {
@@ -16869,11 +16840,10 @@ Readable.prototype.pipe = function(dest, pipeOpts) {
 };
 
 function pipeOnDrain(src) {
-  return function() {
+  return function () {
     var state = src._readableState;
     debug('pipeOnDrain', state.awaitDrain);
-    if (state.awaitDrain)
-      state.awaitDrain--;
+    if (state.awaitDrain) state.awaitDrain--;
     if (state.awaitDrain === 0 && EElistenerCount(src, 'data')) {
       state.flowing = true;
       flow(src);
@@ -16881,29 +16851,24 @@ function pipeOnDrain(src) {
   };
 }
 
-
-Readable.prototype.unpipe = function(dest) {
+Readable.prototype.unpipe = function (dest) {
   var state = this._readableState;
 
   // if we're not piping anywhere, then do nothing.
-  if (state.pipesCount === 0)
-    return this;
+  if (state.pipesCount === 0) return this;
 
   // just one destination.  most common case.
   if (state.pipesCount === 1) {
     // passed in one, but it's not the right one.
-    if (dest && dest !== state.pipes)
-      return this;
+    if (dest && dest !== state.pipes) return this;
 
-    if (!dest)
-      dest = state.pipes;
+    if (!dest) dest = state.pipes;
 
     // got a match.
     state.pipes = null;
     state.pipesCount = 0;
     state.flowing = false;
-    if (dest)
-      dest.emit('unpipe', this);
+    if (dest) dest.emit('unpipe', this);
     return this;
   }
 
@@ -16917,20 +16882,18 @@ Readable.prototype.unpipe = function(dest) {
     state.pipesCount = 0;
     state.flowing = false;
 
-    for (var i = 0; i < len; i++)
-      dests[i].emit('unpipe', this);
-    return this;
+    for (var _i = 0; _i < len; _i++) {
+      dests[_i].emit('unpipe', this);
+    }return this;
   }
 
   // try to find the right one.
   var i = indexOf(state.pipes, dest);
-  if (i === -1)
-    return this;
+  if (i === -1) return this;
 
   state.pipes.splice(i, 1);
   state.pipesCount -= 1;
-  if (state.pipesCount === 1)
-    state.pipes = state.pipes[0];
+  if (state.pipesCount === 1) state.pipes = state.pipes[0];
 
   dest.emit('unpipe', this);
 
@@ -16939,7 +16902,7 @@ Readable.prototype.unpipe = function(dest) {
 
 // set up data events if they are asked for
 // Ensure readable listeners eventually get something
-Readable.prototype.on = function(ev, fn) {
+Readable.prototype.on = function (ev, fn) {
   var res = Stream.prototype.on.call(this, ev, fn);
 
   // If listening to data, and it has not explicitly been paused,
@@ -16948,7 +16911,7 @@ Readable.prototype.on = function(ev, fn) {
     this.resume();
   }
 
-  if (ev === 'readable' && this.readable) {
+  if (ev === 'readable' && !this._readableState.endEmitted) {
     var state = this._readableState;
     if (!state.readableListening) {
       state.readableListening = true;
@@ -16973,7 +16936,7 @@ function nReadingNextTick(self) {
 
 // pause() and resume() are remnants of the legacy readable stream API
 // If the user uses them, then switch into old mode.
-Readable.prototype.resume = function() {
+Readable.prototype.resume = function () {
   var state = this._readableState;
   if (!state.flowing) {
     debug('resume');
@@ -16999,11 +16962,10 @@ function resume_(stream, state) {
   state.resumeScheduled = false;
   stream.emit('resume');
   flow(stream);
-  if (state.flowing && !state.reading)
-    stream.read(0);
+  if (state.flowing && !state.reading) stream.read(0);
 }
 
-Readable.prototype.pause = function() {
+Readable.prototype.pause = function () {
   debug('call pause flowing=%j', this._readableState.flowing);
   if (false !== this._readableState.flowing) {
     debug('pause');
@@ -17026,32 +16988,27 @@ function flow(stream) {
 // wrap an old-style stream as the async data source.
 // This is *not* part of the readable stream interface.
 // It is an ugly unfortunate mess of history.
-Readable.prototype.wrap = function(stream) {
+Readable.prototype.wrap = function (stream) {
   var state = this._readableState;
   var paused = false;
 
   var self = this;
-  stream.on('end', function() {
+  stream.on('end', function () {
     debug('wrapped end');
     if (state.decoder && !state.ended) {
       var chunk = state.decoder.end();
-      if (chunk && chunk.length)
-        self.push(chunk);
+      if (chunk && chunk.length) self.push(chunk);
     }
 
     self.push(null);
   });
 
-  stream.on('data', function(chunk) {
+  stream.on('data', function (chunk) {
     debug('wrapped data');
-    if (state.decoder)
-      chunk = state.decoder.write(chunk);
+    if (state.decoder) chunk = state.decoder.write(chunk);
 
     // don't skip over falsy values in objectMode
-    if (state.objectMode && (chunk === null || chunk === undefined))
-      return;
-    else if (!state.objectMode && (!chunk || !chunk.length))
-      return;
+    if (state.objectMode && (chunk === null || chunk === undefined)) return;else if (!state.objectMode && (!chunk || !chunk.length)) return;
 
     var ret = self.push(chunk);
     if (!ret) {
@@ -17064,21 +17021,23 @@ Readable.prototype.wrap = function(stream) {
   // important when wrapping filters and duplexes.
   for (var i in stream) {
     if (this[i] === undefined && typeof stream[i] === 'function') {
-      this[i] = function(method) { return function() {
-        return stream[method].apply(stream, arguments);
-      }; }(i);
+      this[i] = function (method) {
+        return function () {
+          return stream[method].apply(stream, arguments);
+        };
+      }(i);
     }
   }
 
   // proxy certain important events.
   var events = ['error', 'close', 'destroy', 'pause', 'resume'];
-  forEach(events, function(ev) {
+  forEach(events, function (ev) {
     stream.on(ev, self.emit.bind(self, ev));
   });
 
   // when we try to consume some more bytes, simply unpause the
   // underlying stream.
-  self._read = function(n) {
+  self._read = function (n) {
     debug('wrapped _read', n);
     if (paused) {
       paused = false;
@@ -17088,7 +17047,6 @@ Readable.prototype.wrap = function(stream) {
 
   return self;
 };
-
 
 // exposed for testing purposes only.
 Readable._fromList = fromList;
@@ -17103,21 +17061,11 @@ function fromList(n, state) {
   var ret;
 
   // nothing in the list, definitely empty.
-  if (list.length === 0)
-    return null;
+  if (list.length === 0) return null;
 
-  if (length === 0)
-    ret = null;
-  else if (objectMode)
-    ret = list.shift();
-  else if (!n || n >= length) {
+  if (length === 0) ret = null;else if (objectMode) ret = list.shift();else if (!n || n >= length) {
     // read it all, truncate the array.
-    if (stringMode)
-      ret = list.join('');
-    else if (list.length === 1)
-      ret = list[0];
-    else
-      ret = Buffer.concat(list, length);
+    if (stringMode) ret = list.join('');else if (list.length === 1) ret = list[0];else ret = Buffer.concat(list, length);
     list.length = 0;
   } else {
     // read just some of it.
@@ -17133,25 +17081,16 @@ function fromList(n, state) {
     } else {
       // complex case.
       // we have enough to cover it, but it spans past the first buffer.
-      if (stringMode)
-        ret = '';
-      else
-        ret = new Buffer(n);
+      if (stringMode) ret = '';else ret = bufferShim.allocUnsafe(n);
 
       var c = 0;
       for (var i = 0, l = list.length; i < l && c < n; i++) {
-        var buf = list[0];
-        var cpy = Math.min(n - c, buf.length);
+        var _buf = list[0];
+        var cpy = Math.min(n - c, _buf.length);
 
-        if (stringMode)
-          ret += buf.slice(0, cpy);
-        else
-          buf.copy(ret, c, 0, cpy);
+        if (stringMode) ret += _buf.slice(0, cpy);else _buf.copy(ret, c, 0, cpy);
 
-        if (cpy < buf.length)
-          list[0] = buf.slice(cpy);
-        else
-          list.shift();
+        if (cpy < _buf.length) list[0] = _buf.slice(cpy);else list.shift();
 
         c += cpy;
       }
@@ -17166,8 +17105,7 @@ function endReadable(stream) {
 
   // If we get here before consuming all the bytes, then that is a
   // bug in node.  Should never happen.
-  if (state.length > 0)
-    throw new Error('endReadable called on non-empty stream');
+  if (state.length > 0) throw new Error('"endReadable()" called on non-empty stream');
 
   if (!state.endEmitted) {
     state.ended = true;
@@ -17184,19 +17122,18 @@ function endReadableNT(state, stream) {
   }
 }
 
-function forEach (xs, f) {
+function forEach(xs, f) {
   for (var i = 0, l = xs.length; i < l; i++) {
     f(xs[i], i);
   }
 }
 
-function indexOf (xs, x) {
+function indexOf(xs, x) {
   for (var i = 0, l = xs.length; i < l; i++) {
     if (xs[i] === x) return i;
   }
   return -1;
 }
-
 
 },
 function(require, exports, module, undefined, global) {
@@ -17213,42 +17150,41 @@ var process = require(51);
 module.exports = Writable;
 
 /*<replacement>*/
-var processNextTick = require(88);
+var processNextTick = require(84);
 /*</replacement>*/
 
-
 /*<replacement>*/
-var Buffer = require(9).Buffer;
+var asyncWrite = !process.browser && ['v0.10', 'v0.9.'].indexOf(process.version.slice(0, 5)) > -1 ? setImmediate : processNextTick;
 /*</replacement>*/
 
 Writable.WritableState = WritableState;
 
-
 /*<replacement>*/
-var util = require(89);
+var util = require(86);
 util.inherits = require(71);
 /*</replacement>*/
 
-
 /*<replacement>*/
 var internalUtil = {
-  deprecate: require(91)
+  deprecate: require(88)
 };
 /*</replacement>*/
 
-
-
 /*<replacement>*/
 var Stream;
-(function (){try{
-  Stream = require('st' + 'ream');
-}catch(_){}finally{
-  if (!Stream)
-    Stream = require(64).EventEmitter;
-}}())
+(function () {
+  try {
+    Stream = require('st' + 'ream');
+  } catch (_) {} finally {
+    if (!Stream) Stream = require(64).EventEmitter;
+  }
+})();
 /*</replacement>*/
 
 var Buffer = require(9).Buffer;
+/*<replacement>*/
+var bufferShim = require(85);
+/*</replacement>*/
 
 util.inherits(Writable, Stream);
 
@@ -17263,7 +17199,7 @@ function WriteReq(chunk, encoding, cb) {
 
 var Duplex;
 function WritableState(options, stream) {
-  Duplex = Duplex || require(85);
+  Duplex = Duplex || require(81);
 
   options = options || {};
 
@@ -17271,18 +17207,17 @@ function WritableState(options, stream) {
   // contains buffers or objects.
   this.objectMode = !!options.objectMode;
 
-  if (stream instanceof Duplex)
-    this.objectMode = this.objectMode || !!options.writableObjectMode;
+  if (stream instanceof Duplex) this.objectMode = this.objectMode || !!options.writableObjectMode;
 
   // the point at which write() starts returning false
   // Note: 0 is a valid value, means that we always return false if
   // the entire buffer is not flushed immediately on write()
   var hwm = options.highWaterMark;
   var defaultHwm = this.objectMode ? 16 : 16 * 1024;
-  this.highWaterMark = (hwm || hwm === 0) ? hwm : defaultHwm;
+  this.highWaterMark = hwm || hwm === 0 ? hwm : defaultHwm;
 
   // cast to ints.
-  this.highWaterMark = ~~this.highWaterMark;
+  this.highWaterMark = ~ ~this.highWaterMark;
 
   this.needDrain = false;
   // at the start of calling end()
@@ -17326,7 +17261,7 @@ function WritableState(options, stream) {
   this.bufferProcessing = false;
 
   // the callback that's passed to _write(chunk,cb)
-  this.onwrite = function(er) {
+  this.onwrite = function (er) {
     onwrite(stream, er);
   };
 
@@ -17349,6 +17284,13 @@ function WritableState(options, stream) {
 
   // True if the error was already emitted and should not be thrown again
   this.errorEmitted = false;
+
+  // count buffered requests
+  this.bufferedRequestCount = 0;
+
+  // allocate the first CorkedRequest, there is always
+  // one allocated and free to use, and we maintain at most two
+  this.corkedRequestsFree = new CorkedRequest(this);
 }
 
 WritableState.prototype.getBuffer = function writableStateGetBuffer() {
@@ -17361,24 +17303,23 @@ WritableState.prototype.getBuffer = function writableStateGetBuffer() {
   return out;
 };
 
-(function (){try {
-Object.defineProperty(WritableState.prototype, 'buffer', {
-  get: internalUtil.deprecate(function() {
-    return this.getBuffer();
-  }, '_writableState.buffer is deprecated. Use _writableState.getBuffer ' +
-     'instead.')
-});
-}catch(_){}}());
-
+(function () {
+  try {
+    Object.defineProperty(WritableState.prototype, 'buffer', {
+      get: internalUtil.deprecate(function () {
+        return this.getBuffer();
+      }, '_writableState.buffer is deprecated. Use _writableState.getBuffer ' + 'instead.')
+    });
+  } catch (_) {}
+})();
 
 var Duplex;
 function Writable(options) {
-  Duplex = Duplex || require(85);
+  Duplex = Duplex || require(81);
 
   // Writable ctor is applied to Duplexes, though they're not
   // instanceof Writable, they're instanceof Readable.
-  if (!(this instanceof Writable) && !(this instanceof Duplex))
-    return new Writable(options);
+  if (!(this instanceof Writable) && !(this instanceof Duplex)) return new Writable(options);
 
   this._writableState = new WritableState(options, this);
 
@@ -17386,21 +17327,18 @@ function Writable(options) {
   this.writable = true;
 
   if (options) {
-    if (typeof options.write === 'function')
-      this._write = options.write;
+    if (typeof options.write === 'function') this._write = options.write;
 
-    if (typeof options.writev === 'function')
-      this._writev = options.writev;
+    if (typeof options.writev === 'function') this._writev = options.writev;
   }
 
   Stream.call(this);
 }
 
 // Otherwise people can pipe Writable streams, which is just wrong.
-Writable.prototype.pipe = function() {
-  this.emit('error', new Error('Cannot pipe. Not readable.'));
+Writable.prototype.pipe = function () {
+  this.emit('error', new Error('Cannot pipe, not readable'));
 };
-
 
 function writeAfterEnd(stream, cb) {
   var er = new Error('write after end');
@@ -17416,13 +17354,16 @@ function writeAfterEnd(stream, cb) {
 // how many bytes or characters.
 function validChunk(stream, state, chunk, cb) {
   var valid = true;
-
-  if (!(Buffer.isBuffer(chunk)) &&
-      typeof chunk !== 'string' &&
-      chunk !== null &&
-      chunk !== undefined &&
-      !state.objectMode) {
-    var er = new TypeError('Invalid non-string/buffer chunk');
+  var er = false;
+  // Always throw error if a null is written
+  // if we are not in object mode then throw
+  // if it is not a buffer, string, or undefined.
+  if (chunk === null) {
+    er = new TypeError('May not write null values to stream');
+  } else if (!Buffer.isBuffer(chunk) && typeof chunk !== 'string' && chunk !== undefined && !state.objectMode) {
+    er = new TypeError('Invalid non-string/buffer chunk');
+  }
+  if (er) {
     stream.emit('error', er);
     processNextTick(cb, er);
     valid = false;
@@ -17430,7 +17371,7 @@ function validChunk(stream, state, chunk, cb) {
   return valid;
 }
 
-Writable.prototype.write = function(chunk, encoding, cb) {
+Writable.prototype.write = function (chunk, encoding, cb) {
   var state = this._writableState;
   var ret = false;
 
@@ -17439,17 +17380,11 @@ Writable.prototype.write = function(chunk, encoding, cb) {
     encoding = null;
   }
 
-  if (Buffer.isBuffer(chunk))
-    encoding = 'buffer';
-  else if (!encoding)
-    encoding = state.defaultEncoding;
+  if (Buffer.isBuffer(chunk)) encoding = 'buffer';else if (!encoding) encoding = state.defaultEncoding;
 
-  if (typeof cb !== 'function')
-    cb = nop;
+  if (typeof cb !== 'function') cb = nop;
 
-  if (state.ended)
-    writeAfterEnd(this, cb);
-  else if (validChunk(this, state, chunk, cb)) {
+  if (state.ended) writeAfterEnd(this, cb);else if (validChunk(this, state, chunk, cb)) {
     state.pendingcb++;
     ret = writeOrBuffer(this, state, chunk, encoding, cb);
   }
@@ -17457,43 +17392,33 @@ Writable.prototype.write = function(chunk, encoding, cb) {
   return ret;
 };
 
-Writable.prototype.cork = function() {
+Writable.prototype.cork = function () {
   var state = this._writableState;
 
   state.corked++;
 };
 
-Writable.prototype.uncork = function() {
+Writable.prototype.uncork = function () {
   var state = this._writableState;
 
   if (state.corked) {
     state.corked--;
 
-    if (!state.writing &&
-        !state.corked &&
-        !state.finished &&
-        !state.bufferProcessing &&
-        state.bufferedRequest)
-      clearBuffer(this, state);
+    if (!state.writing && !state.corked && !state.finished && !state.bufferProcessing && state.bufferedRequest) clearBuffer(this, state);
   }
 };
 
 Writable.prototype.setDefaultEncoding = function setDefaultEncoding(encoding) {
   // node::ParseEncoding() requires lower case.
-  if (typeof encoding === 'string')
-    encoding = encoding.toLowerCase();
-  if (!(['hex', 'utf8', 'utf-8', 'ascii', 'binary', 'base64',
-'ucs2', 'ucs-2','utf16le', 'utf-16le', 'raw']
-.indexOf((encoding + '').toLowerCase()) > -1))
-    throw new TypeError('Unknown encoding: ' + encoding);
+  if (typeof encoding === 'string') encoding = encoding.toLowerCase();
+  if (!(['hex', 'utf8', 'utf-8', 'ascii', 'binary', 'base64', 'ucs2', 'ucs-2', 'utf16le', 'utf-16le', 'raw'].indexOf((encoding + '').toLowerCase()) > -1)) throw new TypeError('Unknown encoding: ' + encoding);
   this._writableState.defaultEncoding = encoding;
+  return this;
 };
 
 function decodeChunk(state, chunk, encoding) {
-  if (!state.objectMode &&
-      state.decodeStrings !== false &&
-      typeof chunk === 'string') {
-    chunk = new Buffer(chunk, encoding);
+  if (!state.objectMode && state.decodeStrings !== false && typeof chunk === 'string') {
+    chunk = bufferShim.from(chunk, encoding);
   }
   return chunk;
 }
@@ -17504,16 +17429,14 @@ function decodeChunk(state, chunk, encoding) {
 function writeOrBuffer(stream, state, chunk, encoding, cb) {
   chunk = decodeChunk(state, chunk, encoding);
 
-  if (Buffer.isBuffer(chunk))
-    encoding = 'buffer';
+  if (Buffer.isBuffer(chunk)) encoding = 'buffer';
   var len = state.objectMode ? 1 : chunk.length;
 
   state.length += len;
 
   var ret = state.length < state.highWaterMark;
   // we must ensure that previous needDrain will not be reset to false.
-  if (!ret)
-    state.needDrain = true;
+  if (!ret) state.needDrain = true;
 
   if (state.writing || state.corked) {
     var last = state.lastBufferedRequest;
@@ -17523,6 +17446,7 @@ function writeOrBuffer(stream, state, chunk, encoding, cb) {
     } else {
       state.bufferedRequest = state.lastBufferedRequest;
     }
+    state.bufferedRequestCount += 1;
   } else {
     doWrite(stream, state, false, len, chunk, encoding, cb);
   }
@@ -17535,19 +17459,13 @@ function doWrite(stream, state, writev, len, chunk, encoding, cb) {
   state.writecb = cb;
   state.writing = true;
   state.sync = true;
-  if (writev)
-    stream._writev(chunk, state.onwrite);
-  else
-    stream._write(chunk, encoding, state.onwrite);
+  if (writev) stream._writev(chunk, state.onwrite);else stream._write(chunk, encoding, state.onwrite);
   state.sync = false;
 }
 
 function onwriteError(stream, state, sync, er, cb) {
   --state.pendingcb;
-  if (sync)
-    processNextTick(cb, er);
-  else
-    cb(er);
+  if (sync) processNextTick(cb, er);else cb(er);
 
   stream._writableState.errorEmitted = true;
   stream.emit('error', er);
@@ -17567,30 +17485,26 @@ function onwrite(stream, er) {
 
   onwriteStateUpdate(state);
 
-  if (er)
-    onwriteError(stream, state, sync, er, cb);
-  else {
+  if (er) onwriteError(stream, state, sync, er, cb);else {
     // Check if we're actually ready to finish, but don't emit yet
     var finished = needFinish(state);
 
-    if (!finished &&
-        !state.corked &&
-        !state.bufferProcessing &&
-        state.bufferedRequest) {
+    if (!finished && !state.corked && !state.bufferProcessing && state.bufferedRequest) {
       clearBuffer(stream, state);
     }
 
     if (sync) {
-      processNextTick(afterWrite, stream, state, finished, cb);
+      /*<replacement>*/
+      asyncWrite(afterWrite, stream, state, finished, cb);
+      /*</replacement>*/
     } else {
-      afterWrite(stream, state, finished, cb);
-    }
+        afterWrite(stream, state, finished, cb);
+      }
   }
 }
 
 function afterWrite(stream, state, finished, cb) {
-  if (!finished)
-    onwriteDrain(stream, state);
+  if (!finished) onwriteDrain(stream, state);
   state.pendingcb--;
   cb();
   finishMaybe(stream, state);
@@ -17606,7 +17520,6 @@ function onwriteDrain(stream, state) {
   }
 }
 
-
 // if there's something in the buffer waiting, then process it
 function clearBuffer(stream, state) {
   state.bufferProcessing = true;
@@ -17614,26 +17527,30 @@ function clearBuffer(stream, state) {
 
   if (stream._writev && entry && entry.next) {
     // Fast case, write everything using _writev()
-    var buffer = [];
-    var cbs = [];
+    var l = state.bufferedRequestCount;
+    var buffer = new Array(l);
+    var holder = state.corkedRequestsFree;
+    holder.entry = entry;
+
+    var count = 0;
     while (entry) {
-      cbs.push(entry.callback);
-      buffer.push(entry);
+      buffer[count] = entry;
       entry = entry.next;
+      count += 1;
     }
 
-    // count the one we are adding, as well.
-    // TODO(isaacs) clean this up
+    doWrite(stream, state, true, state.length, buffer, '', holder.finish);
+
+    // doWrite is almost always async, defer these to save a bit of time
+    // as the hot path ends with doWrite
     state.pendingcb++;
     state.lastBufferedRequest = null;
-    doWrite(stream, state, true, state.length, buffer, '', function(err) {
-      for (var i = 0; i < cbs.length; i++) {
-        state.pendingcb--;
-        cbs[i](err);
-      }
-    });
-
-    // Clear buffer
+    if (holder.next) {
+      state.corkedRequestsFree = holder.next;
+      holder.next = null;
+    } else {
+      state.corkedRequestsFree = new CorkedRequest(state);
+    }
   } else {
     // Slow case, write chunks one-by-one
     while (entry) {
@@ -17653,20 +17570,21 @@ function clearBuffer(stream, state) {
       }
     }
 
-    if (entry === null)
-      state.lastBufferedRequest = null;
+    if (entry === null) state.lastBufferedRequest = null;
   }
+
+  state.bufferedRequestCount = 0;
   state.bufferedRequest = entry;
   state.bufferProcessing = false;
 }
 
-Writable.prototype._write = function(chunk, encoding, cb) {
+Writable.prototype._write = function (chunk, encoding, cb) {
   cb(new Error('not implemented'));
 };
 
 Writable.prototype._writev = null;
 
-Writable.prototype.end = function(chunk, encoding, cb) {
+Writable.prototype.end = function (chunk, encoding, cb) {
   var state = this._writableState;
 
   if (typeof chunk === 'function') {
@@ -17678,8 +17596,7 @@ Writable.prototype.end = function(chunk, encoding, cb) {
     encoding = null;
   }
 
-  if (chunk !== null && chunk !== undefined)
-    this.write(chunk, encoding);
+  if (chunk !== null && chunk !== undefined) this.write(chunk, encoding);
 
   // .end() fully uncorks
   if (state.corked) {
@@ -17688,17 +17605,11 @@ Writable.prototype.end = function(chunk, encoding, cb) {
   }
 
   // ignore unnecessary end() calls.
-  if (!state.ending && !state.finished)
-    endWritable(this, state, cb);
+  if (!state.ending && !state.finished) endWritable(this, state, cb);
 };
 
-
 function needFinish(state) {
-  return (state.ending &&
-          state.length === 0 &&
-          state.bufferedRequest === null &&
-          !state.finished &&
-          !state.writing);
+  return state.ending && state.length === 0 && state.bufferedRequest === null && !state.finished && !state.writing;
 }
 
 function prefinish(stream, state) {
@@ -17726,14 +17637,36 @@ function endWritable(stream, state, cb) {
   state.ending = true;
   finishMaybe(stream, state);
   if (cb) {
-    if (state.finished)
-      processNextTick(cb);
-    else
-      stream.once('finish', cb);
+    if (state.finished) processNextTick(cb);else stream.once('finish', cb);
   }
   state.ended = true;
+  stream.writable = false;
 }
 
+// It seems a linked list but it is not
+// there will be only 2 of these for each stream
+function CorkedRequest(state) {
+  var _this = this;
+
+  this.next = null;
+  this.entry = null;
+
+  this.finish = function (err) {
+    var entry = _this.entry;
+    _this.entry = null;
+    while (entry) {
+      var cb = entry.callback;
+      state.pendingcb--;
+      cb(err);
+      entry = entry.next;
+    }
+    if (state.corkedRequestsFree) {
+      state.corkedRequestsFree.next = _this;
+    } else {
+      state.corkedRequestsFree = _this;
+    }
+  };
+}
 
 },
 function(require, exports, module, undefined, global) {
@@ -17748,55 +17681,49 @@ var process = require(51);
 'use strict';
 
 /*<replacement>*/
+
 var objectKeys = Object.keys || function (obj) {
   var keys = [];
-  for (var key in obj) keys.push(key);
-  return keys;
-}
+  for (var key in obj) {
+    keys.push(key);
+  }return keys;
+};
 /*</replacement>*/
-
 
 module.exports = Duplex;
 
 /*<replacement>*/
-var processNextTick = require(88);
+var processNextTick = require(84);
 /*</replacement>*/
 
-
-
 /*<replacement>*/
-var util = require(89);
+var util = require(86);
 util.inherits = require(71);
 /*</replacement>*/
 
-var Readable = require(83);
-var Writable = require(84);
+var Readable = require(79);
+var Writable = require(80);
 
 util.inherits(Duplex, Readable);
 
 var keys = objectKeys(Writable.prototype);
 for (var v = 0; v < keys.length; v++) {
   var method = keys[v];
-  if (!Duplex.prototype[method])
-    Duplex.prototype[method] = Writable.prototype[method];
+  if (!Duplex.prototype[method]) Duplex.prototype[method] = Writable.prototype[method];
 }
 
 function Duplex(options) {
-  if (!(this instanceof Duplex))
-    return new Duplex(options);
+  if (!(this instanceof Duplex)) return new Duplex(options);
 
   Readable.call(this, options);
   Writable.call(this, options);
 
-  if (options && options.readable === false)
-    this.readable = false;
+  if (options && options.readable === false) this.readable = false;
 
-  if (options && options.writable === false)
-    this.writable = false;
+  if (options && options.writable === false) this.writable = false;
 
   this.allowHalfOpen = true;
-  if (options && options.allowHalfOpen === false)
-    this.allowHalfOpen = false;
+  if (options && options.allowHalfOpen === false) this.allowHalfOpen = false;
 
   this.once('end', onend);
 }
@@ -17805,8 +17732,7 @@ function Duplex(options) {
 function onend() {
   // if we allow half-open state, or if the writable side ended,
   // then we're ok.
-  if (this.allowHalfOpen || this._writableState.ended)
-    return;
+  if (this.allowHalfOpen || this._writableState.ended) return;
 
   // no more data can be written.
   // But allow more writes to happen in this tick.
@@ -17817,12 +17743,11 @@ function onEndNT(self) {
   self.end();
 }
 
-function forEach (xs, f) {
+function forEach(xs, f) {
   for (var i = 0, l = xs.length; i < l; i++) {
     f(xs[i], i);
   }
 }
-
 
 },
 function(require, exports, module, undefined, global) {
@@ -17874,18 +17799,17 @@ function(require, exports, module, undefined, global) {
 
 module.exports = Transform;
 
-var Duplex = require(85);
+var Duplex = require(81);
 
 /*<replacement>*/
-var util = require(89);
+var util = require(86);
 util.inherits = require(71);
 /*</replacement>*/
 
 util.inherits(Transform, Duplex);
 
-
 function TransformState(stream) {
-  this.afterTransform = function(er, data) {
+  this.afterTransform = function (er, data) {
     return afterTransform(stream, er, data);
   };
 
@@ -17893,6 +17817,7 @@ function TransformState(stream) {
   this.transforming = false;
   this.writecb = null;
   this.writechunk = null;
+  this.writeencoding = null;
 }
 
 function afterTransform(stream, er, data) {
@@ -17901,17 +17826,14 @@ function afterTransform(stream, er, data) {
 
   var cb = ts.writecb;
 
-  if (!cb)
-    return stream.emit('error', new Error('no writecb in Transform class'));
+  if (!cb) return stream.emit('error', new Error('no writecb in Transform class'));
 
   ts.writechunk = null;
   ts.writecb = null;
 
-  if (data !== null && data !== undefined)
-    stream.push(data);
+  if (data !== null && data !== undefined) stream.push(data);
 
-  if (cb)
-    cb(er);
+  cb(er);
 
   var rs = stream._readableState;
   rs.reading = false;
@@ -17920,10 +17842,8 @@ function afterTransform(stream, er, data) {
   }
 }
 
-
 function Transform(options) {
-  if (!(this instanceof Transform))
-    return new Transform(options);
+  if (!(this instanceof Transform)) return new Transform(options);
 
   Duplex.call(this, options);
 
@@ -17941,24 +17861,19 @@ function Transform(options) {
   this._readableState.sync = false;
 
   if (options) {
-    if (typeof options.transform === 'function')
-      this._transform = options.transform;
+    if (typeof options.transform === 'function') this._transform = options.transform;
 
-    if (typeof options.flush === 'function')
-      this._flush = options.flush;
+    if (typeof options.flush === 'function') this._flush = options.flush;
   }
 
-  this.once('prefinish', function() {
-    if (typeof this._flush === 'function')
-      this._flush(function(er) {
-        done(stream, er);
-      });
-    else
-      done(stream);
+  this.once('prefinish', function () {
+    if (typeof this._flush === 'function') this._flush(function (er) {
+      done(stream, er);
+    });else done(stream);
   });
 }
 
-Transform.prototype.push = function(chunk, encoding) {
+Transform.prototype.push = function (chunk, encoding) {
   this._transformState.needTransform = false;
   return Duplex.prototype.push.call(this, chunk, encoding);
 };
@@ -17973,28 +17888,25 @@ Transform.prototype.push = function(chunk, encoding) {
 // Call `cb(err)` when you are done with this chunk.  If you pass
 // an error, then that'll put the hurt on the whole operation.  If you
 // never call cb(), then you'll never get another chunk.
-Transform.prototype._transform = function(chunk, encoding, cb) {
-  throw new Error('not implemented');
+Transform.prototype._transform = function (chunk, encoding, cb) {
+  throw new Error('Not implemented');
 };
 
-Transform.prototype._write = function(chunk, encoding, cb) {
+Transform.prototype._write = function (chunk, encoding, cb) {
   var ts = this._transformState;
   ts.writecb = cb;
   ts.writechunk = chunk;
   ts.writeencoding = encoding;
   if (!ts.transforming) {
     var rs = this._readableState;
-    if (ts.needTransform ||
-        rs.needReadable ||
-        rs.length < rs.highWaterMark)
-      this._read(rs.highWaterMark);
+    if (ts.needTransform || rs.needReadable || rs.length < rs.highWaterMark) this._read(rs.highWaterMark);
   }
 };
 
 // Doesn't matter what the args are here.
 // _transform does all the work.
 // That we got here means that the readable side wants more data.
-Transform.prototype._read = function(n) {
+Transform.prototype._read = function (n) {
   var ts = this._transformState;
 
   if (ts.writechunk !== null && ts.writecb && !ts.transforming) {
@@ -18007,25 +17919,20 @@ Transform.prototype._read = function(n) {
   }
 };
 
-
 function done(stream, er) {
-  if (er)
-    return stream.emit('error', er);
+  if (er) return stream.emit('error', er);
 
   // if there's nothing in the write buffer, then that means
   // that nothing more will ever be provided
   var ws = stream._writableState;
   var ts = stream._transformState;
 
-  if (ws.length)
-    throw new Error('calling transform done when ws.length != 0');
+  if (ws.length) throw new Error('Calling transform done when ws.length != 0');
 
-  if (ts.transforming)
-    throw new Error('calling transform done when still transforming');
+  if (ts.transforming) throw new Error('Calling transform done when still transforming');
 
   return stream.push(null);
 }
-
 
 },
 function(require, exports, module, undefined, global) {
@@ -18039,26 +17946,24 @@ function(require, exports, module, undefined, global) {
 
 module.exports = PassThrough;
 
-var Transform = require(86);
+var Transform = require(82);
 
 /*<replacement>*/
-var util = require(89);
+var util = require(86);
 util.inherits = require(71);
 /*</replacement>*/
 
 util.inherits(PassThrough, Transform);
 
 function PassThrough(options) {
-  if (!(this instanceof PassThrough))
-    return new PassThrough(options);
+  if (!(this instanceof PassThrough)) return new PassThrough(options);
 
   Transform.call(this, options);
 }
 
-PassThrough.prototype._transform = function(chunk, encoding, cb) {
+PassThrough.prototype._transform = function (chunk, encoding, cb) {
   cb(null, chunk);
 };
-
 
 },
 function(require, exports, module, undefined, global) {
@@ -18075,15 +17980,153 @@ if (!process.version ||
   module.exports = process.nextTick;
 }
 
-function nextTick(fn) {
-  var args = new Array(arguments.length - 1);
-  var i = 0;
-  while (i < args.length) {
-    args[i++] = arguments[i];
+function nextTick(fn, arg1, arg2, arg3) {
+  if (typeof fn !== 'function') {
+    throw new TypeError('"callback" argument must be a function');
   }
-  process.nextTick(function afterTick() {
-    fn.apply(null, args);
-  });
+  var len = arguments.length;
+  var args, i;
+  switch (len) {
+  case 0:
+  case 1:
+    return process.nextTick(fn);
+  case 2:
+    return process.nextTick(function afterTickOne() {
+      fn.call(null, arg1);
+    });
+  case 3:
+    return process.nextTick(function afterTickTwo() {
+      fn.call(null, arg1, arg2);
+    });
+  case 4:
+    return process.nextTick(function afterTickThree() {
+      fn.call(null, arg1, arg2, arg3);
+    });
+  default:
+    args = new Array(len - 1);
+    i = 0;
+    while (i < args.length) {
+      args[i++] = arguments[i];
+    }
+    return process.nextTick(function afterTick() {
+      fn.apply(null, args);
+    });
+  }
+}
+
+
+},
+function(require, exports, module, undefined, global) {
+/* ../buffer-shims/index.js */
+
+var Buffer = require(9).Buffer;
+'use strict';
+
+var buffer = require(9);
+var Buffer = buffer.Buffer;
+var SlowBuffer = buffer.SlowBuffer;
+var MAX_LEN = buffer.kMaxLength || 2147483647;
+exports.alloc = function alloc(size, fill, encoding) {
+  if (typeof Buffer.alloc === 'function') {
+    return Buffer.alloc(size, fill, encoding);
+  }
+  if (typeof encoding === 'number') {
+    throw new TypeError('encoding must not be number');
+  }
+  if (typeof size !== 'number') {
+    throw new TypeError('size must be a number');
+  }
+  if (size > MAX_LEN) {
+    throw new RangeError('size is too large');
+  }
+  var enc = encoding;
+  var _fill = fill;
+  if (_fill === undefined) {
+    enc = undefined;
+    _fill = 0;
+  }
+  var buf = new Buffer(size);
+  if (typeof _fill === 'string') {
+    var fillBuf = new Buffer(_fill, enc);
+    var flen = fillBuf.length;
+    var i = -1;
+    while (++i < size) {
+      buf[i] = fillBuf[i % flen];
+    }
+  } else {
+    buf.fill(_fill);
+  }
+  return buf;
+}
+exports.allocUnsafe = function allocUnsafe(size) {
+  if (typeof Buffer.allocUnsafe === 'function') {
+    return Buffer.allocUnsafe(size);
+  }
+  if (typeof size !== 'number') {
+    throw new TypeError('size must be a number');
+  }
+  if (size > MAX_LEN) {
+    throw new RangeError('size is too large');
+  }
+  return new Buffer(size);
+}
+exports.from = function from(value, encodingOrOffset, length) {
+  if (typeof Buffer.from === 'function' && (!global.Uint8Array || Uint8Array.from !== Buffer.from)) {
+    return Buffer.from(value, encodingOrOffset, length);
+  }
+  if (typeof value === 'number') {
+    throw new TypeError('"value" argument must not be a number');
+  }
+  if (typeof value === 'string') {
+    return new Buffer(value, encodingOrOffset);
+  }
+  if (typeof ArrayBuffer !== 'undefined' && value instanceof ArrayBuffer) {
+    var offset = encodingOrOffset;
+    if (arguments.length === 1) {
+      return new Buffer(value);
+    }
+    if (typeof offset === 'undefined') {
+      offset = 0;
+    }
+    var len = length;
+    if (typeof len === 'undefined') {
+      len = value.byteLength - offset;
+    }
+    if (offset >= value.byteLength) {
+      throw new RangeError('\'offset\' is out of bounds');
+    }
+    if (len > value.byteLength - offset) {
+      throw new RangeError('\'length\' is out of bounds');
+    }
+    return new Buffer(value.slice(offset, offset + len));
+  }
+  if (Buffer.isBuffer(value)) {
+    var out = new Buffer(value.length);
+    value.copy(out, 0, 0, value.length);
+    return out;
+  }
+  if (value) {
+    if (Array.isArray(value) || (typeof ArrayBuffer !== 'undefined' && value.buffer instanceof ArrayBuffer) || 'length' in value) {
+      return new Buffer(value);
+    }
+    if (value.type === 'Buffer' && Array.isArray(value.data)) {
+      return new Buffer(value.data);
+    }
+  }
+
+  throw new TypeError('First argument must be a string, Buffer, ' + 'ArrayBuffer, Array, or array-like object.');
+}
+exports.allocUnsafeSlow = function allocUnsafeSlow(size) {
+  if (typeof Buffer.allocUnsafeSlow === 'function') {
+    return Buffer.allocUnsafeSlow(size);
+  }
+  if (typeof size !== 'number') {
+    throw new TypeError('size must be a number');
+  }
+  if (size >= MAX_LEN) {
+    throw new RangeError('size is too large');
+  }
+  return new SlowBuffer(size);
 }
 
 
@@ -18530,8 +18573,9 @@ function randomBytes (size, cb) {
 
   // This will not work in older browsers.
   // See https://developer.mozilla.org/en-US/docs/Web/API/window.crypto.getRandomValues
-  crypto.getRandomValues(rawBytes)
-
+  if (size > 0) {  // getRandomValues fails on IE if size == 0
+    crypto.getRandomValues(rawBytes)
+  }
   // phantomjs doesn't like a buffer being passed here
   var bytes = new Buffer(rawBytes.buffer)
 
@@ -18552,11 +18596,11 @@ function(require, exports, module, undefined, global) {
 var Buffer = require(9).Buffer;
 'use strict';
 var inherits = require(71)
-var md5 = require(102)
-var rmd160 = require(103)
-var sha = require(104)
+var md5 = require(99)
+var rmd160 = require(100)
+var sha = require(101)
 
-var Base = require(105)
+var Base = require(102)
 
 function HashNoConstructor(hash) {
   Base.call(this, 'digest')
@@ -18610,7 +18654,7 @@ function(require, exports, module, undefined, global) {
 
 var Buffer = require(9).Buffer;
 'use strict';
-var createHash = require(93);
+var createHash = require(90);
 var inherits = require(71)
 
 var Transform = require(57).Transform
@@ -18763,7 +18807,7 @@ function(require, exports, module, undefined, global) {
 /* ../pbkdf2/browser.js */
 
 var Buffer = require(9).Buffer;
-var createHmac = require(94)
+var createHmac = require(91)
 var MAX_ALLOC = Math.pow(2, 30) - 1 // default in iojs
 
 exports.pbkdf2 = pbkdf2
@@ -18849,11 +18893,11 @@ function pbkdf2Sync (password, salt, iterations, keylen, digest) {
 function(require, exports, module, undefined, global) {
 /* ../browserify-cipher/browser.js */
 
-var ebtk = require(114)
-var aes = require(115)
-var DES = require(116)
-var desModes = require(117)
-var aesModes = require(118)
+var ebtk = require(115)
+var aes = require(116)
+var DES = require(117)
+var desModes = require(118)
+var aesModes = require(119)
 function createCipher (suite, password) {
   var keyLen, ivLen
   suite = suite.toLowerCase()
@@ -18929,10 +18973,10 @@ function(require, exports, module, undefined, global) {
 /* ../diffie-hellman/browser.js */
 
 var Buffer = require(9).Buffer;
-var generatePrime = require(140)
-var primes = require(141)
+var generatePrime = require(141)
+var primes = require(142)
 
-var DH = require(142)
+var DH = require(143)
 
 function getDiffieHellman (mod) {
   var prime = new Buffer(primes[mod].prime, 'hex')
@@ -18978,12 +19022,12 @@ function(require, exports, module, undefined, global) {
 /* ../browserify-sign/browser.js */
 
 var Buffer = require(9).Buffer;
-var _algos = require(95)
-var createHash = require(93)
+var _algos = require(92)
+var createHash = require(90)
 var inherits = require(71)
-var sign = require(146)
+var sign = require(147)
 var stream = require(57)
-var verify = require(147)
+var verify = require(148)
 
 var algos = {}
 Object.keys(_algos).forEach(function (key) {
@@ -19088,8 +19132,8 @@ function(require, exports, module, undefined, global) {
 /* ../create-ecdh/browser.js */
 
 var Buffer = require(9).Buffer;
-var elliptic = require(150);
-var BN = require(143);
+var elliptic = require(151);
+var BN = require(144);
 
 module.exports = function createECDH(curve) {
 	return new ECDH(curve);
@@ -19216,8 +19260,8 @@ function formatReturnValue(bn, enc, len) {
 function(require, exports, module, undefined, global) {
 /* ../public-encrypt/browser.js */
 
-exports.publicEncrypt = require(192);
-exports.privateDecrypt = require(193);
+exports.publicEncrypt = require(193);
+exports.privateDecrypt = require(194);
 
 exports.privateEncrypt = function privateEncrypt(key, buf) {
   return exports.publicEncrypt(key, buf, true);
@@ -19241,7 +19285,7 @@ function(require, exports, module, undefined, global) {
  * See http://pajhome.org.uk/crypt/md5 for more info.
  */
 
-var helpers = require(106);
+var helpers = require(103);
 
 /*
  * Calculate the MD5 of an array of little-endian words, and a bit length
@@ -19618,12 +19662,12 @@ var exports = module.exports = function SHA (algorithm) {
   return new Algorithm()
 }
 
-exports.sha = require(107)
-exports.sha1 = require(108)
-exports.sha224 = require(109)
-exports.sha256 = require(110)
-exports.sha384 = require(111)
-exports.sha512 = require(112)
+exports.sha = require(104)
+exports.sha1 = require(105)
+exports.sha224 = require(106)
+exports.sha256 = require(107)
+exports.sha384 = require(108)
+exports.sha512 = require(109)
 
 
 },
@@ -19633,7 +19677,7 @@ function(require, exports, module, undefined, global) {
 var Buffer = require(9).Buffer;
 var Transform = require(57).Transform
 var inherits = require(71)
-var StringDecoder = require(90).StringDecoder
+var StringDecoder = require(87).StringDecoder
 module.exports = CipherBase
 inherits(CipherBase, Transform)
 function CipherBase (hashMode) {
@@ -19777,7 +19821,11 @@ var Buffer = require(9).Buffer;
  */
 
 var inherits = require(71)
-var Hash = require(113)
+var Hash = require(110)
+
+var K = [
+  0x5a827999, 0x6ed9eba1, 0x8f1bbcdc | 0, 0xca62c1d6 | 0
+]
 
 var W = new Array(80)
 
@@ -19791,61 +19839,51 @@ function Sha () {
 inherits(Sha, Hash)
 
 Sha.prototype.init = function () {
-  this._a = 0x67452301 | 0
-  this._b = 0xefcdab89 | 0
-  this._c = 0x98badcfe | 0
-  this._d = 0x10325476 | 0
-  this._e = 0xc3d2e1f0 | 0
+  this._a = 0x67452301
+  this._b = 0xefcdab89
+  this._c = 0x98badcfe
+  this._d = 0x10325476
+  this._e = 0xc3d2e1f0
 
   return this
 }
 
-/*
- * Bitwise rotate a 32-bit number to the left.
- */
-function rol (num, cnt) {
-  return (num << cnt) | (num >>> (32 - cnt))
+function rotl5 (num) {
+  return (num << 5) | (num >>> 27)
+}
+
+function rotl30 (num) {
+  return (num << 30) | (num >>> 2)
+}
+
+function ft (s, b, c, d) {
+  if (s === 0) return (b & c) | ((~b) & d)
+  if (s === 2) return (b & c) | (b & d) | (c & d)
+  return b ^ c ^ d
 }
 
 Sha.prototype._update = function (M) {
   var W = this._w
 
-  var a = this._a
-  var b = this._b
-  var c = this._c
-  var d = this._d
-  var e = this._e
+  var a = this._a | 0
+  var b = this._b | 0
+  var c = this._c | 0
+  var d = this._d | 0
+  var e = this._e | 0
 
-  var j = 0
-  var k
+  for (var i = 0; i < 16; ++i) W[i] = M.readInt32BE(i * 4)
+  for (; i < 80; ++i) W[i] = W[i - 3] ^ W[i - 8] ^ W[i - 14] ^ W[i - 16]
 
-  /*
-   * SHA-1 has a bitwise rotate left operation. But, SHA is not
-   * function calcW() { return rol(W[j - 3] ^ W[j -  8] ^ W[j - 14] ^ W[j - 16], 1) }
-   */
-  function calcW () { return W[j - 3] ^ W[j - 8] ^ W[j - 14] ^ W[j - 16] }
-  function loop (w, f) {
-    W[j] = w
-
-    var t = rol(a, 5) + f + e + w + k
+  for (var j = 0; j < 80; ++j) {
+    var s = ~~(j / 20)
+    var t = (rotl5(a) + ft(s, b, c, d) + e + W[j] + K[s]) | 0
 
     e = d
     d = c
-    c = rol(b, 30)
+    c = rotl30(b)
     b = a
     a = t
-    j++
   }
-
-  k = 1518500249
-  while (j < 16) loop(M.readInt32BE(j * 4), (b & c) | ((~b) & d))
-  while (j < 20) loop(calcW(), (b & c) | ((~b) & d))
-  k = 1859775393
-  while (j < 40) loop(calcW(), b ^ c ^ d)
-  k = -1894007588
-  while (j < 60) loop(calcW(), (b & c) | (b & d) | (c & d))
-  k = -899497514
-  while (j < 80) loop(calcW(), b ^ c ^ d)
 
   this._a = (a + this._a) | 0
   this._b = (b + this._b) | 0
@@ -19869,7 +19907,6 @@ Sha.prototype._hash = function () {
 module.exports = Sha
 
 
-
 },
 function(require, exports, module, undefined, global) {
 /* ../sha.js/sha1.js */
@@ -19885,7 +19922,11 @@ var Buffer = require(9).Buffer;
  */
 
 var inherits = require(71)
-var Hash = require(113)
+var Hash = require(110)
+
+var K = [
+  0x5a827999, 0x6ed9eba1, 0x8f1bbcdc | 0, 0xca62c1d6 | 0
+]
 
 var W = new Array(80)
 
@@ -19899,57 +19940,55 @@ function Sha1 () {
 inherits(Sha1, Hash)
 
 Sha1.prototype.init = function () {
-  this._a = 0x67452301 | 0
-  this._b = 0xefcdab89 | 0
-  this._c = 0x98badcfe | 0
-  this._d = 0x10325476 | 0
-  this._e = 0xc3d2e1f0 | 0
+  this._a = 0x67452301
+  this._b = 0xefcdab89
+  this._c = 0x98badcfe
+  this._d = 0x10325476
+  this._e = 0xc3d2e1f0
 
   return this
 }
 
-/*
- * Bitwise rotate a 32-bit number to the left.
- */
-function rol (num, cnt) {
-  return (num << cnt) | (num >>> (32 - cnt))
+function rotl1 (num) {
+  return (num << 1) | (num >>> 31)
+}
+
+function rotl5 (num) {
+  return (num << 5) | (num >>> 27)
+}
+
+function rotl30 (num) {
+  return (num << 30) | (num >>> 2)
+}
+
+function ft (s, b, c, d) {
+  if (s === 0) return (b & c) | ((~b) & d)
+  if (s === 2) return (b & c) | (b & d) | (c & d)
+  return b ^ c ^ d
 }
 
 Sha1.prototype._update = function (M) {
   var W = this._w
 
-  var a = this._a
-  var b = this._b
-  var c = this._c
-  var d = this._d
-  var e = this._e
+  var a = this._a | 0
+  var b = this._b | 0
+  var c = this._c | 0
+  var d = this._d | 0
+  var e = this._e | 0
 
-  var j = 0
-  var k
+  for (var i = 0; i < 16; ++i) W[i] = M.readInt32BE(i * 4)
+  for (; i < 80; ++i) W[i] = rotl1(W[i - 3] ^ W[i - 8] ^ W[i - 14] ^ W[i - 16])
 
-  function calcW () { return rol(W[j - 3] ^ W[j - 8] ^ W[j - 14] ^ W[j - 16], 1) }
-  function loop (w, f) {
-    W[j] = w
-
-    var t = rol(a, 5) + f + e + w + k
+  for (var j = 0; j < 80; ++j) {
+    var s = ~~(j / 20)
+    var t = (rotl5(a) + ft(s, b, c, d) + e + W[j] + K[s]) | 0
 
     e = d
     d = c
-    c = rol(b, 30)
+    c = rotl30(b)
     b = a
     a = t
-    j++
   }
-
-  k = 1518500249
-  while (j < 16) loop(M.readInt32BE(j * 4), (b & c) | ((~b) & d))
-  while (j < 20) loop(calcW(), (b & c) | ((~b) & d))
-  k = 1859775393
-  while (j < 40) loop(calcW(), b ^ c ^ d)
-  k = -1894007588
-  while (j < 60) loop(calcW(), (b & c) | (b & d) | (c & d))
-  k = -899497514
-  while (j < 80) loop(calcW(), b ^ c ^ d)
 
   this._a = (a + this._a) | 0
   this._b = (b + this._b) | 0
@@ -19987,8 +20026,8 @@ var Buffer = require(9).Buffer;
  */
 
 var inherits = require(71)
-var Sha256 = require(110)
-var Hash = require(113)
+var Sha256 = require(107)
+var Hash = require(110)
 
 var W = new Array(64)
 
@@ -20003,14 +20042,14 @@ function Sha224 () {
 inherits(Sha224, Sha256)
 
 Sha224.prototype.init = function () {
-  this._a = 0xc1059ed8 | 0
-  this._b = 0x367cd507 | 0
-  this._c = 0x3070dd17 | 0
-  this._d = 0xf70e5939 | 0
-  this._e = 0xffc00b31 | 0
-  this._f = 0x68581511 | 0
-  this._g = 0x64f98fa7 | 0
-  this._h = 0xbefa4fa4 | 0
+  this._a = 0xc1059ed8
+  this._b = 0x367cd507
+  this._c = 0x3070dd17
+  this._d = 0xf70e5939
+  this._e = 0xffc00b31
+  this._f = 0x68581511
+  this._g = 0x64f98fa7
+  this._h = 0xbefa4fa4
 
   return this
 }
@@ -20046,7 +20085,7 @@ var Buffer = require(9).Buffer;
  */
 
 var inherits = require(71)
-var Hash = require(113)
+var Hash = require(110)
 
 var K = [
   0x428A2F98, 0x71374491, 0xB5C0FBCF, 0xE9B5DBA5,
@@ -20080,39 +20119,39 @@ function Sha256 () {
 inherits(Sha256, Hash)
 
 Sha256.prototype.init = function () {
-  this._a = 0x6a09e667 | 0
-  this._b = 0xbb67ae85 | 0
-  this._c = 0x3c6ef372 | 0
-  this._d = 0xa54ff53a | 0
-  this._e = 0x510e527f | 0
-  this._f = 0x9b05688c | 0
-  this._g = 0x1f83d9ab | 0
-  this._h = 0x5be0cd19 | 0
+  this._a = 0x6a09e667
+  this._b = 0xbb67ae85
+  this._c = 0x3c6ef372
+  this._d = 0xa54ff53a
+  this._e = 0x510e527f
+  this._f = 0x9b05688c
+  this._g = 0x1f83d9ab
+  this._h = 0x5be0cd19
 
   return this
 }
 
-function Ch (x, y, z) {
+function ch (x, y, z) {
   return z ^ (x & (y ^ z))
 }
 
-function Maj (x, y, z) {
+function maj (x, y, z) {
   return (x & y) | (z & (x | y))
 }
 
-function Sigma0 (x) {
+function sigma0 (x) {
   return (x >>> 2 | x << 30) ^ (x >>> 13 | x << 19) ^ (x >>> 22 | x << 10)
 }
 
-function Sigma1 (x) {
+function sigma1 (x) {
   return (x >>> 6 | x << 26) ^ (x >>> 11 | x << 21) ^ (x >>> 25 | x << 7)
 }
 
-function Gamma0 (x) {
+function gamma0 (x) {
   return (x >>> 7 | x << 25) ^ (x >>> 18 | x << 14) ^ (x >>> 3)
 }
 
-function Gamma1 (x) {
+function gamma1 (x) {
   return (x >>> 17 | x << 15) ^ (x >>> 19 | x << 13) ^ (x >>> 10)
 }
 
@@ -20128,29 +20167,22 @@ Sha256.prototype._update = function (M) {
   var g = this._g | 0
   var h = this._h | 0
 
-  var j = 0
+  for (var i = 0; i < 16; ++i) W[i] = M.readInt32BE(i * 4)
+  for (; i < 64; ++i) W[i] = (gamma1(W[i - 2]) + W[i - 7] + gamma0(W[i - 15]) + W[i - 16]) | 0
 
-  function calcW () { return Gamma1(W[j - 2]) + W[j - 7] + Gamma0(W[j - 15]) + W[j - 16] }
-  function loop (w) {
-    W[j] = w
-
-    var T1 = h + Sigma1(e) + Ch(e, f, g) + K[j] + w
-    var T2 = Sigma0(a) + Maj(a, b, c)
+  for (var j = 0; j < 64; ++j) {
+    var T1 = (h + sigma1(e) + ch(e, f, g) + K[j] + W[j]) | 0
+    var T2 = (sigma0(a) + maj(a, b, c)) | 0
 
     h = g
     g = f
     f = e
-    e = d + T1
+    e = (d + T1) | 0
     d = c
     c = b
     b = a
-    a = T1 + T2
-
-    j++
+    a = (T1 + T2) | 0
   }
-
-  while (j < 16) loop(M.readInt32BE(j * 4))
-  while (j < 64) loop(calcW())
 
   this._a = (a + this._a) | 0
   this._b = (b + this._b) | 0
@@ -20186,8 +20218,8 @@ function(require, exports, module, undefined, global) {
 
 var Buffer = require(9).Buffer;
 var inherits = require(71)
-var SHA512 = require(112)
-var Hash = require(113)
+var SHA512 = require(109)
+var Hash = require(110)
 
 var W = new Array(160)
 
@@ -20201,23 +20233,23 @@ function Sha384 () {
 inherits(Sha384, SHA512)
 
 Sha384.prototype.init = function () {
-  this._a = 0xcbbb9d5d | 0
-  this._b = 0x629a292a | 0
-  this._c = 0x9159015a | 0
-  this._d = 0x152fecd8 | 0
-  this._e = 0x67332667 | 0
-  this._f = 0x8eb44a87 | 0
-  this._g = 0xdb0c2e0d | 0
-  this._h = 0x47b5481d | 0
+  this._ah = 0xcbbb9d5d
+  this._bh = 0x629a292a
+  this._ch = 0x9159015a
+  this._dh = 0x152fecd8
+  this._eh = 0x67332667
+  this._fh = 0x8eb44a87
+  this._gh = 0xdb0c2e0d
+  this._hh = 0x47b5481d
 
-  this._al = 0xc1059ed8 | 0
-  this._bl = 0x367cd507 | 0
-  this._cl = 0x3070dd17 | 0
-  this._dl = 0xf70e5939 | 0
-  this._el = 0xffc00b31 | 0
-  this._fl = 0x68581511 | 0
-  this._gl = 0x64f98fa7 | 0
-  this._hl = 0xbefa4fa4 | 0
+  this._al = 0xc1059ed8
+  this._bl = 0x367cd507
+  this._cl = 0x3070dd17
+  this._dl = 0xf70e5939
+  this._el = 0xffc00b31
+  this._fl = 0x68581511
+  this._gl = 0x64f98fa7
+  this._hl = 0xbefa4fa4
 
   return this
 }
@@ -20230,12 +20262,12 @@ Sha384.prototype._hash = function () {
     H.writeInt32BE(l, offset + 4)
   }
 
-  writeInt64BE(this._a, this._al, 0)
-  writeInt64BE(this._b, this._bl, 8)
-  writeInt64BE(this._c, this._cl, 16)
-  writeInt64BE(this._d, this._dl, 24)
-  writeInt64BE(this._e, this._el, 32)
-  writeInt64BE(this._f, this._fl, 40)
+  writeInt64BE(this._ah, this._al, 0)
+  writeInt64BE(this._bh, this._bl, 8)
+  writeInt64BE(this._ch, this._cl, 16)
+  writeInt64BE(this._dh, this._dl, 24)
+  writeInt64BE(this._eh, this._el, 32)
+  writeInt64BE(this._fh, this._fl, 40)
 
   return H
 }
@@ -20249,7 +20281,7 @@ function(require, exports, module, undefined, global) {
 
 var Buffer = require(9).Buffer;
 var inherits = require(71)
-var Hash = require(113)
+var Hash = require(110)
 
 var K = [
   0x428a2f98, 0xd728ae22, 0x71374491, 0x23ef65cd,
@@ -20306,23 +20338,23 @@ function Sha512 () {
 inherits(Sha512, Hash)
 
 Sha512.prototype.init = function () {
-  this._a = 0x6a09e667 | 0
-  this._b = 0xbb67ae85 | 0
-  this._c = 0x3c6ef372 | 0
-  this._d = 0xa54ff53a | 0
-  this._e = 0x510e527f | 0
-  this._f = 0x9b05688c | 0
-  this._g = 0x1f83d9ab | 0
-  this._h = 0x5be0cd19 | 0
+  this._ah = 0x6a09e667
+  this._bh = 0xbb67ae85
+  this._ch = 0x3c6ef372
+  this._dh = 0xa54ff53a
+  this._eh = 0x510e527f
+  this._fh = 0x9b05688c
+  this._gh = 0x1f83d9ab
+  this._hh = 0x5be0cd19
 
-  this._al = 0xf3bcc908 | 0
-  this._bl = 0x84caa73b | 0
-  this._cl = 0xfe94f82b | 0
-  this._dl = 0x5f1d36f1 | 0
-  this._el = 0xade682d1 | 0
-  this._fl = 0x2b3e6c1f | 0
-  this._gl = 0xfb41bd6b | 0
-  this._hl = 0x137e2179 | 0
+  this._al = 0xf3bcc908
+  this._bl = 0x84caa73b
+  this._cl = 0xfe94f82b
+  this._dl = 0x5f1d36f1
+  this._el = 0xade682d1
+  this._fl = 0x2b3e6c1f
+  this._gl = 0xfb41bd6b
+  this._hl = 0x137e2179
 
   return this
 }
@@ -20331,15 +20363,15 @@ function Ch (x, y, z) {
   return z ^ (x & (y ^ z))
 }
 
-function Maj (x, y, z) {
+function maj (x, y, z) {
   return (x & y) | (z & (x | y))
 }
 
-function Sigma0 (x, xl) {
+function sigma0 (x, xl) {
   return (x >>> 28 | xl << 4) ^ (xl >>> 2 | x << 30) ^ (xl >>> 7 | x << 25)
 }
 
-function Sigma1 (x, xl) {
+function sigma1 (x, xl) {
   return (x >>> 14 | xl << 18) ^ (x >>> 18 | xl << 14) ^ (xl >>> 9 | x << 23)
 }
 
@@ -20359,17 +20391,21 @@ function Gamma1l (x, xl) {
   return (x >>> 19 | xl << 13) ^ (xl >>> 29 | x << 3) ^ (x >>> 6 | xl << 26)
 }
 
+function getCarry (a, b) {
+  return (a >>> 0) < (b >>> 0) ? 1 : 0
+}
+
 Sha512.prototype._update = function (M) {
   var W = this._w
 
-  var a = this._a | 0
-  var b = this._b | 0
-  var c = this._c | 0
-  var d = this._d | 0
-  var e = this._e | 0
-  var f = this._f | 0
-  var g = this._g | 0
-  var h = this._h | 0
+  var ah = this._ah | 0
+  var bh = this._bh | 0
+  var ch = this._ch | 0
+  var dh = this._dh | 0
+  var eh = this._eh | 0
+  var fh = this._fh | 0
+  var gh = this._gh | 0
+  var hh = this._hh | 0
 
   var al = this._al | 0
   var bl = this._bl | 0
@@ -20380,98 +20416,87 @@ Sha512.prototype._update = function (M) {
   var gl = this._gl | 0
   var hl = this._hl | 0
 
-  var i = 0
-  var j = 0
-  var Wi, Wil
-  function calcW () {
-    var x = W[j - 15 * 2]
-    var xl = W[j - 15 * 2 + 1]
-    var gamma0 = Gamma0(x, xl)
-    var gamma0l = Gamma0l(xl, x)
+  for (var i = 0; i < 32; i += 2) {
+    W[i] = M.readInt32BE(i * 4)
+    W[i + 1] = M.readInt32BE(i * 4 + 4)
+  }
+  for (; i < 160; i += 2) {
+    var xh = W[i - 15 * 2]
+    var xl = W[i - 15 * 2 + 1]
+    var gamma0 = Gamma0(xh, xl)
+    var gamma0l = Gamma0l(xl, xh)
 
-    x = W[j - 2 * 2]
-    xl = W[j - 2 * 2 + 1]
-    var gamma1 = Gamma1(x, xl)
-    var gamma1l = Gamma1l(xl, x)
+    xh = W[i - 2 * 2]
+    xl = W[i - 2 * 2 + 1]
+    var gamma1 = Gamma1(xh, xl)
+    var gamma1l = Gamma1l(xl, xh)
 
     // W[i] = gamma0 + W[i - 7] + gamma1 + W[i - 16]
-    var Wi7 = W[j - 7 * 2]
-    var Wi7l = W[j - 7 * 2 + 1]
+    var Wi7h = W[i - 7 * 2]
+    var Wi7l = W[i - 7 * 2 + 1]
 
-    var Wi16 = W[j - 16 * 2]
-    var Wi16l = W[j - 16 * 2 + 1]
+    var Wi16h = W[i - 16 * 2]
+    var Wi16l = W[i - 16 * 2 + 1]
 
-    Wil = gamma0l + Wi7l
-    Wi = gamma0 + Wi7 + ((Wil >>> 0) < (gamma0l >>> 0) ? 1 : 0)
-    Wil = Wil + gamma1l
-    Wi = Wi + gamma1 + ((Wil >>> 0) < (gamma1l >>> 0) ? 1 : 0)
-    Wil = Wil + Wi16l
-    Wi = Wi + Wi16 + ((Wil >>> 0) < (Wi16l >>> 0) ? 1 : 0)
+    var Wil = (gamma0l + Wi7l) | 0
+    var Wih = (gamma0 + Wi7h + getCarry(Wil, gamma0l)) | 0
+    Wil = (Wil + gamma1l) | 0
+    Wih = (Wih + gamma1 + getCarry(Wil, gamma1l)) | 0
+    Wil = (Wil + Wi16l) | 0
+    Wih = (Wih + Wi16h + getCarry(Wil, Wi16l)) | 0
+
+    W[i] = Wih
+    W[i + 1] = Wil
   }
 
-  function loop () {
-    W[j] = Wi
-    W[j + 1] = Wil
+  for (var j = 0; j < 160; j += 2) {
+    Wih = W[j]
+    Wil = W[j + 1]
 
-    var maj = Maj(a, b, c)
-    var majl = Maj(al, bl, cl)
+    var majh = maj(ah, bh, ch)
+    var majl = maj(al, bl, cl)
 
-    var sigma0h = Sigma0(a, al)
-    var sigma0l = Sigma0(al, a)
-    var sigma1h = Sigma1(e, el)
-    var sigma1l = Sigma1(el, e)
+    var sigma0h = sigma0(ah, al)
+    var sigma0l = sigma0(al, ah)
+    var sigma1h = sigma1(eh, el)
+    var sigma1l = sigma1(el, eh)
 
-    // t1 = h + sigma1 + ch + K[i] + W[i]
-    var Ki = K[j]
+    // t1 = h + sigma1 + ch + K[j] + W[j]
+    var Kih = K[j]
     var Kil = K[j + 1]
 
-    var ch = Ch(e, f, g)
+    var chh = Ch(eh, fh, gh)
     var chl = Ch(el, fl, gl)
 
-    var t1l = hl + sigma1l
-    var t1 = h + sigma1h + ((t1l >>> 0) < (hl >>> 0) ? 1 : 0)
-    t1l = t1l + chl
-    t1 = t1 + ch + ((t1l >>> 0) < (chl >>> 0) ? 1 : 0)
-    t1l = t1l + Kil
-    t1 = t1 + Ki + ((t1l >>> 0) < (Kil >>> 0) ? 1 : 0)
-    t1l = t1l + Wil
-    t1 = t1 + Wi + ((t1l >>> 0) < (Wil >>> 0) ? 1 : 0)
+    var t1l = (hl + sigma1l) | 0
+    var t1h = (hh + sigma1h + getCarry(t1l, hl)) | 0
+    t1l = (t1l + chl) | 0
+    t1h = (t1h + chh + getCarry(t1l, chl)) | 0
+    t1l = (t1l + Kil) | 0
+    t1h = (t1h + Kih + getCarry(t1l, Kil)) | 0
+    t1l = (t1l + Wil) | 0
+    t1h = (t1h + Wih + getCarry(t1l, Wil)) | 0
 
     // t2 = sigma0 + maj
-    var t2l = sigma0l + majl
-    var t2 = sigma0h + maj + ((t2l >>> 0) < (sigma0l >>> 0) ? 1 : 0)
+    var t2l = (sigma0l + majl) | 0
+    var t2h = (sigma0h + majh + getCarry(t2l, sigma0l)) | 0
 
-    h = g
+    hh = gh
     hl = gl
-    g = f
+    gh = fh
     gl = fl
-    f = e
+    fh = eh
     fl = el
     el = (dl + t1l) | 0
-    e = (d + t1 + ((el >>> 0) < (dl >>> 0) ? 1 : 0)) | 0
-    d = c
+    eh = (dh + t1h + getCarry(el, dl)) | 0
+    dh = ch
     dl = cl
-    c = b
+    ch = bh
     cl = bl
-    b = a
+    bh = ah
     bl = al
     al = (t1l + t2l) | 0
-    a = (t1 + t2 + ((al >>> 0) < (t1l >>> 0) ? 1 : 0)) | 0
-
-    i++
-    j += 2
-  }
-
-  while (i < 16) {
-    Wi = M.readInt32BE(j * 4)
-    Wil = M.readInt32BE(j * 4 + 4)
-
-    loop()
-  }
-
-  while (i < 80) {
-    calcW()
-    loop()
+    ah = (t1h + t2h + getCarry(al, t1l)) | 0
   }
 
   this._al = (this._al + al) | 0
@@ -20483,14 +20508,14 @@ Sha512.prototype._update = function (M) {
   this._gl = (this._gl + gl) | 0
   this._hl = (this._hl + hl) | 0
 
-  this._a = (this._a + a + ((this._al >>> 0) < (al >>> 0) ? 1 : 0)) | 0
-  this._b = (this._b + b + ((this._bl >>> 0) < (bl >>> 0) ? 1 : 0)) | 0
-  this._c = (this._c + c + ((this._cl >>> 0) < (cl >>> 0) ? 1 : 0)) | 0
-  this._d = (this._d + d + ((this._dl >>> 0) < (dl >>> 0) ? 1 : 0)) | 0
-  this._e = (this._e + e + ((this._el >>> 0) < (el >>> 0) ? 1 : 0)) | 0
-  this._f = (this._f + f + ((this._fl >>> 0) < (fl >>> 0) ? 1 : 0)) | 0
-  this._g = (this._g + g + ((this._gl >>> 0) < (gl >>> 0) ? 1 : 0)) | 0
-  this._h = (this._h + h + ((this._hl >>> 0) < (hl >>> 0) ? 1 : 0)) | 0
+  this._ah = (this._ah + ah + getCarry(this._al, al)) | 0
+  this._bh = (this._bh + bh + getCarry(this._bl, bl)) | 0
+  this._ch = (this._ch + ch + getCarry(this._cl, cl)) | 0
+  this._dh = (this._dh + dh + getCarry(this._dl, dl)) | 0
+  this._eh = (this._eh + eh + getCarry(this._el, el)) | 0
+  this._fh = (this._fh + fh + getCarry(this._fl, fl)) | 0
+  this._gh = (this._gh + gh + getCarry(this._gl, gl)) | 0
+  this._hh = (this._hh + hh + getCarry(this._hl, hl)) | 0
 }
 
 Sha512.prototype._hash = function () {
@@ -20501,14 +20526,14 @@ Sha512.prototype._hash = function () {
     H.writeInt32BE(l, offset + 4)
   }
 
-  writeInt64BE(this._a, this._al, 0)
-  writeInt64BE(this._b, this._bl, 8)
-  writeInt64BE(this._c, this._cl, 16)
-  writeInt64BE(this._d, this._dl, 24)
-  writeInt64BE(this._e, this._el, 32)
-  writeInt64BE(this._f, this._fl, 40)
-  writeInt64BE(this._g, this._gl, 48)
-  writeInt64BE(this._h, this._hl, 56)
+  writeInt64BE(this._ah, this._al, 0)
+  writeInt64BE(this._bh, this._bl, 8)
+  writeInt64BE(this._ch, this._cl, 16)
+  writeInt64BE(this._dh, this._dl, 24)
+  writeInt64BE(this._eh, this._el, 32)
+  writeInt64BE(this._fh, this._fl, 40)
+  writeInt64BE(this._gh, this._gl, 48)
+  writeInt64BE(this._hh, this._hl, 56)
 
   return H
 }
@@ -20594,10 +20619,38 @@ module.exports = Hash
 
 },
 function(require, exports, module, undefined, global) {
+/* ../readable-stream/writable.js */
+
+module.exports = require(80)
+
+
+},
+function(require, exports, module, undefined, global) {
+/* ../readable-stream/duplex.js */
+
+module.exports = require(81)
+
+
+},
+function(require, exports, module, undefined, global) {
+/* ../readable-stream/transform.js */
+
+module.exports = require(82)
+
+
+},
+function(require, exports, module, undefined, global) {
+/* ../readable-stream/passthrough.js */
+
+module.exports = require(83)
+
+
+},
+function(require, exports, module, undefined, global) {
 /* ../evp_bytestokey/index.js */
 
 var Buffer = require(9).Buffer;
-var md5 = require(102)
+var md5 = require(99)
 module.exports = EVP_BytesToKey
 function EVP_BytesToKey (password, salt, keyLen, ivLen) {
   if (!Buffer.isBuffer(password)) {
@@ -20671,13 +20724,13 @@ function EVP_BytesToKey (password, salt, keyLen, ivLen) {
 function(require, exports, module, undefined, global) {
 /* ../browserify-aes/browser.js */
 
-var ciphers = require(119)
+var ciphers = require(120)
 exports.createCipher = exports.Cipher = ciphers.createCipher
 exports.createCipheriv = exports.Cipheriv = ciphers.createCipheriv
-var deciphers = require(120)
+var deciphers = require(121)
 exports.createDecipher = exports.Decipher = deciphers.createDecipher
 exports.createDecipheriv = exports.Decipheriv = deciphers.createDecipheriv
-var modes = require(118)
+var modes = require(119)
 function getCiphers () {
   return Object.keys(modes)
 }
@@ -20689,8 +20742,8 @@ function(require, exports, module, undefined, global) {
 /* ../browserify-des/index.js */
 
 var Buffer = require(9).Buffer;
-var CipherBase = require(105)
-var des = require(133)
+var CipherBase = require(102)
+var des = require(134)
 var inherits = require(71)
 
 var modes = {
@@ -20946,13 +20999,13 @@ function(require, exports, module, undefined, global) {
 /* ../browserify-aes/encrypter.js */
 
 var Buffer = require(9).Buffer;
-var aes = require(121)
-var Transform = require(105)
+var aes = require(122)
+var Transform = require(102)
 var inherits = require(71)
-var modes = require(118)
-var ebtk = require(114)
-var StreamCipher = require(122)
-var AuthCipher = require(123)
+var modes = require(119)
+var ebtk = require(115)
+var StreamCipher = require(123)
+var AuthCipher = require(124)
 inherits(Cipher, Transform)
 function Cipher (mode, key, iv) {
   if (!(this instanceof Cipher)) {
@@ -21023,14 +21076,14 @@ Splitter.prototype.flush = function () {
   return out
 }
 var modelist = {
-  ECB: require(124),
-  CBC: require(125),
-  CFB: require(126),
-  CFB8: require(127),
-  CFB1: require(128),
-  OFB: require(129),
-  CTR: require(130),
-  GCM: require(130)
+  ECB: require(125),
+  CBC: require(126),
+  CFB: require(127),
+  CFB8: require(128),
+  CFB1: require(129),
+  OFB: require(130),
+  CTR: require(131),
+  GCM: require(131)
 }
 
 function createCipheriv (suite, password, iv) {
@@ -21075,13 +21128,13 @@ function(require, exports, module, undefined, global) {
 /* ../browserify-aes/decrypter.js */
 
 var Buffer = require(9).Buffer;
-var aes = require(121)
-var Transform = require(105)
+var aes = require(122)
+var Transform = require(102)
 var inherits = require(71)
-var modes = require(118)
-var StreamCipher = require(122)
-var AuthCipher = require(123)
-var ebtk = require(114)
+var modes = require(119)
+var StreamCipher = require(123)
+var AuthCipher = require(124)
+var ebtk = require(115)
 
 inherits(Decipher, Transform)
 function Decipher (mode, key, iv) {
@@ -21167,14 +21220,14 @@ function unpad (last) {
 }
 
 var modelist = {
-  ECB: require(124),
-  CBC: require(125),
-  CFB: require(126),
-  CFB8: require(127),
-  CFB1: require(128),
-  OFB: require(129),
-  CTR: require(130),
-  GCM: require(130)
+  ECB: require(125),
+  CBC: require(126),
+  CFB: require(127),
+  CFB8: require(128),
+  CFB1: require(129),
+  OFB: require(130),
+  CTR: require(131),
+  GCM: require(131)
 }
 
 function createDecipheriv (suite, password, iv) {
@@ -21403,8 +21456,8 @@ function(require, exports, module, undefined, global) {
 /* ../browserify-aes/streamCipher.js */
 
 var Buffer = require(9).Buffer;
-var aes = require(121)
-var Transform = require(105)
+var aes = require(122)
+var Transform = require(102)
 var inherits = require(71)
 
 inherits(StreamCipher, Transform)
@@ -21435,11 +21488,11 @@ function(require, exports, module, undefined, global) {
 /* ../browserify-aes/authCipher.js */
 
 var Buffer = require(9).Buffer;
-var aes = require(121)
-var Transform = require(105)
+var aes = require(122)
+var Transform = require(102)
 var inherits = require(71)
-var GHASH = require(131)
-var xor = require(132)
+var GHASH = require(132)
+var xor = require(133)
 inherits(StreamCipher, Transform)
 module.exports = StreamCipher
 
@@ -21550,7 +21603,7 @@ exports.decrypt = function (self, block) {
 function(require, exports, module, undefined, global) {
 /* ../browserify-aes/modes/cbc.js */
 
-var xor = require(132)
+var xor = require(133)
 
 exports.encrypt = function (self, block) {
   var data = xor(block, self._prev)
@@ -21574,7 +21627,7 @@ function(require, exports, module, undefined, global) {
 /* ../browserify-aes/modes/cfb.js */
 
 var Buffer = require(9).Buffer;
-var xor = require(132)
+var xor = require(133)
 
 exports.encrypt = function (self, data, decrypt) {
   var out = new Buffer('')
@@ -21675,7 +21728,7 @@ function(require, exports, module, undefined, global) {
 /* ../browserify-aes/modes/ofb.js */
 
 var Buffer = require(9).Buffer;
-var xor = require(132)
+var xor = require(133)
 
 function getBlock (self) {
   self._prev = self._cipher.encryptBlock(self._prev)
@@ -21698,7 +21751,7 @@ function(require, exports, module, undefined, global) {
 /* ../browserify-aes/modes/ctr.js */
 
 var Buffer = require(9).Buffer;
-var xor = require(132)
+var xor = require(133)
 
 function incr32 (iv) {
   var len = iv.length
@@ -21859,11 +21912,11 @@ function(require, exports, module, undefined, global) {
 
 'use strict';
 
-exports.utils = require(134);
-exports.Cipher = require(135);
-exports.DES = require(136);
-exports.CBC = require(137);
-exports.EDE = require(138);
+exports.utils = require(135);
+exports.Cipher = require(136);
+exports.DES = require(137);
+exports.CBC = require(138);
+exports.EDE = require(139);
 
 
 },
@@ -22135,7 +22188,7 @@ function(require, exports, module, undefined, global) {
 var Buffer = require(9).Buffer;
 'use strict';
 
-var assert = require(139);
+var assert = require(140);
 
 function Cipher(options) {
   this.options = options;
@@ -22282,10 +22335,10 @@ function(require, exports, module, undefined, global) {
 
 'use strict';
 
-var assert = require(139);
+var assert = require(140);
 var inherits = require(71);
 
-var des = require(133);
+var des = require(134);
 var utils = des.utils;
 var Cipher = des.Cipher;
 
@@ -22431,7 +22484,7 @@ function(require, exports, module, undefined, global) {
 
 'use strict';
 
-var assert = require(139);
+var assert = require(140);
 var inherits = require(71);
 
 var proto = {};
@@ -22502,10 +22555,10 @@ function(require, exports, module, undefined, global) {
 
 'use strict';
 
-var assert = require(139);
+var assert = require(140);
 var inherits = require(71);
 
-var des = require(133);
+var des = require(134);
 var Cipher = des.Cipher;
 var DES = des.DES;
 
@@ -22578,13 +22631,13 @@ assert.equal = function assertEqual(l, r, msg) {
 function(require, exports, module, undefined, global) {
 /* ../diffie-hellman/lib/generatePrime.js */
 
-var randomBytes = require(92);
+var randomBytes = require(89);
 module.exports = findPrime;
 findPrime.simpleSieve = simpleSieve;
 findPrime.fermatTest = fermatTest;
-var BN = require(143);
+var BN = require(144);
 var TWENTYFOUR = new BN(24);
-var MillerRabin = require(144);
+var MillerRabin = require(145);
 var millerRabin = new MillerRabin();
 var ONE = new BN(1);
 var TWO = new BN(2);
@@ -22729,16 +22782,16 @@ function(require, exports, module, undefined, global) {
 /* ../diffie-hellman/lib/dh.js */
 
 var Buffer = require(9).Buffer;
-var BN = require(143);
-var MillerRabin = require(144);
+var BN = require(144);
+var MillerRabin = require(145);
 var millerRabin = new MillerRabin();
 var TWENTYFOUR = new BN(24);
 var ELEVEN = new BN(11);
 var TEN = new BN(10);
 var THREE = new BN(3);
 var SEVEN = new BN(7);
-var primes = require(140);
-var randomBytes = require(92);
+var primes = require(141);
+var randomBytes = require(89);
 module.exports = DH;
 
 function setPublicKey(pub, enc) {
@@ -22921,10 +22974,7 @@ var Buffer = require(9).Buffer;
   // BN
 
   function BN (number, base, endian) {
-    // May be `new BN(bn)` ?
-    if (number !== null &&
-      typeof number === 'object' &&
-      Array.isArray(number.words)) {
+    if (BN.isBN(number)) {
       return number;
     }
 
@@ -22958,6 +23008,15 @@ var Buffer = require(9).Buffer;
     Buffer = require('buf' + 'fer').Buffer;
   } catch (e) {
   }
+
+  BN.isBN = function isBN (num) {
+    if (num instanceof BN) {
+      return true;
+    }
+
+    return num !== null && typeof num === 'object' &&
+      num.constructor.wordSize === BN.wordSize && Array.isArray(num.words);
+  };
 
   BN.max = function max (left, right) {
     if (left.cmp(right) > 0) return left;
@@ -23117,6 +23176,7 @@ var Buffer = require(9).Buffer;
     for (i = number.length - 6, j = 0; i >= start; i -= 6) {
       w = parseHex(number, i, i + 6);
       this.words[j] |= (w << off) & 0x3ffffff;
+      // NOTE: `0x3fffff` is intentional here, 26bits max shift + 24bit hex limb
       this.words[j + 1] |= w >>> (26 - off) & 0x3fffff;
       off += 24;
       if (off >= 26) {
@@ -23215,6 +23275,13 @@ var Buffer = require(9).Buffer;
     var r = new BN(null);
     this.copy(r);
     return r;
+  };
+
+  BN.prototype._expand = function _expand (size) {
+    while (this.length < size) {
+      this.words[this.length++] = 0;
+    }
+    return this;
   };
 
   // Remove leading `0` from `this`
@@ -23384,16 +23451,13 @@ var Buffer = require(9).Buffer;
   };
 
   BN.prototype.toNumber = function toNumber () {
-    var length = this.bitLength();
-    var ret;
-    if (length <= 26) {
-      ret = this.words[0];
-    } else if (length <= 52) {
-      ret = (this.words[1] * 0x4000000) + this.words[0];
-    } else if (length === 53) {
+    var ret = this.words[0];
+    if (this.length === 2) {
+      ret += this.words[1] * 0x4000000;
+    } else if (this.length === 3 && this.words[2] === 0x01) {
       // NOTE: at this stage it is known that the top bit is set
-      ret = 0x10000000000000 + (this.words[1] * 0x4000000) + this.words[0];
-    } else {
+      ret += 0x10000000000000 + (this.words[1] * 0x4000000);
+    } else if (this.length > 2) {
       assert(false, 'Number can only safely store up to 53 bits');
     }
     return (this.negative !== 0) ? -ret : ret;
@@ -23692,9 +23756,7 @@ var Buffer = require(9).Buffer;
     var bitsLeft = width % 26;
 
     // Extend the buffer with leading zeroes
-    while (this.length < bytesNeeded) {
-      this.words[this.length++] = 0;
-    }
+    this._expand(bytesNeeded);
 
     if (bitsLeft > 0) {
       bytesNeeded--;
@@ -23725,9 +23787,7 @@ var Buffer = require(9).Buffer;
     var off = (bit / 26) | 0;
     var wbit = bit % 26;
 
-    while (this.length <= off) {
-      this.words[this.length++] = 0;
-    }
+    this._expand(off + 1);
 
     if (val) {
       this.words[off] = this.words[off] | (1 << wbit);
@@ -24002,478 +24062,478 @@ var Buffer = require(9).Buffer;
     /* k = 0 */
     lo = Math.imul(al0, bl0);
     mid = Math.imul(al0, bh0);
-    mid += Math.imul(ah0, bl0);
+    mid = (mid + Math.imul(ah0, bl0)) | 0;
     hi = Math.imul(ah0, bh0);
-    var w0 = c + lo + ((mid & 0x1fff) << 13);
-    c = hi + (mid >>> 13) + (w0 >>> 26);
+    var w0 = (((c + lo) | 0) + ((mid & 0x1fff) << 13)) | 0;
+    c = (((hi + (mid >>> 13)) | 0) + (w0 >>> 26)) | 0;
     w0 &= 0x3ffffff;
     /* k = 1 */
     lo = Math.imul(al1, bl0);
     mid = Math.imul(al1, bh0);
-    mid += Math.imul(ah1, bl0);
+    mid = (mid + Math.imul(ah1, bl0)) | 0;
     hi = Math.imul(ah1, bh0);
-    lo += Math.imul(al0, bl1);
-    mid += Math.imul(al0, bh1);
-    mid += Math.imul(ah0, bl1);
-    hi += Math.imul(ah0, bh1);
-    var w1 = c + lo + ((mid & 0x1fff) << 13);
-    c = hi + (mid >>> 13) + (w1 >>> 26);
+    lo = (lo + Math.imul(al0, bl1)) | 0;
+    mid = (mid + Math.imul(al0, bh1)) | 0;
+    mid = (mid + Math.imul(ah0, bl1)) | 0;
+    hi = (hi + Math.imul(ah0, bh1)) | 0;
+    var w1 = (((c + lo) | 0) + ((mid & 0x1fff) << 13)) | 0;
+    c = (((hi + (mid >>> 13)) | 0) + (w1 >>> 26)) | 0;
     w1 &= 0x3ffffff;
     /* k = 2 */
     lo = Math.imul(al2, bl0);
     mid = Math.imul(al2, bh0);
-    mid += Math.imul(ah2, bl0);
+    mid = (mid + Math.imul(ah2, bl0)) | 0;
     hi = Math.imul(ah2, bh0);
-    lo += Math.imul(al1, bl1);
-    mid += Math.imul(al1, bh1);
-    mid += Math.imul(ah1, bl1);
-    hi += Math.imul(ah1, bh1);
-    lo += Math.imul(al0, bl2);
-    mid += Math.imul(al0, bh2);
-    mid += Math.imul(ah0, bl2);
-    hi += Math.imul(ah0, bh2);
-    var w2 = c + lo + ((mid & 0x1fff) << 13);
-    c = hi + (mid >>> 13) + (w2 >>> 26);
+    lo = (lo + Math.imul(al1, bl1)) | 0;
+    mid = (mid + Math.imul(al1, bh1)) | 0;
+    mid = (mid + Math.imul(ah1, bl1)) | 0;
+    hi = (hi + Math.imul(ah1, bh1)) | 0;
+    lo = (lo + Math.imul(al0, bl2)) | 0;
+    mid = (mid + Math.imul(al0, bh2)) | 0;
+    mid = (mid + Math.imul(ah0, bl2)) | 0;
+    hi = (hi + Math.imul(ah0, bh2)) | 0;
+    var w2 = (((c + lo) | 0) + ((mid & 0x1fff) << 13)) | 0;
+    c = (((hi + (mid >>> 13)) | 0) + (w2 >>> 26)) | 0;
     w2 &= 0x3ffffff;
     /* k = 3 */
     lo = Math.imul(al3, bl0);
     mid = Math.imul(al3, bh0);
-    mid += Math.imul(ah3, bl0);
+    mid = (mid + Math.imul(ah3, bl0)) | 0;
     hi = Math.imul(ah3, bh0);
-    lo += Math.imul(al2, bl1);
-    mid += Math.imul(al2, bh1);
-    mid += Math.imul(ah2, bl1);
-    hi += Math.imul(ah2, bh1);
-    lo += Math.imul(al1, bl2);
-    mid += Math.imul(al1, bh2);
-    mid += Math.imul(ah1, bl2);
-    hi += Math.imul(ah1, bh2);
-    lo += Math.imul(al0, bl3);
-    mid += Math.imul(al0, bh3);
-    mid += Math.imul(ah0, bl3);
-    hi += Math.imul(ah0, bh3);
-    var w3 = c + lo + ((mid & 0x1fff) << 13);
-    c = hi + (mid >>> 13) + (w3 >>> 26);
+    lo = (lo + Math.imul(al2, bl1)) | 0;
+    mid = (mid + Math.imul(al2, bh1)) | 0;
+    mid = (mid + Math.imul(ah2, bl1)) | 0;
+    hi = (hi + Math.imul(ah2, bh1)) | 0;
+    lo = (lo + Math.imul(al1, bl2)) | 0;
+    mid = (mid + Math.imul(al1, bh2)) | 0;
+    mid = (mid + Math.imul(ah1, bl2)) | 0;
+    hi = (hi + Math.imul(ah1, bh2)) | 0;
+    lo = (lo + Math.imul(al0, bl3)) | 0;
+    mid = (mid + Math.imul(al0, bh3)) | 0;
+    mid = (mid + Math.imul(ah0, bl3)) | 0;
+    hi = (hi + Math.imul(ah0, bh3)) | 0;
+    var w3 = (((c + lo) | 0) + ((mid & 0x1fff) << 13)) | 0;
+    c = (((hi + (mid >>> 13)) | 0) + (w3 >>> 26)) | 0;
     w3 &= 0x3ffffff;
     /* k = 4 */
     lo = Math.imul(al4, bl0);
     mid = Math.imul(al4, bh0);
-    mid += Math.imul(ah4, bl0);
+    mid = (mid + Math.imul(ah4, bl0)) | 0;
     hi = Math.imul(ah4, bh0);
-    lo += Math.imul(al3, bl1);
-    mid += Math.imul(al3, bh1);
-    mid += Math.imul(ah3, bl1);
-    hi += Math.imul(ah3, bh1);
-    lo += Math.imul(al2, bl2);
-    mid += Math.imul(al2, bh2);
-    mid += Math.imul(ah2, bl2);
-    hi += Math.imul(ah2, bh2);
-    lo += Math.imul(al1, bl3);
-    mid += Math.imul(al1, bh3);
-    mid += Math.imul(ah1, bl3);
-    hi += Math.imul(ah1, bh3);
-    lo += Math.imul(al0, bl4);
-    mid += Math.imul(al0, bh4);
-    mid += Math.imul(ah0, bl4);
-    hi += Math.imul(ah0, bh4);
-    var w4 = c + lo + ((mid & 0x1fff) << 13);
-    c = hi + (mid >>> 13) + (w4 >>> 26);
+    lo = (lo + Math.imul(al3, bl1)) | 0;
+    mid = (mid + Math.imul(al3, bh1)) | 0;
+    mid = (mid + Math.imul(ah3, bl1)) | 0;
+    hi = (hi + Math.imul(ah3, bh1)) | 0;
+    lo = (lo + Math.imul(al2, bl2)) | 0;
+    mid = (mid + Math.imul(al2, bh2)) | 0;
+    mid = (mid + Math.imul(ah2, bl2)) | 0;
+    hi = (hi + Math.imul(ah2, bh2)) | 0;
+    lo = (lo + Math.imul(al1, bl3)) | 0;
+    mid = (mid + Math.imul(al1, bh3)) | 0;
+    mid = (mid + Math.imul(ah1, bl3)) | 0;
+    hi = (hi + Math.imul(ah1, bh3)) | 0;
+    lo = (lo + Math.imul(al0, bl4)) | 0;
+    mid = (mid + Math.imul(al0, bh4)) | 0;
+    mid = (mid + Math.imul(ah0, bl4)) | 0;
+    hi = (hi + Math.imul(ah0, bh4)) | 0;
+    var w4 = (((c + lo) | 0) + ((mid & 0x1fff) << 13)) | 0;
+    c = (((hi + (mid >>> 13)) | 0) + (w4 >>> 26)) | 0;
     w4 &= 0x3ffffff;
     /* k = 5 */
     lo = Math.imul(al5, bl0);
     mid = Math.imul(al5, bh0);
-    mid += Math.imul(ah5, bl0);
+    mid = (mid + Math.imul(ah5, bl0)) | 0;
     hi = Math.imul(ah5, bh0);
-    lo += Math.imul(al4, bl1);
-    mid += Math.imul(al4, bh1);
-    mid += Math.imul(ah4, bl1);
-    hi += Math.imul(ah4, bh1);
-    lo += Math.imul(al3, bl2);
-    mid += Math.imul(al3, bh2);
-    mid += Math.imul(ah3, bl2);
-    hi += Math.imul(ah3, bh2);
-    lo += Math.imul(al2, bl3);
-    mid += Math.imul(al2, bh3);
-    mid += Math.imul(ah2, bl3);
-    hi += Math.imul(ah2, bh3);
-    lo += Math.imul(al1, bl4);
-    mid += Math.imul(al1, bh4);
-    mid += Math.imul(ah1, bl4);
-    hi += Math.imul(ah1, bh4);
-    lo += Math.imul(al0, bl5);
-    mid += Math.imul(al0, bh5);
-    mid += Math.imul(ah0, bl5);
-    hi += Math.imul(ah0, bh5);
-    var w5 = c + lo + ((mid & 0x1fff) << 13);
-    c = hi + (mid >>> 13) + (w5 >>> 26);
+    lo = (lo + Math.imul(al4, bl1)) | 0;
+    mid = (mid + Math.imul(al4, bh1)) | 0;
+    mid = (mid + Math.imul(ah4, bl1)) | 0;
+    hi = (hi + Math.imul(ah4, bh1)) | 0;
+    lo = (lo + Math.imul(al3, bl2)) | 0;
+    mid = (mid + Math.imul(al3, bh2)) | 0;
+    mid = (mid + Math.imul(ah3, bl2)) | 0;
+    hi = (hi + Math.imul(ah3, bh2)) | 0;
+    lo = (lo + Math.imul(al2, bl3)) | 0;
+    mid = (mid + Math.imul(al2, bh3)) | 0;
+    mid = (mid + Math.imul(ah2, bl3)) | 0;
+    hi = (hi + Math.imul(ah2, bh3)) | 0;
+    lo = (lo + Math.imul(al1, bl4)) | 0;
+    mid = (mid + Math.imul(al1, bh4)) | 0;
+    mid = (mid + Math.imul(ah1, bl4)) | 0;
+    hi = (hi + Math.imul(ah1, bh4)) | 0;
+    lo = (lo + Math.imul(al0, bl5)) | 0;
+    mid = (mid + Math.imul(al0, bh5)) | 0;
+    mid = (mid + Math.imul(ah0, bl5)) | 0;
+    hi = (hi + Math.imul(ah0, bh5)) | 0;
+    var w5 = (((c + lo) | 0) + ((mid & 0x1fff) << 13)) | 0;
+    c = (((hi + (mid >>> 13)) | 0) + (w5 >>> 26)) | 0;
     w5 &= 0x3ffffff;
     /* k = 6 */
     lo = Math.imul(al6, bl0);
     mid = Math.imul(al6, bh0);
-    mid += Math.imul(ah6, bl0);
+    mid = (mid + Math.imul(ah6, bl0)) | 0;
     hi = Math.imul(ah6, bh0);
-    lo += Math.imul(al5, bl1);
-    mid += Math.imul(al5, bh1);
-    mid += Math.imul(ah5, bl1);
-    hi += Math.imul(ah5, bh1);
-    lo += Math.imul(al4, bl2);
-    mid += Math.imul(al4, bh2);
-    mid += Math.imul(ah4, bl2);
-    hi += Math.imul(ah4, bh2);
-    lo += Math.imul(al3, bl3);
-    mid += Math.imul(al3, bh3);
-    mid += Math.imul(ah3, bl3);
-    hi += Math.imul(ah3, bh3);
-    lo += Math.imul(al2, bl4);
-    mid += Math.imul(al2, bh4);
-    mid += Math.imul(ah2, bl4);
-    hi += Math.imul(ah2, bh4);
-    lo += Math.imul(al1, bl5);
-    mid += Math.imul(al1, bh5);
-    mid += Math.imul(ah1, bl5);
-    hi += Math.imul(ah1, bh5);
-    lo += Math.imul(al0, bl6);
-    mid += Math.imul(al0, bh6);
-    mid += Math.imul(ah0, bl6);
-    hi += Math.imul(ah0, bh6);
-    var w6 = c + lo + ((mid & 0x1fff) << 13);
-    c = hi + (mid >>> 13) + (w6 >>> 26);
+    lo = (lo + Math.imul(al5, bl1)) | 0;
+    mid = (mid + Math.imul(al5, bh1)) | 0;
+    mid = (mid + Math.imul(ah5, bl1)) | 0;
+    hi = (hi + Math.imul(ah5, bh1)) | 0;
+    lo = (lo + Math.imul(al4, bl2)) | 0;
+    mid = (mid + Math.imul(al4, bh2)) | 0;
+    mid = (mid + Math.imul(ah4, bl2)) | 0;
+    hi = (hi + Math.imul(ah4, bh2)) | 0;
+    lo = (lo + Math.imul(al3, bl3)) | 0;
+    mid = (mid + Math.imul(al3, bh3)) | 0;
+    mid = (mid + Math.imul(ah3, bl3)) | 0;
+    hi = (hi + Math.imul(ah3, bh3)) | 0;
+    lo = (lo + Math.imul(al2, bl4)) | 0;
+    mid = (mid + Math.imul(al2, bh4)) | 0;
+    mid = (mid + Math.imul(ah2, bl4)) | 0;
+    hi = (hi + Math.imul(ah2, bh4)) | 0;
+    lo = (lo + Math.imul(al1, bl5)) | 0;
+    mid = (mid + Math.imul(al1, bh5)) | 0;
+    mid = (mid + Math.imul(ah1, bl5)) | 0;
+    hi = (hi + Math.imul(ah1, bh5)) | 0;
+    lo = (lo + Math.imul(al0, bl6)) | 0;
+    mid = (mid + Math.imul(al0, bh6)) | 0;
+    mid = (mid + Math.imul(ah0, bl6)) | 0;
+    hi = (hi + Math.imul(ah0, bh6)) | 0;
+    var w6 = (((c + lo) | 0) + ((mid & 0x1fff) << 13)) | 0;
+    c = (((hi + (mid >>> 13)) | 0) + (w6 >>> 26)) | 0;
     w6 &= 0x3ffffff;
     /* k = 7 */
     lo = Math.imul(al7, bl0);
     mid = Math.imul(al7, bh0);
-    mid += Math.imul(ah7, bl0);
+    mid = (mid + Math.imul(ah7, bl0)) | 0;
     hi = Math.imul(ah7, bh0);
-    lo += Math.imul(al6, bl1);
-    mid += Math.imul(al6, bh1);
-    mid += Math.imul(ah6, bl1);
-    hi += Math.imul(ah6, bh1);
-    lo += Math.imul(al5, bl2);
-    mid += Math.imul(al5, bh2);
-    mid += Math.imul(ah5, bl2);
-    hi += Math.imul(ah5, bh2);
-    lo += Math.imul(al4, bl3);
-    mid += Math.imul(al4, bh3);
-    mid += Math.imul(ah4, bl3);
-    hi += Math.imul(ah4, bh3);
-    lo += Math.imul(al3, bl4);
-    mid += Math.imul(al3, bh4);
-    mid += Math.imul(ah3, bl4);
-    hi += Math.imul(ah3, bh4);
-    lo += Math.imul(al2, bl5);
-    mid += Math.imul(al2, bh5);
-    mid += Math.imul(ah2, bl5);
-    hi += Math.imul(ah2, bh5);
-    lo += Math.imul(al1, bl6);
-    mid += Math.imul(al1, bh6);
-    mid += Math.imul(ah1, bl6);
-    hi += Math.imul(ah1, bh6);
-    lo += Math.imul(al0, bl7);
-    mid += Math.imul(al0, bh7);
-    mid += Math.imul(ah0, bl7);
-    hi += Math.imul(ah0, bh7);
-    var w7 = c + lo + ((mid & 0x1fff) << 13);
-    c = hi + (mid >>> 13) + (w7 >>> 26);
+    lo = (lo + Math.imul(al6, bl1)) | 0;
+    mid = (mid + Math.imul(al6, bh1)) | 0;
+    mid = (mid + Math.imul(ah6, bl1)) | 0;
+    hi = (hi + Math.imul(ah6, bh1)) | 0;
+    lo = (lo + Math.imul(al5, bl2)) | 0;
+    mid = (mid + Math.imul(al5, bh2)) | 0;
+    mid = (mid + Math.imul(ah5, bl2)) | 0;
+    hi = (hi + Math.imul(ah5, bh2)) | 0;
+    lo = (lo + Math.imul(al4, bl3)) | 0;
+    mid = (mid + Math.imul(al4, bh3)) | 0;
+    mid = (mid + Math.imul(ah4, bl3)) | 0;
+    hi = (hi + Math.imul(ah4, bh3)) | 0;
+    lo = (lo + Math.imul(al3, bl4)) | 0;
+    mid = (mid + Math.imul(al3, bh4)) | 0;
+    mid = (mid + Math.imul(ah3, bl4)) | 0;
+    hi = (hi + Math.imul(ah3, bh4)) | 0;
+    lo = (lo + Math.imul(al2, bl5)) | 0;
+    mid = (mid + Math.imul(al2, bh5)) | 0;
+    mid = (mid + Math.imul(ah2, bl5)) | 0;
+    hi = (hi + Math.imul(ah2, bh5)) | 0;
+    lo = (lo + Math.imul(al1, bl6)) | 0;
+    mid = (mid + Math.imul(al1, bh6)) | 0;
+    mid = (mid + Math.imul(ah1, bl6)) | 0;
+    hi = (hi + Math.imul(ah1, bh6)) | 0;
+    lo = (lo + Math.imul(al0, bl7)) | 0;
+    mid = (mid + Math.imul(al0, bh7)) | 0;
+    mid = (mid + Math.imul(ah0, bl7)) | 0;
+    hi = (hi + Math.imul(ah0, bh7)) | 0;
+    var w7 = (((c + lo) | 0) + ((mid & 0x1fff) << 13)) | 0;
+    c = (((hi + (mid >>> 13)) | 0) + (w7 >>> 26)) | 0;
     w7 &= 0x3ffffff;
     /* k = 8 */
     lo = Math.imul(al8, bl0);
     mid = Math.imul(al8, bh0);
-    mid += Math.imul(ah8, bl0);
+    mid = (mid + Math.imul(ah8, bl0)) | 0;
     hi = Math.imul(ah8, bh0);
-    lo += Math.imul(al7, bl1);
-    mid += Math.imul(al7, bh1);
-    mid += Math.imul(ah7, bl1);
-    hi += Math.imul(ah7, bh1);
-    lo += Math.imul(al6, bl2);
-    mid += Math.imul(al6, bh2);
-    mid += Math.imul(ah6, bl2);
-    hi += Math.imul(ah6, bh2);
-    lo += Math.imul(al5, bl3);
-    mid += Math.imul(al5, bh3);
-    mid += Math.imul(ah5, bl3);
-    hi += Math.imul(ah5, bh3);
-    lo += Math.imul(al4, bl4);
-    mid += Math.imul(al4, bh4);
-    mid += Math.imul(ah4, bl4);
-    hi += Math.imul(ah4, bh4);
-    lo += Math.imul(al3, bl5);
-    mid += Math.imul(al3, bh5);
-    mid += Math.imul(ah3, bl5);
-    hi += Math.imul(ah3, bh5);
-    lo += Math.imul(al2, bl6);
-    mid += Math.imul(al2, bh6);
-    mid += Math.imul(ah2, bl6);
-    hi += Math.imul(ah2, bh6);
-    lo += Math.imul(al1, bl7);
-    mid += Math.imul(al1, bh7);
-    mid += Math.imul(ah1, bl7);
-    hi += Math.imul(ah1, bh7);
-    lo += Math.imul(al0, bl8);
-    mid += Math.imul(al0, bh8);
-    mid += Math.imul(ah0, bl8);
-    hi += Math.imul(ah0, bh8);
-    var w8 = c + lo + ((mid & 0x1fff) << 13);
-    c = hi + (mid >>> 13) + (w8 >>> 26);
+    lo = (lo + Math.imul(al7, bl1)) | 0;
+    mid = (mid + Math.imul(al7, bh1)) | 0;
+    mid = (mid + Math.imul(ah7, bl1)) | 0;
+    hi = (hi + Math.imul(ah7, bh1)) | 0;
+    lo = (lo + Math.imul(al6, bl2)) | 0;
+    mid = (mid + Math.imul(al6, bh2)) | 0;
+    mid = (mid + Math.imul(ah6, bl2)) | 0;
+    hi = (hi + Math.imul(ah6, bh2)) | 0;
+    lo = (lo + Math.imul(al5, bl3)) | 0;
+    mid = (mid + Math.imul(al5, bh3)) | 0;
+    mid = (mid + Math.imul(ah5, bl3)) | 0;
+    hi = (hi + Math.imul(ah5, bh3)) | 0;
+    lo = (lo + Math.imul(al4, bl4)) | 0;
+    mid = (mid + Math.imul(al4, bh4)) | 0;
+    mid = (mid + Math.imul(ah4, bl4)) | 0;
+    hi = (hi + Math.imul(ah4, bh4)) | 0;
+    lo = (lo + Math.imul(al3, bl5)) | 0;
+    mid = (mid + Math.imul(al3, bh5)) | 0;
+    mid = (mid + Math.imul(ah3, bl5)) | 0;
+    hi = (hi + Math.imul(ah3, bh5)) | 0;
+    lo = (lo + Math.imul(al2, bl6)) | 0;
+    mid = (mid + Math.imul(al2, bh6)) | 0;
+    mid = (mid + Math.imul(ah2, bl6)) | 0;
+    hi = (hi + Math.imul(ah2, bh6)) | 0;
+    lo = (lo + Math.imul(al1, bl7)) | 0;
+    mid = (mid + Math.imul(al1, bh7)) | 0;
+    mid = (mid + Math.imul(ah1, bl7)) | 0;
+    hi = (hi + Math.imul(ah1, bh7)) | 0;
+    lo = (lo + Math.imul(al0, bl8)) | 0;
+    mid = (mid + Math.imul(al0, bh8)) | 0;
+    mid = (mid + Math.imul(ah0, bl8)) | 0;
+    hi = (hi + Math.imul(ah0, bh8)) | 0;
+    var w8 = (((c + lo) | 0) + ((mid & 0x1fff) << 13)) | 0;
+    c = (((hi + (mid >>> 13)) | 0) + (w8 >>> 26)) | 0;
     w8 &= 0x3ffffff;
     /* k = 9 */
     lo = Math.imul(al9, bl0);
     mid = Math.imul(al9, bh0);
-    mid += Math.imul(ah9, bl0);
+    mid = (mid + Math.imul(ah9, bl0)) | 0;
     hi = Math.imul(ah9, bh0);
-    lo += Math.imul(al8, bl1);
-    mid += Math.imul(al8, bh1);
-    mid += Math.imul(ah8, bl1);
-    hi += Math.imul(ah8, bh1);
-    lo += Math.imul(al7, bl2);
-    mid += Math.imul(al7, bh2);
-    mid += Math.imul(ah7, bl2);
-    hi += Math.imul(ah7, bh2);
-    lo += Math.imul(al6, bl3);
-    mid += Math.imul(al6, bh3);
-    mid += Math.imul(ah6, bl3);
-    hi += Math.imul(ah6, bh3);
-    lo += Math.imul(al5, bl4);
-    mid += Math.imul(al5, bh4);
-    mid += Math.imul(ah5, bl4);
-    hi += Math.imul(ah5, bh4);
-    lo += Math.imul(al4, bl5);
-    mid += Math.imul(al4, bh5);
-    mid += Math.imul(ah4, bl5);
-    hi += Math.imul(ah4, bh5);
-    lo += Math.imul(al3, bl6);
-    mid += Math.imul(al3, bh6);
-    mid += Math.imul(ah3, bl6);
-    hi += Math.imul(ah3, bh6);
-    lo += Math.imul(al2, bl7);
-    mid += Math.imul(al2, bh7);
-    mid += Math.imul(ah2, bl7);
-    hi += Math.imul(ah2, bh7);
-    lo += Math.imul(al1, bl8);
-    mid += Math.imul(al1, bh8);
-    mid += Math.imul(ah1, bl8);
-    hi += Math.imul(ah1, bh8);
-    lo += Math.imul(al0, bl9);
-    mid += Math.imul(al0, bh9);
-    mid += Math.imul(ah0, bl9);
-    hi += Math.imul(ah0, bh9);
-    var w9 = c + lo + ((mid & 0x1fff) << 13);
-    c = hi + (mid >>> 13) + (w9 >>> 26);
+    lo = (lo + Math.imul(al8, bl1)) | 0;
+    mid = (mid + Math.imul(al8, bh1)) | 0;
+    mid = (mid + Math.imul(ah8, bl1)) | 0;
+    hi = (hi + Math.imul(ah8, bh1)) | 0;
+    lo = (lo + Math.imul(al7, bl2)) | 0;
+    mid = (mid + Math.imul(al7, bh2)) | 0;
+    mid = (mid + Math.imul(ah7, bl2)) | 0;
+    hi = (hi + Math.imul(ah7, bh2)) | 0;
+    lo = (lo + Math.imul(al6, bl3)) | 0;
+    mid = (mid + Math.imul(al6, bh3)) | 0;
+    mid = (mid + Math.imul(ah6, bl3)) | 0;
+    hi = (hi + Math.imul(ah6, bh3)) | 0;
+    lo = (lo + Math.imul(al5, bl4)) | 0;
+    mid = (mid + Math.imul(al5, bh4)) | 0;
+    mid = (mid + Math.imul(ah5, bl4)) | 0;
+    hi = (hi + Math.imul(ah5, bh4)) | 0;
+    lo = (lo + Math.imul(al4, bl5)) | 0;
+    mid = (mid + Math.imul(al4, bh5)) | 0;
+    mid = (mid + Math.imul(ah4, bl5)) | 0;
+    hi = (hi + Math.imul(ah4, bh5)) | 0;
+    lo = (lo + Math.imul(al3, bl6)) | 0;
+    mid = (mid + Math.imul(al3, bh6)) | 0;
+    mid = (mid + Math.imul(ah3, bl6)) | 0;
+    hi = (hi + Math.imul(ah3, bh6)) | 0;
+    lo = (lo + Math.imul(al2, bl7)) | 0;
+    mid = (mid + Math.imul(al2, bh7)) | 0;
+    mid = (mid + Math.imul(ah2, bl7)) | 0;
+    hi = (hi + Math.imul(ah2, bh7)) | 0;
+    lo = (lo + Math.imul(al1, bl8)) | 0;
+    mid = (mid + Math.imul(al1, bh8)) | 0;
+    mid = (mid + Math.imul(ah1, bl8)) | 0;
+    hi = (hi + Math.imul(ah1, bh8)) | 0;
+    lo = (lo + Math.imul(al0, bl9)) | 0;
+    mid = (mid + Math.imul(al0, bh9)) | 0;
+    mid = (mid + Math.imul(ah0, bl9)) | 0;
+    hi = (hi + Math.imul(ah0, bh9)) | 0;
+    var w9 = (((c + lo) | 0) + ((mid & 0x1fff) << 13)) | 0;
+    c = (((hi + (mid >>> 13)) | 0) + (w9 >>> 26)) | 0;
     w9 &= 0x3ffffff;
     /* k = 10 */
     lo = Math.imul(al9, bl1);
     mid = Math.imul(al9, bh1);
-    mid += Math.imul(ah9, bl1);
+    mid = (mid + Math.imul(ah9, bl1)) | 0;
     hi = Math.imul(ah9, bh1);
-    lo += Math.imul(al8, bl2);
-    mid += Math.imul(al8, bh2);
-    mid += Math.imul(ah8, bl2);
-    hi += Math.imul(ah8, bh2);
-    lo += Math.imul(al7, bl3);
-    mid += Math.imul(al7, bh3);
-    mid += Math.imul(ah7, bl3);
-    hi += Math.imul(ah7, bh3);
-    lo += Math.imul(al6, bl4);
-    mid += Math.imul(al6, bh4);
-    mid += Math.imul(ah6, bl4);
-    hi += Math.imul(ah6, bh4);
-    lo += Math.imul(al5, bl5);
-    mid += Math.imul(al5, bh5);
-    mid += Math.imul(ah5, bl5);
-    hi += Math.imul(ah5, bh5);
-    lo += Math.imul(al4, bl6);
-    mid += Math.imul(al4, bh6);
-    mid += Math.imul(ah4, bl6);
-    hi += Math.imul(ah4, bh6);
-    lo += Math.imul(al3, bl7);
-    mid += Math.imul(al3, bh7);
-    mid += Math.imul(ah3, bl7);
-    hi += Math.imul(ah3, bh7);
-    lo += Math.imul(al2, bl8);
-    mid += Math.imul(al2, bh8);
-    mid += Math.imul(ah2, bl8);
-    hi += Math.imul(ah2, bh8);
-    lo += Math.imul(al1, bl9);
-    mid += Math.imul(al1, bh9);
-    mid += Math.imul(ah1, bl9);
-    hi += Math.imul(ah1, bh9);
-    var w10 = c + lo + ((mid & 0x1fff) << 13);
-    c = hi + (mid >>> 13) + (w10 >>> 26);
+    lo = (lo + Math.imul(al8, bl2)) | 0;
+    mid = (mid + Math.imul(al8, bh2)) | 0;
+    mid = (mid + Math.imul(ah8, bl2)) | 0;
+    hi = (hi + Math.imul(ah8, bh2)) | 0;
+    lo = (lo + Math.imul(al7, bl3)) | 0;
+    mid = (mid + Math.imul(al7, bh3)) | 0;
+    mid = (mid + Math.imul(ah7, bl3)) | 0;
+    hi = (hi + Math.imul(ah7, bh3)) | 0;
+    lo = (lo + Math.imul(al6, bl4)) | 0;
+    mid = (mid + Math.imul(al6, bh4)) | 0;
+    mid = (mid + Math.imul(ah6, bl4)) | 0;
+    hi = (hi + Math.imul(ah6, bh4)) | 0;
+    lo = (lo + Math.imul(al5, bl5)) | 0;
+    mid = (mid + Math.imul(al5, bh5)) | 0;
+    mid = (mid + Math.imul(ah5, bl5)) | 0;
+    hi = (hi + Math.imul(ah5, bh5)) | 0;
+    lo = (lo + Math.imul(al4, bl6)) | 0;
+    mid = (mid + Math.imul(al4, bh6)) | 0;
+    mid = (mid + Math.imul(ah4, bl6)) | 0;
+    hi = (hi + Math.imul(ah4, bh6)) | 0;
+    lo = (lo + Math.imul(al3, bl7)) | 0;
+    mid = (mid + Math.imul(al3, bh7)) | 0;
+    mid = (mid + Math.imul(ah3, bl7)) | 0;
+    hi = (hi + Math.imul(ah3, bh7)) | 0;
+    lo = (lo + Math.imul(al2, bl8)) | 0;
+    mid = (mid + Math.imul(al2, bh8)) | 0;
+    mid = (mid + Math.imul(ah2, bl8)) | 0;
+    hi = (hi + Math.imul(ah2, bh8)) | 0;
+    lo = (lo + Math.imul(al1, bl9)) | 0;
+    mid = (mid + Math.imul(al1, bh9)) | 0;
+    mid = (mid + Math.imul(ah1, bl9)) | 0;
+    hi = (hi + Math.imul(ah1, bh9)) | 0;
+    var w10 = (((c + lo) | 0) + ((mid & 0x1fff) << 13)) | 0;
+    c = (((hi + (mid >>> 13)) | 0) + (w10 >>> 26)) | 0;
     w10 &= 0x3ffffff;
     /* k = 11 */
     lo = Math.imul(al9, bl2);
     mid = Math.imul(al9, bh2);
-    mid += Math.imul(ah9, bl2);
+    mid = (mid + Math.imul(ah9, bl2)) | 0;
     hi = Math.imul(ah9, bh2);
-    lo += Math.imul(al8, bl3);
-    mid += Math.imul(al8, bh3);
-    mid += Math.imul(ah8, bl3);
-    hi += Math.imul(ah8, bh3);
-    lo += Math.imul(al7, bl4);
-    mid += Math.imul(al7, bh4);
-    mid += Math.imul(ah7, bl4);
-    hi += Math.imul(ah7, bh4);
-    lo += Math.imul(al6, bl5);
-    mid += Math.imul(al6, bh5);
-    mid += Math.imul(ah6, bl5);
-    hi += Math.imul(ah6, bh5);
-    lo += Math.imul(al5, bl6);
-    mid += Math.imul(al5, bh6);
-    mid += Math.imul(ah5, bl6);
-    hi += Math.imul(ah5, bh6);
-    lo += Math.imul(al4, bl7);
-    mid += Math.imul(al4, bh7);
-    mid += Math.imul(ah4, bl7);
-    hi += Math.imul(ah4, bh7);
-    lo += Math.imul(al3, bl8);
-    mid += Math.imul(al3, bh8);
-    mid += Math.imul(ah3, bl8);
-    hi += Math.imul(ah3, bh8);
-    lo += Math.imul(al2, bl9);
-    mid += Math.imul(al2, bh9);
-    mid += Math.imul(ah2, bl9);
-    hi += Math.imul(ah2, bh9);
-    var w11 = c + lo + ((mid & 0x1fff) << 13);
-    c = hi + (mid >>> 13) + (w11 >>> 26);
+    lo = (lo + Math.imul(al8, bl3)) | 0;
+    mid = (mid + Math.imul(al8, bh3)) | 0;
+    mid = (mid + Math.imul(ah8, bl3)) | 0;
+    hi = (hi + Math.imul(ah8, bh3)) | 0;
+    lo = (lo + Math.imul(al7, bl4)) | 0;
+    mid = (mid + Math.imul(al7, bh4)) | 0;
+    mid = (mid + Math.imul(ah7, bl4)) | 0;
+    hi = (hi + Math.imul(ah7, bh4)) | 0;
+    lo = (lo + Math.imul(al6, bl5)) | 0;
+    mid = (mid + Math.imul(al6, bh5)) | 0;
+    mid = (mid + Math.imul(ah6, bl5)) | 0;
+    hi = (hi + Math.imul(ah6, bh5)) | 0;
+    lo = (lo + Math.imul(al5, bl6)) | 0;
+    mid = (mid + Math.imul(al5, bh6)) | 0;
+    mid = (mid + Math.imul(ah5, bl6)) | 0;
+    hi = (hi + Math.imul(ah5, bh6)) | 0;
+    lo = (lo + Math.imul(al4, bl7)) | 0;
+    mid = (mid + Math.imul(al4, bh7)) | 0;
+    mid = (mid + Math.imul(ah4, bl7)) | 0;
+    hi = (hi + Math.imul(ah4, bh7)) | 0;
+    lo = (lo + Math.imul(al3, bl8)) | 0;
+    mid = (mid + Math.imul(al3, bh8)) | 0;
+    mid = (mid + Math.imul(ah3, bl8)) | 0;
+    hi = (hi + Math.imul(ah3, bh8)) | 0;
+    lo = (lo + Math.imul(al2, bl9)) | 0;
+    mid = (mid + Math.imul(al2, bh9)) | 0;
+    mid = (mid + Math.imul(ah2, bl9)) | 0;
+    hi = (hi + Math.imul(ah2, bh9)) | 0;
+    var w11 = (((c + lo) | 0) + ((mid & 0x1fff) << 13)) | 0;
+    c = (((hi + (mid >>> 13)) | 0) + (w11 >>> 26)) | 0;
     w11 &= 0x3ffffff;
     /* k = 12 */
     lo = Math.imul(al9, bl3);
     mid = Math.imul(al9, bh3);
-    mid += Math.imul(ah9, bl3);
+    mid = (mid + Math.imul(ah9, bl3)) | 0;
     hi = Math.imul(ah9, bh3);
-    lo += Math.imul(al8, bl4);
-    mid += Math.imul(al8, bh4);
-    mid += Math.imul(ah8, bl4);
-    hi += Math.imul(ah8, bh4);
-    lo += Math.imul(al7, bl5);
-    mid += Math.imul(al7, bh5);
-    mid += Math.imul(ah7, bl5);
-    hi += Math.imul(ah7, bh5);
-    lo += Math.imul(al6, bl6);
-    mid += Math.imul(al6, bh6);
-    mid += Math.imul(ah6, bl6);
-    hi += Math.imul(ah6, bh6);
-    lo += Math.imul(al5, bl7);
-    mid += Math.imul(al5, bh7);
-    mid += Math.imul(ah5, bl7);
-    hi += Math.imul(ah5, bh7);
-    lo += Math.imul(al4, bl8);
-    mid += Math.imul(al4, bh8);
-    mid += Math.imul(ah4, bl8);
-    hi += Math.imul(ah4, bh8);
-    lo += Math.imul(al3, bl9);
-    mid += Math.imul(al3, bh9);
-    mid += Math.imul(ah3, bl9);
-    hi += Math.imul(ah3, bh9);
-    var w12 = c + lo + ((mid & 0x1fff) << 13);
-    c = hi + (mid >>> 13) + (w12 >>> 26);
+    lo = (lo + Math.imul(al8, bl4)) | 0;
+    mid = (mid + Math.imul(al8, bh4)) | 0;
+    mid = (mid + Math.imul(ah8, bl4)) | 0;
+    hi = (hi + Math.imul(ah8, bh4)) | 0;
+    lo = (lo + Math.imul(al7, bl5)) | 0;
+    mid = (mid + Math.imul(al7, bh5)) | 0;
+    mid = (mid + Math.imul(ah7, bl5)) | 0;
+    hi = (hi + Math.imul(ah7, bh5)) | 0;
+    lo = (lo + Math.imul(al6, bl6)) | 0;
+    mid = (mid + Math.imul(al6, bh6)) | 0;
+    mid = (mid + Math.imul(ah6, bl6)) | 0;
+    hi = (hi + Math.imul(ah6, bh6)) | 0;
+    lo = (lo + Math.imul(al5, bl7)) | 0;
+    mid = (mid + Math.imul(al5, bh7)) | 0;
+    mid = (mid + Math.imul(ah5, bl7)) | 0;
+    hi = (hi + Math.imul(ah5, bh7)) | 0;
+    lo = (lo + Math.imul(al4, bl8)) | 0;
+    mid = (mid + Math.imul(al4, bh8)) | 0;
+    mid = (mid + Math.imul(ah4, bl8)) | 0;
+    hi = (hi + Math.imul(ah4, bh8)) | 0;
+    lo = (lo + Math.imul(al3, bl9)) | 0;
+    mid = (mid + Math.imul(al3, bh9)) | 0;
+    mid = (mid + Math.imul(ah3, bl9)) | 0;
+    hi = (hi + Math.imul(ah3, bh9)) | 0;
+    var w12 = (((c + lo) | 0) + ((mid & 0x1fff) << 13)) | 0;
+    c = (((hi + (mid >>> 13)) | 0) + (w12 >>> 26)) | 0;
     w12 &= 0x3ffffff;
     /* k = 13 */
     lo = Math.imul(al9, bl4);
     mid = Math.imul(al9, bh4);
-    mid += Math.imul(ah9, bl4);
+    mid = (mid + Math.imul(ah9, bl4)) | 0;
     hi = Math.imul(ah9, bh4);
-    lo += Math.imul(al8, bl5);
-    mid += Math.imul(al8, bh5);
-    mid += Math.imul(ah8, bl5);
-    hi += Math.imul(ah8, bh5);
-    lo += Math.imul(al7, bl6);
-    mid += Math.imul(al7, bh6);
-    mid += Math.imul(ah7, bl6);
-    hi += Math.imul(ah7, bh6);
-    lo += Math.imul(al6, bl7);
-    mid += Math.imul(al6, bh7);
-    mid += Math.imul(ah6, bl7);
-    hi += Math.imul(ah6, bh7);
-    lo += Math.imul(al5, bl8);
-    mid += Math.imul(al5, bh8);
-    mid += Math.imul(ah5, bl8);
-    hi += Math.imul(ah5, bh8);
-    lo += Math.imul(al4, bl9);
-    mid += Math.imul(al4, bh9);
-    mid += Math.imul(ah4, bl9);
-    hi += Math.imul(ah4, bh9);
-    var w13 = c + lo + ((mid & 0x1fff) << 13);
-    c = hi + (mid >>> 13) + (w13 >>> 26);
+    lo = (lo + Math.imul(al8, bl5)) | 0;
+    mid = (mid + Math.imul(al8, bh5)) | 0;
+    mid = (mid + Math.imul(ah8, bl5)) | 0;
+    hi = (hi + Math.imul(ah8, bh5)) | 0;
+    lo = (lo + Math.imul(al7, bl6)) | 0;
+    mid = (mid + Math.imul(al7, bh6)) | 0;
+    mid = (mid + Math.imul(ah7, bl6)) | 0;
+    hi = (hi + Math.imul(ah7, bh6)) | 0;
+    lo = (lo + Math.imul(al6, bl7)) | 0;
+    mid = (mid + Math.imul(al6, bh7)) | 0;
+    mid = (mid + Math.imul(ah6, bl7)) | 0;
+    hi = (hi + Math.imul(ah6, bh7)) | 0;
+    lo = (lo + Math.imul(al5, bl8)) | 0;
+    mid = (mid + Math.imul(al5, bh8)) | 0;
+    mid = (mid + Math.imul(ah5, bl8)) | 0;
+    hi = (hi + Math.imul(ah5, bh8)) | 0;
+    lo = (lo + Math.imul(al4, bl9)) | 0;
+    mid = (mid + Math.imul(al4, bh9)) | 0;
+    mid = (mid + Math.imul(ah4, bl9)) | 0;
+    hi = (hi + Math.imul(ah4, bh9)) | 0;
+    var w13 = (((c + lo) | 0) + ((mid & 0x1fff) << 13)) | 0;
+    c = (((hi + (mid >>> 13)) | 0) + (w13 >>> 26)) | 0;
     w13 &= 0x3ffffff;
     /* k = 14 */
     lo = Math.imul(al9, bl5);
     mid = Math.imul(al9, bh5);
-    mid += Math.imul(ah9, bl5);
+    mid = (mid + Math.imul(ah9, bl5)) | 0;
     hi = Math.imul(ah9, bh5);
-    lo += Math.imul(al8, bl6);
-    mid += Math.imul(al8, bh6);
-    mid += Math.imul(ah8, bl6);
-    hi += Math.imul(ah8, bh6);
-    lo += Math.imul(al7, bl7);
-    mid += Math.imul(al7, bh7);
-    mid += Math.imul(ah7, bl7);
-    hi += Math.imul(ah7, bh7);
-    lo += Math.imul(al6, bl8);
-    mid += Math.imul(al6, bh8);
-    mid += Math.imul(ah6, bl8);
-    hi += Math.imul(ah6, bh8);
-    lo += Math.imul(al5, bl9);
-    mid += Math.imul(al5, bh9);
-    mid += Math.imul(ah5, bl9);
-    hi += Math.imul(ah5, bh9);
-    var w14 = c + lo + ((mid & 0x1fff) << 13);
-    c = hi + (mid >>> 13) + (w14 >>> 26);
+    lo = (lo + Math.imul(al8, bl6)) | 0;
+    mid = (mid + Math.imul(al8, bh6)) | 0;
+    mid = (mid + Math.imul(ah8, bl6)) | 0;
+    hi = (hi + Math.imul(ah8, bh6)) | 0;
+    lo = (lo + Math.imul(al7, bl7)) | 0;
+    mid = (mid + Math.imul(al7, bh7)) | 0;
+    mid = (mid + Math.imul(ah7, bl7)) | 0;
+    hi = (hi + Math.imul(ah7, bh7)) | 0;
+    lo = (lo + Math.imul(al6, bl8)) | 0;
+    mid = (mid + Math.imul(al6, bh8)) | 0;
+    mid = (mid + Math.imul(ah6, bl8)) | 0;
+    hi = (hi + Math.imul(ah6, bh8)) | 0;
+    lo = (lo + Math.imul(al5, bl9)) | 0;
+    mid = (mid + Math.imul(al5, bh9)) | 0;
+    mid = (mid + Math.imul(ah5, bl9)) | 0;
+    hi = (hi + Math.imul(ah5, bh9)) | 0;
+    var w14 = (((c + lo) | 0) + ((mid & 0x1fff) << 13)) | 0;
+    c = (((hi + (mid >>> 13)) | 0) + (w14 >>> 26)) | 0;
     w14 &= 0x3ffffff;
     /* k = 15 */
     lo = Math.imul(al9, bl6);
     mid = Math.imul(al9, bh6);
-    mid += Math.imul(ah9, bl6);
+    mid = (mid + Math.imul(ah9, bl6)) | 0;
     hi = Math.imul(ah9, bh6);
-    lo += Math.imul(al8, bl7);
-    mid += Math.imul(al8, bh7);
-    mid += Math.imul(ah8, bl7);
-    hi += Math.imul(ah8, bh7);
-    lo += Math.imul(al7, bl8);
-    mid += Math.imul(al7, bh8);
-    mid += Math.imul(ah7, bl8);
-    hi += Math.imul(ah7, bh8);
-    lo += Math.imul(al6, bl9);
-    mid += Math.imul(al6, bh9);
-    mid += Math.imul(ah6, bl9);
-    hi += Math.imul(ah6, bh9);
-    var w15 = c + lo + ((mid & 0x1fff) << 13);
-    c = hi + (mid >>> 13) + (w15 >>> 26);
+    lo = (lo + Math.imul(al8, bl7)) | 0;
+    mid = (mid + Math.imul(al8, bh7)) | 0;
+    mid = (mid + Math.imul(ah8, bl7)) | 0;
+    hi = (hi + Math.imul(ah8, bh7)) | 0;
+    lo = (lo + Math.imul(al7, bl8)) | 0;
+    mid = (mid + Math.imul(al7, bh8)) | 0;
+    mid = (mid + Math.imul(ah7, bl8)) | 0;
+    hi = (hi + Math.imul(ah7, bh8)) | 0;
+    lo = (lo + Math.imul(al6, bl9)) | 0;
+    mid = (mid + Math.imul(al6, bh9)) | 0;
+    mid = (mid + Math.imul(ah6, bl9)) | 0;
+    hi = (hi + Math.imul(ah6, bh9)) | 0;
+    var w15 = (((c + lo) | 0) + ((mid & 0x1fff) << 13)) | 0;
+    c = (((hi + (mid >>> 13)) | 0) + (w15 >>> 26)) | 0;
     w15 &= 0x3ffffff;
     /* k = 16 */
     lo = Math.imul(al9, bl7);
     mid = Math.imul(al9, bh7);
-    mid += Math.imul(ah9, bl7);
+    mid = (mid + Math.imul(ah9, bl7)) | 0;
     hi = Math.imul(ah9, bh7);
-    lo += Math.imul(al8, bl8);
-    mid += Math.imul(al8, bh8);
-    mid += Math.imul(ah8, bl8);
-    hi += Math.imul(ah8, bh8);
-    lo += Math.imul(al7, bl9);
-    mid += Math.imul(al7, bh9);
-    mid += Math.imul(ah7, bl9);
-    hi += Math.imul(ah7, bh9);
-    var w16 = c + lo + ((mid & 0x1fff) << 13);
-    c = hi + (mid >>> 13) + (w16 >>> 26);
+    lo = (lo + Math.imul(al8, bl8)) | 0;
+    mid = (mid + Math.imul(al8, bh8)) | 0;
+    mid = (mid + Math.imul(ah8, bl8)) | 0;
+    hi = (hi + Math.imul(ah8, bh8)) | 0;
+    lo = (lo + Math.imul(al7, bl9)) | 0;
+    mid = (mid + Math.imul(al7, bh9)) | 0;
+    mid = (mid + Math.imul(ah7, bl9)) | 0;
+    hi = (hi + Math.imul(ah7, bh9)) | 0;
+    var w16 = (((c + lo) | 0) + ((mid & 0x1fff) << 13)) | 0;
+    c = (((hi + (mid >>> 13)) | 0) + (w16 >>> 26)) | 0;
     w16 &= 0x3ffffff;
     /* k = 17 */
     lo = Math.imul(al9, bl8);
     mid = Math.imul(al9, bh8);
-    mid += Math.imul(ah9, bl8);
+    mid = (mid + Math.imul(ah9, bl8)) | 0;
     hi = Math.imul(ah9, bh8);
-    lo += Math.imul(al8, bl9);
-    mid += Math.imul(al8, bh9);
-    mid += Math.imul(ah8, bl9);
-    hi += Math.imul(ah8, bh9);
-    var w17 = c + lo + ((mid & 0x1fff) << 13);
-    c = hi + (mid >>> 13) + (w17 >>> 26);
+    lo = (lo + Math.imul(al8, bl9)) | 0;
+    mid = (mid + Math.imul(al8, bh9)) | 0;
+    mid = (mid + Math.imul(ah8, bl9)) | 0;
+    hi = (hi + Math.imul(ah8, bh9)) | 0;
+    var w17 = (((c + lo) | 0) + ((mid & 0x1fff) << 13)) | 0;
+    c = (((hi + (mid >>> 13)) | 0) + (w17 >>> 26)) | 0;
     w17 &= 0x3ffffff;
     /* k = 18 */
     lo = Math.imul(al9, bl9);
     mid = Math.imul(al9, bh9);
-    mid += Math.imul(ah9, bl9);
+    mid = (mid + Math.imul(ah9, bl9)) | 0;
     hi = Math.imul(ah9, bh9);
-    var w18 = c + lo + ((mid & 0x1fff) << 13);
-    c = hi + (mid >>> 13) + (w18 >>> 26);
+    var w18 = (((c + lo) | 0) + ((mid & 0x1fff) << 13)) | 0;
+    c = (((hi + (mid >>> 13)) | 0) + (w18 >>> 26)) | 0;
     w18 &= 0x3ffffff;
     o[0] = w0;
     o[1] = w1;
@@ -25103,24 +25163,10 @@ var Buffer = require(9).Buffer;
   };
 
   BN.prototype._ishlnsubmul = function _ishlnsubmul (num, mul, shift) {
-    // Bigger storage is needed
     var len = num.length + shift;
     var i;
-    if (this.words.length < len) {
-      var t = new Array(len);
-      for (i = 0; i < this.length; i++) {
-        t[i] = this.words[i];
-      }
-      this.words = t;
-    } else {
-      i = this.length;
-    }
 
-    // Zeroify rest
-    this.length = Math.max(this.length, len);
-    for (; i < this.length; i++) {
-      this.words[i] = 0;
-    }
+    this._expand(len);
 
     var w;
     var carry = 0;
@@ -25603,17 +25649,14 @@ var Buffer = require(9).Buffer;
 
     // Fast case: bit is much higher than all existing words
     if (this.length <= s) {
-      for (var i = this.length; i < s + 1; i++) {
-        this.words[i] = 0;
-      }
+      this._expand(s + 1);
       this.words[s] |= q;
-      this.length = s + 1;
       return this;
     }
 
     // Add bit and propagate, if needed
     var carry = q;
-    for (i = s; carry !== 0 && i < this.length; i++) {
+    for (var i = s; carry !== 0 && i < this.length; i++) {
       var w = this.words[i] | 0;
       w += carry;
       carry = w >>> 26;
@@ -25652,9 +25695,7 @@ var Buffer = require(9).Buffer;
       var w = this.words[0] | 0;
       res = w === num ? 0 : w < num ? -1 : 1;
     }
-    if (this.negative !== 0) {
-      res = -res;
-    }
+    if (this.negative !== 0) return -res | 0;
     return res;
   };
 
@@ -25667,8 +25708,7 @@ var Buffer = require(9).Buffer;
     if (this.negative === 0 && num.negative !== 0) return 1;
 
     var res = this.ucmp(num);
-    if (this.negative !== 0) return -res;
-
+    if (this.negative !== 0) return -res | 0;
     return res;
   };
 
@@ -25785,7 +25825,7 @@ var Buffer = require(9).Buffer;
 
   BN.prototype.redShl = function redShl (num) {
     assert(this.red, 'redShl works only with red numbers');
-    return this.red.ushl(this, num);
+    return this.red.shl(this, num);
   };
 
   BN.prototype.redMul = function redMul (num) {
@@ -26037,6 +26077,7 @@ var Buffer = require(9).Buffer;
       this.m = prime.p;
       this.prime = prime;
     } else {
+      assert(m.gtn(1), 'modulus must be greater than 1');
       this.m = m;
       this.prime = null;
     }
@@ -26341,8 +26382,8 @@ var Buffer = require(9).Buffer;
 function(require, exports, module, undefined, global) {
 /* ../miller-rabin/lib/mr.js */
 
-var bn = require(143);
-var brorand = require(145);
+var bn = require(144);
+var brorand = require(146);
 
 function MillerRabin(rand) {
   this.rand = rand || new brorand.Rand();
@@ -26525,13 +26566,13 @@ function(require, exports, module, undefined, global) {
 
 var Buffer = require(9).Buffer;
 // much of this based on https://github.com/indutny/self-signed/blob/gh-pages/lib/rsa.js
-var createHmac = require(94)
-var crt = require(148)
-var curves = require(149)
-var elliptic = require(150)
-var parseKeys = require(151)
+var createHmac = require(91)
+var crt = require(149)
+var curves = require(150)
+var elliptic = require(151)
+var parseKeys = require(152)
 
-var BN = require(143)
+var BN = require(144)
 var EC = elliptic.ec
 
 function sign (hash, key, hashType, signType) {
@@ -26717,11 +26758,11 @@ function(require, exports, module, undefined, global) {
 
 var Buffer = require(9).Buffer;
 // much of this based on https://github.com/indutny/self-signed/blob/gh-pages/lib/rsa.js
-var curves = require(149)
-var elliptic = require(150)
-var parseKeys = require(151)
+var curves = require(150)
+var elliptic = require(151)
+var parseKeys = require(152)
 
-var BN = require(143)
+var BN = require(144)
 var EC = elliptic.ec
 
 function verify (sig, hash, key, signType) {
@@ -26826,8 +26867,8 @@ function(require, exports, module, undefined, global) {
 /* ../browserify-rsa/index.js */
 
 var Buffer = require(9).Buffer;
-var bn = require(143);
-var randomBytes = require(92);
+var bn = require(144);
+var randomBytes = require(89);
 module.exports = crt;
 function blind(priv) {
   var r = getr(priv);
@@ -26894,16 +26935,16 @@ function(require, exports, module, undefined, global) {
 
 var elliptic = exports;
 
-elliptic.version = require(152).version;
-elliptic.utils = require(153);
-elliptic.rand = require(145);
-elliptic.hmacDRBG = require(154);
-elliptic.curve = require(155);
-elliptic.curves = require(156);
+elliptic.version = require(153).version;
+elliptic.utils = require(154);
+elliptic.rand = require(146);
+elliptic.hmacDRBG = require(155);
+elliptic.curve = require(156);
+elliptic.curves = require(157);
 
 // Protocols
-elliptic.ec = require(157);
-elliptic.eddsa = require(158);
+elliptic.ec = require(158);
+elliptic.eddsa = require(159);
 
 
 },
@@ -26911,11 +26952,11 @@ function(require, exports, module, undefined, global) {
 /* ../parse-asn1/index.js */
 
 var Buffer = require(9).Buffer;
-var asn1 = require(174)
-var aesid = require(175)
-var fixProc = require(176)
-var ciphers = require(115)
-var compat = require(96)
+var asn1 = require(175)
+var aesid = require(176)
+var fixProc = require(177)
+var ciphers = require(116)
+var compat = require(93)
 module.exports = parseKeys
 
 function parseKeys (buffer) {
@@ -27021,27 +27062,40 @@ function(require, exports, module, undefined, global) {
 module.exports = {
   "_args": [
     [
-      "elliptic@^6.0.0",
+      {
+        "raw": "elliptic@^6.0.0",
+        "scope": null,
+        "escapedName": "elliptic",
+        "name": "elliptic",
+        "rawSpec": "^6.0.0",
+        "spec": ">=6.0.0 <7.0.0",
+        "type": "range"
+      },
       "/var/www/html/node/_commonjs/comn/node_modules/browserify-sign"
     ]
   ],
   "_from": "elliptic@>=6.0.0 <7.0.0",
-  "_id": "elliptic@6.2.3",
+  "_id": "elliptic@6.3.1",
   "_inCache": true,
   "_installable": true,
   "_location": "/elliptic",
-  "_nodeVersion": "5.4.1",
-  "_npmUser": {
-    "email": "fedor@indutny.com",
-    "name": "indutny"
+  "_nodeVersion": "6.0.0",
+  "_npmOperationalInternal": {
+    "host": "packages-16-east.internal.npmjs.com",
+    "tmp": "tmp/elliptic-6.3.1.tgz_1465921413402_0.5202967382501811"
   },
-  "_npmVersion": "3.3.12",
+  "_npmUser": {
+    "name": "indutny",
+    "email": "fedor@indutny.com"
+  },
+  "_npmVersion": "3.8.6",
   "_phantomChildren": {},
   "_requested": {
-    "name": "elliptic",
     "raw": "elliptic@^6.0.0",
-    "rawSpec": "^6.0.0",
     "scope": null,
+    "escapedName": "elliptic",
+    "name": "elliptic",
+    "rawSpec": "^6.0.0",
     "spec": ">=6.0.0 <7.0.0",
     "type": "range"
   },
@@ -27049,27 +27103,35 @@ module.exports = {
     "/browserify-sign",
     "/create-ecdh"
   ],
-  "_resolved": "https://registry.npmjs.org/elliptic/-/elliptic-6.2.3.tgz",
-  "_shasum": "18e46d7306b0951275a2d42063270a14b74ebe99",
+  "_resolved": "https://registry.npmjs.org/elliptic/-/elliptic-6.3.1.tgz",
+  "_shasum": "17781f2109ab0ec686b146bdcff5d2e8c6aeceda",
   "_shrinkwrap": null,
   "_spec": "elliptic@^6.0.0",
   "_where": "/var/www/html/node/_commonjs/comn/node_modules/browserify-sign",
   "author": {
-    "email": "fedor@indutny.com",
-    "name": "Fedor Indutny"
+    "name": "Fedor Indutny",
+    "email": "fedor@indutny.com"
   },
   "bugs": {
     "url": "https://github.com/indutny/elliptic/issues"
   },
   "dependencies": {
-    "bn.js": "^4.0.0",
+    "bn.js": "^4.4.0",
     "brorand": "^1.0.1",
     "hash.js": "^1.0.0",
     "inherits": "^2.0.1"
   },
   "description": "EC cryptography",
   "devDependencies": {
+    "brfs": "^1.4.3",
     "coveralls": "^2.11.3",
+    "grunt": "^0.4.5",
+    "grunt-browserify": "^5.0.0",
+    "grunt-contrib-connect": "^1.0.0",
+    "grunt-contrib-copy": "^1.0.0",
+    "grunt-contrib-uglify": "^1.0.1",
+    "grunt-mocha-istanbul": "^3.0.1",
+    "grunt-saucelabs": "^8.6.2",
     "istanbul": "^0.4.2",
     "jscs": "^2.9.0",
     "jshint": "^2.6.0",
@@ -27077,19 +27139,19 @@ module.exports = {
   },
   "directories": {},
   "dist": {
-    "shasum": "18e46d7306b0951275a2d42063270a14b74ebe99",
-    "tarball": "http://registry.npmjs.org/elliptic/-/elliptic-6.2.3.tgz"
+    "shasum": "17781f2109ab0ec686b146bdcff5d2e8c6aeceda",
+    "tarball": "https://registry.npmjs.org/elliptic/-/elliptic-6.3.1.tgz"
   },
   "files": [
     "lib"
   ],
-  "gitHead": "c32f20b22b420eb6af3c6dda28963deb7facf823",
+  "gitHead": "c53f5cf3d832c0073eb4a4ed423a464cbce68f3e",
   "homepage": "https://github.com/indutny/elliptic",
   "keywords": [
-    "Cryptography",
     "EC",
     "Elliptic",
-    "curve"
+    "curve",
+    "Cryptography"
   ],
   "license": "MIT",
   "main": "lib/elliptic.js",
@@ -27107,15 +27169,14 @@ module.exports = {
     "url": "git+ssh://git@github.com/indutny/elliptic.git"
   },
   "scripts": {
-    "coverage": "npm run unit --coverage",
-    "coveralls": "npm run coverage && cat ./coverage/lcov.info | coveralls",
-    "jscs": "jscs benchmarks/*.js lib/*.js lib/**/*.js lib/**/**/*.js test/*.js",
-    "jshint": "jscs benchmarks/*.js lib/*.js lib/**/*.js lib/**/**/*.js test/*.js",
+    "jscs": "jscs benchmarks/*.js lib/*.js lib/**/*.js lib/**/**/*.js test/index.js",
+    "jshint": "jscs benchmarks/*.js lib/*.js lib/**/*.js lib/**/**/*.js test/index.js",
     "lint": "npm run jscs && npm run jshint",
     "test": "npm run lint && npm run unit",
-    "unit": "istanbul test _mocha --reporter=spec test/*-test.js"
+    "unit": "istanbul test _mocha --reporter=spec test/index.js",
+    "version": "grunt dist && git add dist/"
   },
-  "version": "6.2.3"
+  "version": "6.3.1"
 }
 ;
 
@@ -27126,7 +27187,7 @@ function(require, exports, module, undefined, global) {
 'use strict';
 
 var utils = exports;
-var BN = require(143);
+var BN = require(144);
 
 utils.assert = function assert(val, msg) {
   if (!val)
@@ -27275,8 +27336,7 @@ function getJSF(k1, k2) {
 }
 utils.getJSF = getJSF;
 
-function cachedProperty(obj, computer) {
-  var name = computer.name;
+function cachedProperty(obj, name, computer) {
   var key = '_' + name;
   obj.prototype[name] = function cachedProperty() {
     return this[key] !== undefined ? this[key] :
@@ -27304,8 +27364,8 @@ function(require, exports, module, undefined, global) {
 
 'use strict';
 
-var hash = require(159);
-var elliptic = require(150);
+var hash = require(160);
+var elliptic = require(151);
 var utils = elliptic.utils;
 var assert = utils.assert;
 
@@ -27426,10 +27486,10 @@ function(require, exports, module, undefined, global) {
 
 var curve = exports;
 
-curve.base = require(165);
-curve.short = require(166);
-curve.mont = require(167);
-curve.edwards = require(168);
+curve.base = require(166);
+curve.short = require(167);
+curve.mont = require(168);
+curve.edwards = require(169);
 
 
 },
@@ -27440,8 +27500,8 @@ function(require, exports, module, undefined, global) {
 
 var curves = exports;
 
-var hash = require(159);
-var elliptic = require(150);
+var hash = require(160);
+var elliptic = require(151);
 
 var assert = elliptic.utils.assert;
 
@@ -27605,7 +27665,7 @@ defineCurve('ed25519', {
 
 var pre;
 try {
-  pre = require(169);
+  pre = require(170);
 } catch (e) {
   pre = undefined;
 }
@@ -27649,13 +27709,13 @@ function(require, exports, module, undefined, global) {
 
 'use strict';
 
-var BN = require(143);
-var elliptic = require(150);
+var BN = require(144);
+var elliptic = require(151);
 var utils = elliptic.utils;
 var assert = utils.assert;
 
-var KeyPair = require(170);
-var Signature = require(171);
+var KeyPair = require(171);
+var Signature = require(172);
 
 function EC(options) {
   if (!(this instanceof EC))
@@ -27815,11 +27875,25 @@ EC.prototype.verify = function verify(msg, signature, key, enc) {
   var u1 = sinv.mul(msg).umod(this.n);
   var u2 = sinv.mul(r).umod(this.n);
 
-  var p = this.g.mulAdd(u1, key.getPublic(), u2);
+  if (!this.curve._maxwellTrick) {
+    var p = this.g.mulAdd(u1, key.getPublic(), u2);
+    if (p.isInfinity())
+      return false;
+
+    return p.getX().umod(this.n).cmp(r) === 0;
+  }
+
+  // NOTE: Greg Maxwell's trick, inspired by:
+  // https://git.io/vad3K
+
+  var p = this.g.jmulAdd(u1, key.getPublic(), u2);
   if (p.isInfinity())
     return false;
 
-  return p.getX().umod(this.n).cmp(r) === 0;
+  // Compare `p.x` of Jacobian point with `r`,
+  // this will do `p.x == r * p.z^2` instead of multiplying `p.x` by the
+  // inverse of `p.z^2`
+  return p.eqXToP(r);
 };
 
 EC.prototype.recoverPubKey = function(msg, signature, j, enc) {
@@ -27877,13 +27951,13 @@ function(require, exports, module, undefined, global) {
 
 'use strict';
 
-var hash = require(159);
-var elliptic = require(150);
+var hash = require(160);
+var elliptic = require(151);
 var utils = elliptic.utils;
 var assert = utils.assert;
 var parseBytes = utils.parseBytes;
-var KeyPair = require(172);
-var Signature = require(173);
+var KeyPair = require(173);
+var Signature = require(174);
 
 function EDDSA(curve) {
   assert(curve === 'ed25519', 'only tested with ed25519 so far');
@@ -28001,11 +28075,11 @@ function(require, exports, module, undefined, global) {
 
 var hash = exports;
 
-hash.utils = require(160);
-hash.common = require(161);
-hash.sha = require(162);
-hash.ripemd = require(163);
-hash.hmac = require(164);
+hash.utils = require(161);
+hash.common = require(162);
+hash.sha = require(163);
+hash.ripemd = require(164);
+hash.hmac = require(165);
 
 // Proxy hash functions to the main object
 hash.sha1 = hash.sha.sha1;
@@ -28283,7 +28357,7 @@ exports.shr64_lo = shr64_lo;
 function(require, exports, module, undefined, global) {
 /* ../hash.js/lib/hash/common.js */
 
-var hash = require(159);
+var hash = require(160);
 var utils = hash.utils;
 var assert = utils.assert;
 
@@ -28380,7 +28454,7 @@ BlockHash.prototype._pad = function pad() {
 function(require, exports, module, undefined, global) {
 /* ../hash.js/lib/hash/sha.js */
 
-var hash = require(159);
+var hash = require(160);
 var utils = hash.utils;
 var assert = utils.assert;
 
@@ -28950,7 +29024,7 @@ function g1_512_lo(xh, xl) {
 function(require, exports, module, undefined, global) {
 /* ../hash.js/lib/hash/ripemd.js */
 
-var hash = require(159);
+var hash = require(160);
 var utils = hash.utils;
 
 var rotl32 = utils.rotl32;
@@ -29102,7 +29176,7 @@ function(require, exports, module, undefined, global) {
 
 var hmac = exports;
 
-var hash = require(159);
+var hash = require(160);
 var utils = hash.utils;
 var assert = utils.assert;
 
@@ -29156,8 +29230,8 @@ function(require, exports, module, undefined, global) {
 
 'use strict';
 
-var BN = require(143);
-var elliptic = require(150);
+var BN = require(144);
+var elliptic = require(151);
 var utils = elliptic.utils;
 var getNAF = utils.getNAF;
 var getJSF = utils.getJSF;
@@ -29184,6 +29258,15 @@ function BaseCurve(type, conf) {
   this._wnafT2 = new Array(4);
   this._wnafT3 = new Array(4);
   this._wnafT4 = new Array(4);
+
+  // Generalized Greg Maxwell's trick
+  var adjustCount = this.n && this.p.div(this.n);
+  if (!adjustCount || adjustCount.cmpn(100) > 0) {
+    this.redN = null;
+  } else {
+    this._maxwellTrick = true;
+    this.redN = this.n.toRed(this.red);
+  }
 }
 module.exports = BaseCurve;
 
@@ -29272,7 +29355,8 @@ BaseCurve.prototype._wnafMul = function _wnafMul(p, k) {
 BaseCurve.prototype._wnafMulAdd = function _wnafMulAdd(defW,
                                                        points,
                                                        coeffs,
-                                                       len) {
+                                                       len,
+                                                       jacobianResult) {
   var wndWidth = this._wnafT1;
   var wnd = this._wnafT2;
   var naf = this._wnafT3;
@@ -29385,7 +29469,11 @@ BaseCurve.prototype._wnafMulAdd = function _wnafMulAdd(defW,
   // Zeroify references
   for (var i = 0; i < len; i++)
     wnd[i] = null;
-  return acc.toP();
+
+  if (jacobianResult)
+    return acc;
+  else
+    return acc.toP();
 };
 
 function BasePoint(curve, type) {
@@ -29407,9 +29495,19 @@ BaseCurve.prototype.decodePoint = function decodePoint(bytes, enc) {
   bytes = utils.toArray(bytes, enc);
 
   var len = this.p.byteLength();
-  if (bytes[0] === 0x04 && bytes.length - 1 === 2 * len) {
-    return this.point(bytes.slice(1, 1 + len),
-                      bytes.slice(1 + len, 1 + 2 * len));
+
+  // uncompressed, hybrid-odd, hybrid-even
+  if ((bytes[0] === 0x04 || bytes[0] === 0x06 || bytes[0] === 0x07) &&
+      bytes.length - 1 === 2 * len) {
+    if (bytes[0] === 0x06)
+      assert(bytes[bytes.length - 1] % 2 === 0);
+    else if (bytes[0] === 0x07)
+      assert(bytes[bytes.length - 1] % 2 === 1);
+
+    var res =  this.point(bytes.slice(1, 1 + len),
+                          bytes.slice(1 + len, 1 + 2 * len));
+
+    return res;
   } else if ((bytes[0] === 0x02 || bytes[0] === 0x03) &&
               bytes.length - 1 === len) {
     return this.pointFromX(bytes.slice(1, 1 + len), bytes[0] === 0x03);
@@ -29513,9 +29611,9 @@ function(require, exports, module, undefined, global) {
 
 'use strict';
 
-var curve = require(155);
-var elliptic = require(150);
-var BN = require(143);
+var curve = require(156);
+var elliptic = require(151);
+var BN = require(144);
 var inherits = require(71);
 var Base = curve.base;
 
@@ -29730,7 +29828,7 @@ ShortCurve.prototype.validate = function validate(point) {
 };
 
 ShortCurve.prototype._endoWnafMulAdd =
-    function _endoWnafMulAdd(points, coeffs) {
+    function _endoWnafMulAdd(points, coeffs, jacobianResult) {
   var npoints = this._endoWnafT1;
   var ncoeffs = this._endoWnafT2;
   for (var i = 0; i < points.length; i++) {
@@ -29752,7 +29850,7 @@ ShortCurve.prototype._endoWnafMulAdd =
     ncoeffs[i * 2] = split.k1;
     ncoeffs[i * 2 + 1] = split.k2;
   }
-  var res = this._wnafMulAdd(1, npoints, ncoeffs, i * 2);
+  var res = this._wnafMulAdd(1, npoints, ncoeffs, i * 2, jacobianResult);
 
   // Clean-up references to points and coefficients
   for (var j = 0; j < i * 2; j++) {
@@ -29951,6 +30049,15 @@ Point.prototype.mulAdd = function mulAdd(k1, p2, k2) {
     return this.curve._endoWnafMulAdd(points, coeffs);
   else
     return this.curve._wnafMulAdd(1, points, coeffs, 2);
+};
+
+Point.prototype.jmulAdd = function jmulAdd(k1, p2, k2) {
+  var points = [ this, p2 ];
+  var coeffs = [ k1, k2 ];
+  if (this.curve.endo)
+    return this.curve._endoWnafMulAdd(points, coeffs, true);
+  else
+    return this.curve._wnafMulAdd(1, points, coeffs, 2, true);
 };
 
 Point.prototype.eq = function eq(p) {
@@ -30408,6 +30515,26 @@ JPoint.prototype.eq = function eq(p) {
   return this.y.redMul(pz3).redISub(p.y.redMul(z3)).cmpn(0) === 0;
 };
 
+JPoint.prototype.eqXToP = function eqXToP(x) {
+  var zs = this.z.redSqr();
+  var rx = x.toRed(this.curve.red).redMul(zs);
+  if (this.x.cmp(rx) === 0)
+    return true;
+
+  var xc = x.clone();
+  var t = this.curve.redN.redMul(zs);
+  for (;;) {
+    xc.iadd(this.curve.n);
+    if (xc.cmp(this.curve.p) >= 0)
+      return false;
+
+    rx.redIAdd(t);
+    if (this.x.cmp(rx) === 0)
+      return true;
+  }
+  return false;
+};
+
 JPoint.prototype.inspect = function inspect() {
   if (this.isInfinity())
     return '<EC JPoint Infinity>';
@@ -30428,12 +30555,12 @@ function(require, exports, module, undefined, global) {
 
 'use strict';
 
-var curve = require(155);
-var BN = require(143);
+var curve = require(156);
+var BN = require(144);
 var inherits = require(71);
 var Base = curve.base;
 
-var elliptic = require(150);
+var elliptic = require(151);
 var utils = elliptic.utils;
 
 function MontCurve(conf) {
@@ -30586,6 +30713,10 @@ Point.prototype.mulAdd = function mulAdd() {
   throw new Error('Not supported on Montgomery curve');
 };
 
+Point.prototype.jumlAdd = function jumlAdd() {
+  throw new Error('Not supported on Montgomery curve');
+};
+
 Point.prototype.eq = function eq(other) {
   return this.getX().cmp(other.getX()) === 0;
 };
@@ -30610,9 +30741,9 @@ function(require, exports, module, undefined, global) {
 
 'use strict';
 
-var curve = require(155);
-var elliptic = require(150);
-var BN = require(143);
+var curve = require(156);
+var elliptic = require(151);
+var BN = require(144);
 var inherits = require(71);
 var Base = curve.base;
 
@@ -30974,7 +31105,11 @@ Point.prototype.mul = function mul(k) {
 };
 
 Point.prototype.mulAdd = function mulAdd(k1, p, k2) {
-  return this.curve._wnafMulAdd(1, [ this, p ], [ k1, k2 ], 2);
+  return this.curve._wnafMulAdd(1, [ this, p ], [ k1, k2 ], 2, false);
+};
+
+Point.prototype.jmulAdd = function jmulAdd(k1, p, k2) {
+  return this.curve._wnafMulAdd(1, [ this, p ], [ k1, k2 ], 2, true);
 };
 
 Point.prototype.normalize = function normalize() {
@@ -31013,6 +31148,25 @@ Point.prototype.eq = function eq(other) {
   return this === other ||
          this.getX().cmp(other.getX()) === 0 &&
          this.getY().cmp(other.getY()) === 0;
+};
+
+Point.prototype.eqXToP = function eqXToP(x) {
+  var rx = x.toRed(this.curve.red).redMul(this.z);
+  if (this.x.cmp(rx) === 0)
+    return true;
+
+  var xc = x.clone();
+  var t = this.curve.redN.redMul(this.z);
+  for (;;) {
+    xc.iadd(this.curve.n);
+    if (xc.cmp(this.curve.p) >= 0)
+      return false;
+
+    rx.redIAdd(t);
+    if (this.x.cmp(rx) === 0)
+      return true;
+  }
+  return false;
 };
 
 // Compatibility with BaseCurve
@@ -31812,7 +31966,7 @@ function(require, exports, module, undefined, global) {
 
 'use strict';
 
-var BN = require(143);
+var BN = require(144);
 
 function KeyPair(ec, options) {
   this.ec = ec;
@@ -31925,9 +32079,9 @@ function(require, exports, module, undefined, global) {
 
 'use strict';
 
-var BN = require(143);
+var BN = require(144);
 
-var elliptic = require(150);
+var elliptic = require(151);
 var utils = elliptic.utils;
 var assert = utils.assert;
 
@@ -32066,7 +32220,7 @@ function(require, exports, module, undefined, global) {
 
 'use strict';
 
-var elliptic = require(150);
+var elliptic = require(151);
 var utils = elliptic.utils;
 var assert = utils.assert;
 var parseBytes = utils.parseBytes;
@@ -32106,17 +32260,17 @@ KeyPair.prototype.secret = function secret() {
   return this._secret;
 };
 
-cachedProperty(KeyPair, function pubBytes() {
+cachedProperty(KeyPair, 'pubBytes', function pubBytes() {
   return this.eddsa.encodePoint(this.pub());
 });
 
-cachedProperty(KeyPair, function pub() {
+cachedProperty(KeyPair, 'pub', function pub() {
   if (this._pubBytes)
     return this.eddsa.decodePoint(this._pubBytes);
   return this.eddsa.g.mul(this.priv());
 });
 
-cachedProperty(KeyPair, function privBytes() {
+cachedProperty(KeyPair, 'privBytes', function privBytes() {
   var eddsa = this.eddsa;
   var hash = this.hash();
   var lastIx = eddsa.encodingLength - 1;
@@ -32129,15 +32283,15 @@ cachedProperty(KeyPair, function privBytes() {
   return a;
 });
 
-cachedProperty(KeyPair, function priv() {
+cachedProperty(KeyPair, 'priv', function priv() {
   return this.eddsa.decodeInt(this.privBytes());
 });
 
-cachedProperty(KeyPair, function hash() {
+cachedProperty(KeyPair, 'hash', function hash() {
   return this.eddsa.hash().update(this.secret()).digest();
 });
 
-cachedProperty(KeyPair, function messagePrefix() {
+cachedProperty(KeyPair, 'messagePrefix', function messagePrefix() {
   return this.hash().slice(this.eddsa.encodingLength);
 });
 
@@ -32168,8 +32322,8 @@ function(require, exports, module, undefined, global) {
 
 'use strict';
 
-var BN = require(143);
-var elliptic = require(150);
+var BN = require(144);
+var elliptic = require(151);
 var utils = elliptic.utils;
 var assert = utils.assert;
 var cachedProperty = utils.cachedProperty;
@@ -32207,19 +32361,19 @@ function Signature(eddsa, sig) {
   this._Sencoded = Array.isArray(sig.S) ? sig.S : sig.Sencoded;
 }
 
-cachedProperty(Signature, function S() {
+cachedProperty(Signature, 'S', function S() {
   return this.eddsa.decodeInt(this.Sencoded());
 });
 
-cachedProperty(Signature, function R() {
+cachedProperty(Signature, 'R', function R() {
   return this.eddsa.decodePoint(this.Rencoded());
 });
 
-cachedProperty(Signature, function Rencoded() {
+cachedProperty(Signature, 'Rencoded', function Rencoded() {
   return this.eddsa.encodePoint(this.R());
 });
 
-cachedProperty(Signature, function Sencoded() {
+cachedProperty(Signature, 'Sencoded', function Sencoded() {
   return this.eddsa.encodeInt(this.S());
 });
 
@@ -32241,7 +32395,7 @@ function(require, exports, module, undefined, global) {
 // from https://github.com/indutny/self-signed/blob/gh-pages/lib/asn1.js
 // Fedor, you are amazing.
 
-var asn1 = require(177)
+var asn1 = require(178)
 
 var RSAPrivateKey = asn1.define('RSAPrivateKey', function () {
   this.seq().obj(
@@ -32384,8 +32538,8 @@ var Buffer = require(9).Buffer;
 var findProc = /Proc-Type: 4,ENCRYPTED\r?\nDEK-Info: AES-((?:128)|(?:192)|(?:256))-CBC,([0-9A-H]+)\r?\n\r?\n([0-9A-z\n\r\+\/\=]+)\r?\n/m
 var startRegex = /^-----BEGIN (.*) KEY-----\r?\n/m
 var fullRegex = /^-----BEGIN (.*) KEY-----\r?\n([0-9A-z\n\r\+\/\=]+)\r?\n-----END \1 KEY-----$/m
-var evp = require(114)
-var ciphers = require(115)
+var evp = require(115)
+var ciphers = require(116)
 module.exports = function (okey, password) {
   var key = okey.toString()
   var match = key.match(findProc)
@@ -32418,20 +32572,20 @@ function(require, exports, module, undefined, global) {
 
 var asn1 = exports;
 
-asn1.bignum = require(143);
+asn1.bignum = require(144);
 
-asn1.define = require(178).define;
-asn1.base = require(179);
-asn1.constants = require(180);
-asn1.decoders = require(181);
-asn1.encoders = require(182);
+asn1.define = require(179).define;
+asn1.base = require(180);
+asn1.constants = require(181);
+asn1.decoders = require(182);
+asn1.encoders = require(183);
 
 
 },
 function(require, exports, module, undefined, global) {
 /* ../asn1.js/lib/asn1/api.js */
 
-var asn1 = require(177);
+var asn1 = require(178);
 var inherits = require(71);
 
 var api = exports;
@@ -32451,7 +32605,7 @@ function Entity(name, body) {
 Entity.prototype._createNamed = function createNamed(base) {
   var named;
   try {
-    named = require(183).runInThisContext(
+    named = require(184).runInThisContext(
       '(function ' + this.name + '(entity) {\n' +
       '  this._initNamed(entity);\n' +
       '})'
@@ -32470,6 +32624,7 @@ Entity.prototype._createNamed = function createNamed(base) {
 };
 
 Entity.prototype._getDecoder = function _getDecoder(enc) {
+  enc = enc || 'der';
   // Lazily create decoder
   if (!this.decoders.hasOwnProperty(enc))
     this.decoders[enc] = this._createNamed(asn1.decoders[enc]);
@@ -32481,6 +32636,7 @@ Entity.prototype.decode = function decode(data, enc, options) {
 };
 
 Entity.prototype._getEncoder = function _getEncoder(enc) {
+  enc = enc || 'der';
   // Lazily create encoder
   if (!this.encoders.hasOwnProperty(enc))
     this.encoders[enc] = this._createNamed(asn1.encoders[enc]);
@@ -32498,10 +32654,10 @@ function(require, exports, module, undefined, global) {
 
 var base = exports;
 
-base.Reporter = require(184).Reporter;
-base.DecoderBuffer = require(185).DecoderBuffer;
-base.EncoderBuffer = require(185).EncoderBuffer;
-base.Node = require(186);
+base.Reporter = require(185).Reporter;
+base.DecoderBuffer = require(186).DecoderBuffer;
+base.EncoderBuffer = require(186).EncoderBuffer;
+base.Node = require(187);
 
 
 },
@@ -32526,7 +32682,7 @@ constants._reverse = function reverse(map) {
   return res;
 };
 
-constants.der = require(187);
+constants.der = require(188);
 
 
 },
@@ -32535,8 +32691,8 @@ function(require, exports, module, undefined, global) {
 
 var decoders = exports;
 
-decoders.der = require(188);
-decoders.pem = require(189);
+decoders.der = require(189);
+decoders.pem = require(190);
 
 
 },
@@ -32545,8 +32701,8 @@ function(require, exports, module, undefined, global) {
 
 var encoders = exports;
 
-encoders.der = require(190);
-encoders.pem = require(191);
+encoders.der = require(191);
+encoders.pem = require(192);
 
 
 },
@@ -32730,12 +32886,22 @@ Reporter.prototype.enterKey = function enterKey(key) {
   return this._reporterState.path.push(key);
 };
 
-Reporter.prototype.leaveKey = function leaveKey(index, key, value) {
+Reporter.prototype.exitKey = function exitKey(index) {
   var state = this._reporterState;
 
   state.path = state.path.slice(0, index - 1);
+};
+
+Reporter.prototype.leaveKey = function leaveKey(index, key, value) {
+  var state = this._reporterState;
+
+  this.exitKey(index);
   if (state.obj !== null)
     state.obj[key] = value;
+};
+
+Reporter.prototype.path = function path() {
+  return this._reporterState.path.join('/');
 };
 
 Reporter.prototype.enterObject = function enterObject() {
@@ -32795,8 +32961,17 @@ inherits(ReporterError, Error);
 
 ReporterError.prototype.rethrow = function rethrow(msg) {
   this.message = msg + ' at: ' + (this.path || '(shallow)');
-  Error.captureStackTrace(this, ReporterError);
+  if (Error.captureStackTrace)
+    Error.captureStackTrace(this, ReporterError);
 
+  if (!this.stack) {
+    try {
+      // IE only adds stack when thrown
+      throw new Error(this.message);
+    } catch (e) {
+      this.stack = e.stack;
+    }
+  }
   return this;
 };
 
@@ -32807,7 +32982,7 @@ function(require, exports, module, undefined, global) {
 
 var Buffer = require(9).Buffer;
 var inherits = require(71);
-var Reporter = require(179).Reporter;
+var Reporter = require(180).Reporter;
 var Buffer = require(9).Buffer;
 
 function DecoderBuffer(base, options) {
@@ -32928,16 +33103,17 @@ EncoderBuffer.prototype.join = function join(out, offset) {
 function(require, exports, module, undefined, global) {
 /* ../asn1.js/lib/asn1/base/node.js */
 
-var Reporter = require(179).Reporter;
-var EncoderBuffer = require(179).EncoderBuffer;
-var DecoderBuffer = require(179).DecoderBuffer;
-var assert = require(139);
+var Reporter = require(180).Reporter;
+var EncoderBuffer = require(180).EncoderBuffer;
+var DecoderBuffer = require(180).DecoderBuffer;
+var assert = require(140);
 
 // Supported tags
 var tags = [
-  'seq', 'seqof', 'set', 'setof', 'octstr', 'bitstr', 'objid', 'bool',
-  'gentime', 'utctime', 'null_', 'enum', 'int', 'ia5str', 'utf8str', 'bmpstr',
-  'numstr', 'printstr'
+  'seq', 'seqof', 'set', 'setof', 'objid', 'bool',
+  'gentime', 'utctime', 'null_', 'enum', 'int',
+  'bitstr', 'bmpstr', 'charstr', 'genstr', 'graphstr', 'ia5str', 'iso646str',
+  'numstr', 'octstr', 'printstr', 't61str', 'unistr', 'utf8str', 'videostr'
 ];
 
 // Public methods list
@@ -32992,7 +33168,7 @@ module.exports = Node;
 var stateProps = [
   'enc', 'parent', 'children', 'tag', 'args', 'reverseArgs', 'choice',
   'optional', 'any', 'obj', 'use', 'alteredUse', 'key', 'default', 'explicit',
-  'implicit'
+  'implicit', 'contains'
 ];
 
 Node.prototype.clone = function clone() {
@@ -33197,17 +33373,17 @@ Node.prototype.contains = function contains(item) {
 // Decoding
 //
 
-Node.prototype._decode = function decode(input) {
+Node.prototype._decode = function decode(input, options) {
   var state = this._baseState;
 
   // Decode root node
   if (state.parent === null)
-    return input.wrapResult(state.children[0]._decode(input));
+    return input.wrapResult(state.children[0]._decode(input, options));
 
   var result = state['default'];
   var present = true;
 
-  var prevKey;
+  var prevKey = null;
   if (state.key !== null)
     prevKey = input.enterKey(state.key);
 
@@ -33226,9 +33402,9 @@ Node.prototype._decode = function decode(input) {
       var save = input.save();
       try {
         if (state.choice === null)
-          this._decodeGeneric(state.tag, input);
+          this._decodeGeneric(state.tag, input, options);
         else
-          this._decodeChoice(input);
+          this._decodeChoice(input, options);
         present = true;
       } catch (e) {
         present = false;
@@ -33256,6 +33432,8 @@ Node.prototype._decode = function decode(input) {
       input = explicit;
     }
 
+    var start = input.offset;
+
     // Unwrap implicit and normal values
     if (state.use === null && state.choice === null) {
       if (state.any)
@@ -33274,32 +33452,37 @@ Node.prototype._decode = function decode(input) {
         input = body;
     }
 
+    if (options && options.track && state.tag !== null)
+      options.track(input.path(), start, input.length, 'tagged');
+
+    if (options && options.track && state.tag !== null)
+      options.track(input.path(), input.offset, input.length, 'content');
+
     // Select proper method for tag
     if (state.any)
       result = result;
     else if (state.choice === null)
-      result = this._decodeGeneric(state.tag, input);
+      result = this._decodeGeneric(state.tag, input, options);
     else
-      result = this._decodeChoice(input);
+      result = this._decodeChoice(input, options);
 
     if (input.isError(result))
       return result;
 
     // Decode children
     if (!state.any && state.choice === null && state.children !== null) {
-      var fail = state.children.some(function decodeChildren(child) {
+      state.children.forEach(function decodeChildren(child) {
         // NOTE: We are ignoring errors here, to let parser continue with other
         // parts of encoded data
-        child._decode(input);
+        child._decode(input, options);
       });
-      if (fail)
-        return err;
     }
 
     // Decode contained/encoded by schema, only in bit or octet strings
     if (state.contains && (state.tag === 'octstr' || state.tag === 'bitstr')) {
       var data = new DecoderBuffer(result);
-      result = this._getUse(state.contains, input._reporterState.obj)._decode(data);
+      result = this._getUse(state.contains, input._reporterState.obj)
+          ._decode(data, options);
     }
   }
 
@@ -33310,41 +33493,40 @@ Node.prototype._decode = function decode(input) {
   // Set key
   if (state.key !== null && (result !== null || present === true))
     input.leaveKey(prevKey, state.key, result);
+  else if (prevKey !== null)
+    input.exitKey(prevKey);
 
   return result;
 };
 
-Node.prototype._decodeGeneric = function decodeGeneric(tag, input) {
+Node.prototype._decodeGeneric = function decodeGeneric(tag, input, options) {
   var state = this._baseState;
 
   if (tag === 'seq' || tag === 'set')
     return null;
   if (tag === 'seqof' || tag === 'setof')
-    return this._decodeList(input, tag, state.args[0]);
-  else if (tag === 'octstr' || tag === 'bitstr')
-    return this._decodeStr(input, tag);
-  else if (tag === 'ia5str' || tag === 'utf8str' || tag === 'bmpstr')
-    return this._decodeStr(input, tag);
-  else if (tag === 'numstr' || tag === 'printstr')
-    return this._decodeStr(input, tag);
+    return this._decodeList(input, tag, state.args[0], options);
+  else if (/str$/.test(tag))
+    return this._decodeStr(input, tag, options);
   else if (tag === 'objid' && state.args)
-    return this._decodeObjid(input, state.args[0], state.args[1]);
+    return this._decodeObjid(input, state.args[0], state.args[1], options);
   else if (tag === 'objid')
-    return this._decodeObjid(input, null, null);
+    return this._decodeObjid(input, null, null, options);
   else if (tag === 'gentime' || tag === 'utctime')
-    return this._decodeTime(input, tag);
+    return this._decodeTime(input, tag, options);
   else if (tag === 'null_')
-    return this._decodeNull(input);
+    return this._decodeNull(input, options);
   else if (tag === 'bool')
-    return this._decodeBool(input);
+    return this._decodeBool(input, options);
   else if (tag === 'int' || tag === 'enum')
-    return this._decodeInt(input, state.args && state.args[0]);
-  else if (state.use !== null)
-    return this._getUse(state.use, input._reporterState.obj)._decode(input);
-  else
-    return input.error('unknown tag: ' + tag);
+    return this._decodeInt(input, state.args && state.args[0], options);
 
-  return null;
+  if (state.use !== null) {
+    return this._getUse(state.use, input._reporterState.obj)
+        ._decode(input, options);
+  } else {
+    return input.error('unknown tag: ' + tag);
+  }
 };
 
 Node.prototype._getUse = function _getUse(entity, obj) {
@@ -33361,7 +33543,7 @@ Node.prototype._getUse = function _getUse(entity, obj) {
   return state.useDecoder;
 };
 
-Node.prototype._decodeChoice = function decodeChoice(input) {
+Node.prototype._decodeChoice = function decodeChoice(input, options) {
   var state = this._baseState;
   var result = null;
   var match = false;
@@ -33370,7 +33552,7 @@ Node.prototype._decodeChoice = function decodeChoice(input) {
     var save = input.save();
     var node = state.choice[key];
     try {
-      var value = node._decode(input);
+      var value = node._decode(input, options);
       if (input.isError(value))
         return false;
 
@@ -33420,7 +33602,6 @@ Node.prototype._encodeValue = function encode(data, reporter, parent) {
     return state.children[0]._encode(data, reporter || new Reporter());
 
   var result = null;
-  var present = true;
 
   // Set reporter to share it with a child class
   this.reporter = reporter;
@@ -33432,9 +33613,6 @@ Node.prototype._encodeValue = function encode(data, reporter, parent) {
     else
       return;
   }
-
-  // For error reporting
-  var prevKey;
 
   // Encode children first
   var content = null;
@@ -33529,11 +33707,7 @@ Node.prototype._encodeChoice = function encodeChoice(data, reporter) {
 Node.prototype._encodePrimitive = function encodePrimitive(tag, data) {
   var state = this._baseState;
 
-  if (tag === 'octstr' || tag === 'bitstr' || tag === 'ia5str')
-    return this._encodeStr(data, tag);
-  else if (tag === 'utf8str' || tag === 'bmpstr')
-    return this._encodeStr(data, tag);
-  else if (tag === 'numstr' || tag === 'printstr')
+  if (/str$/.test(tag))
     return this._encodeStr(data, tag);
   else if (tag === 'objid' && state.args)
     return this._encodeObjid(data, state.reverseArgs[0], state.args[1]);
@@ -33564,7 +33738,7 @@ Node.prototype._isPrintstr = function isPrintstr(str) {
 function(require, exports, module, undefined, global) {
 /* ../asn1.js/lib/asn1/constants/der.js */
 
-var constants = require(180);
+var constants = require(181);
 
 exports.tagClass = {
   0: 'universal',
@@ -33614,7 +33788,7 @@ function(require, exports, module, undefined, global) {
 
 var inherits = require(71);
 
-var asn1 = require(177);
+var asn1 = require(178);
 var base = asn1.base;
 var bignum = asn1.bignum;
 
@@ -33657,7 +33831,8 @@ DERNode.prototype._peekTag = function peekTag(buffer, tag, any) {
 
   buffer.restore(state);
 
-  return decodedTag.tag === tag || decodedTag.tagStr === tag || any;
+  return decodedTag.tag === tag || decodedTag.tagStr === tag ||
+    (decodedTag.tagStr + 'of') === tag || any;
 };
 
 DERNode.prototype._decodeTag = function decodeTag(buffer, tag, any) {
@@ -33721,14 +33896,15 @@ DERNode.prototype._skipUntilEnd = function skipUntilEnd(buffer, fail) {
   }
 };
 
-DERNode.prototype._decodeList = function decodeList(buffer, tag, decoder) {
+DERNode.prototype._decodeList = function decodeList(buffer, tag, decoder,
+                                                    options) {
   var result = [];
   while (!buffer.isEmpty()) {
     var possibleEnd = this._peekTag(buffer, 'end');
     if (buffer.isError(possibleEnd))
       return possibleEnd;
 
-    var res = decoder.decode(buffer, 'der');
+    var res = decoder.decode(buffer, 'der', options);
     if (buffer.isError(res) && possibleEnd)
       break;
     result.push(res);
@@ -33737,33 +33913,12 @@ DERNode.prototype._decodeList = function decodeList(buffer, tag, decoder) {
 };
 
 DERNode.prototype._decodeStr = function decodeStr(buffer, tag) {
-  if (tag === 'octstr') {
-    return buffer.raw();
-  } else if (tag === 'bitstr') {
+  if (tag === 'bitstr') {
     var unused = buffer.readUInt8();
     if (buffer.isError(unused))
       return unused;
-
     return { unused: unused, data: buffer.raw() };
-  } else if (tag === 'ia5str' || tag === 'utf8str') {
-    return buffer.raw().toString();
-  } else if(tag === 'numstr') {
-    var numstr = buffer.raw().toString('ascii');
-    if (!this._isNumstr(numstr)) {
-      return buffer.error('Decoding of string type: ' +
-                          'numstr unsupported characters');
-    }
-
-    return numstr;
-  } else if (tag === 'printstr') {
-    var printstr = buffer.raw().toString('ascii');
-    if (!this._isPrintstr(printstr)) {
-      return buffer.error('Decoding of string type: ' +
-                          'printstr unsupported characters');
-    }
-
-    return printstr;
-  } else if(tag === 'bmpstr') {
+  } else if (tag === 'bmpstr') {
     var raw = buffer.raw();
     if (raw.length % 2 === 1)
       return buffer.error('Decoding of string type: bmpstr length mismatch');
@@ -33773,6 +33928,24 @@ DERNode.prototype._decodeStr = function decodeStr(buffer, tag) {
       str += String.fromCharCode(raw.readUInt16BE(i * 2));
     }
     return str;
+  } else if (tag === 'numstr') {
+    var numstr = buffer.raw().toString('ascii');
+    if (!this._isNumstr(numstr)) {
+      return buffer.error('Decoding of string type: ' +
+                          'numstr unsupported characters');
+    }
+    return numstr;
+  } else if (tag === 'octstr') {
+    return buffer.raw();
+  } else if (tag === 'printstr') {
+    var printstr = buffer.raw().toString('ascii');
+    if (!this._isPrintstr(printstr)) {
+      return buffer.error('Decoding of string type: ' +
+                          'printstr unsupported characters');
+    }
+    return printstr;
+  } else if (/str$/.test(tag)) {
+    return buffer.raw().toString();
   } else {
     return buffer.error('Decoding of string type: ' + tag + ' unsupported');
   }
@@ -33945,8 +34118,7 @@ var Buffer = require(9).Buffer;
 var inherits = require(71);
 var Buffer = require(9).Buffer;
 
-var asn1 = require(177);
-var DERDecoder = require(188);
+var DERDecoder = require(189);
 
 function PEMDecoder(entity) {
   DERDecoder.call(this, entity);
@@ -34002,9 +34174,8 @@ var Buffer = require(9).Buffer;
 var inherits = require(71);
 var Buffer = require(9).Buffer;
 
-var asn1 = require(177);
+var asn1 = require(178);
 var base = asn1.base;
-var bignum = asn1.bignum;
 
 // Import DER constants
 var der = asn1.constants.der;
@@ -34062,12 +34233,8 @@ DERNode.prototype._encodeComposite = function encodeComposite(tag,
 };
 
 DERNode.prototype._encodeStr = function encodeStr(str, tag) {
-  if (tag === 'octstr') {
-    return this._createEncoderBuffer(str);
-  } else if (tag === 'bitstr') {
+  if (tag === 'bitstr') {
     return this._createEncoderBuffer([ str.unused | 0, str.data ]);
-  } else if (tag === 'ia5str' || tag === 'utf8str') {
-    return this._createEncoderBuffer(str);
   } else if (tag === 'bmpstr') {
     var buf = new Buffer(str.length * 2);
     for (var i = 0; i < str.length; i++) {
@@ -34079,7 +34246,6 @@ DERNode.prototype._encodeStr = function encodeStr(str, tag) {
       return this.reporter.error('Encoding of string type: numstr supports ' +
                                  'only digits and space');
     }
-
     return this._createEncoderBuffer(str);
   } else if (tag === 'printstr') {
     if (!this._isPrintstr(str)) {
@@ -34090,7 +34256,8 @@ DERNode.prototype._encodeStr = function encodeStr(str, tag) {
                                  'dot, slash, colon, equal sign, ' +
                                  'question mark');
     }
-
+    return this._createEncoderBuffer(str);
+  } else if (/str$/.test(tag)) {
     return this._createEncoderBuffer(str);
   } else {
     return this.reporter.error('Encoding of string type: ' + tag +
@@ -34303,12 +34470,9 @@ function encodeTag(tag, primitive, cls, reporter) {
 function(require, exports, module, undefined, global) {
 /* ../asn1.js/lib/asn1/encoders/pem.js */
 
-var Buffer = require(9).Buffer;
 var inherits = require(71);
-var Buffer = require(9).Buffer;
 
-var asn1 = require(177);
-var DEREncoder = require(190);
+var DEREncoder = require(191);
 
 function PEMEncoder(entity) {
   DEREncoder.call(this, entity);
@@ -34334,14 +34498,14 @@ function(require, exports, module, undefined, global) {
 /* ../public-encrypt/publicEncrypt.js */
 
 var Buffer = require(9).Buffer;
-var parseKeys = require(151);
-var randomBytes = require(92);
-var createHash = require(93);
-var mgf = require(194);
-var xor = require(195);
-var bn = require(143);
-var withPublic = require(196);
-var crt = require(148);
+var parseKeys = require(152);
+var randomBytes = require(89);
+var createHash = require(90);
+var mgf = require(195);
+var xor = require(196);
+var bn = require(144);
+var withPublic = require(197);
+var crt = require(149);
 
 var constants = {
   RSA_PKCS1_OAEP_PADDING: 4,
@@ -34435,13 +34599,13 @@ function(require, exports, module, undefined, global) {
 /* ../public-encrypt/privateDecrypt.js */
 
 var Buffer = require(9).Buffer;
-var parseKeys = require(151);
-var mgf = require(194);
-var xor = require(195);
-var bn = require(143);
-var crt = require(148);
-var createHash = require(93);
-var withPublic = require(196);
+var parseKeys = require(152);
+var mgf = require(195);
+var xor = require(196);
+var bn = require(144);
+var crt = require(149);
+var createHash = require(90);
+var withPublic = require(197);
 module.exports = function privateDecrypt(private_key, enc, reverse) {
   var padding;
   if (private_key.padding) {
@@ -34549,7 +34713,7 @@ function(require, exports, module, undefined, global) {
 /* ../public-encrypt/mgf.js */
 
 var Buffer = require(9).Buffer;
-var createHash = require(93);
+var createHash = require(90);
 module.exports = function (seed, len) {
   var t = new Buffer('');
   var  i = 0, c;
@@ -34584,7 +34748,7 @@ function(require, exports, module, undefined, global) {
 /* ../public-encrypt/withPublic.js */
 
 var Buffer = require(9).Buffer;
-var bn = require(143);
+var bn = require(144);
 function withPublic(paddedMsg, key) {
   return new Buffer(paddedMsg
     .toRed(bn.mont(key.modulus))
@@ -34644,9 +34808,9 @@ function(require, exports, module, undefined, global) {
  */
 
 try {
-  module.exports = require(200);
-} catch (e) {
   module.exports = require(201);
+} catch (e) {
+  module.exports = require(202);
 }
 
 
@@ -34657,9 +34821,9 @@ function(require, exports, module, undefined, global) {
 'use strict';
 
 try {
-  module.exports = require(202)('bufferutil');
+  module.exports = require(203)('bufferutil');
 } catch (e) {
-  module.exports = require(203);
+  module.exports = require(204);
 }
 
 
@@ -34727,8 +34891,8 @@ var process = require(51);
  * Module dependencies.
  */
 
-var fs = require(197)
-  , path = require(204)
+var fs = require(198)
+  , path = require(205)
   , join = path.join
   , dirname = path.dirname
   , exists = fs.existsSync || path.existsSync
@@ -35211,11 +35375,11 @@ var process = require(51);
 // OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-var Transform = require(78);
+var Transform = require(77);
 
-var binding = require(206);
+var binding = require(207);
 var util = require(53);
-var assert = require(207).ok;
+var assert = require(208).ok;
 
 // zlib doesn't provide these, so kludge them in following the same
 // const naming scheme zlib uses.
@@ -35808,11 +35972,11 @@ function(require, exports, module, undefined, global) {
 
 var Buffer = require(9).Buffer;
 var process = require(51);
-var msg = require(208);
-var zstream = require(209);
-var zlib_deflate = require(210);
-var zlib_inflate = require(211);
-var constants = require(212);
+var msg = require(209);
+var zstream = require(210);
+var zlib_deflate = require(211);
+var zlib_inflate = require(212);
+var constants = require(213);
 
 for (var key in constants) {
   exports[key] = constants[key];
@@ -36472,11 +36636,11 @@ function(require, exports, module, undefined, global) {
 var Buffer = require(9).Buffer;
 'use strict';
 
-var utils   = require(213);
-var trees   = require(214);
-var adler32 = require(215);
-var crc32   = require(216);
-var msg   = require(208);
+var utils   = require(214);
+var trees   = require(215);
+var adler32 = require(216);
+var crc32   = require(217);
+var msg   = require(209);
 
 /* Public constants ==========================================================*/
 /* ===========================================================================*/
@@ -38244,11 +38408,11 @@ function(require, exports, module, undefined, global) {
 'use strict';
 
 
-var utils = require(213);
-var adler32 = require(215);
-var crc32   = require(216);
-var inflate_fast = require(217);
-var inflate_table = require(218);
+var utils = require(214);
+var adler32 = require(216);
+var crc32   = require(217);
+var inflate_fast = require(218);
+var inflate_table = require(219);
 
 var CODES = 0;
 var LENS = 1;
@@ -39914,7 +40078,7 @@ function(require, exports, module, undefined, global) {
 'use strict';
 
 
-var utils = require(213);
+var utils = require(214);
 
 /* Public constants ==========================================================*/
 /* ===========================================================================*/
@@ -41537,7 +41701,7 @@ var process = require(51);
 'use strict';
 
 
-var utils = require(213);
+var utils = require(214);
 
 var MAXBITS = 15;
 var ENOUGH_LENS = 852;
@@ -41876,9 +42040,9 @@ function(require, exports, module, undefined, global) {
  */
 
 try {
-  module.exports = require(221);
-} catch (e) {
   module.exports = require(222);
+} catch (e) {
+  module.exports = require(223);
 }
 
 
@@ -41959,9 +42123,9 @@ function(require, exports, module, undefined, global) {
 'use strict';
 
 try {
-  module.exports = require(202)('validation');
+  module.exports = require(203)('validation');
 } catch (e) {
-  module.exports = require(223);
+  module.exports = require(224);
 }
 
 

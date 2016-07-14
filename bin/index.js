@@ -1,9 +1,9 @@
 #!/usr/bin/env node
 
 var comn = require(".."),
-    isString = require("is_string"),
-    fileUtils = require("file_utils"),
-    argv = require("argv");
+    isString = require("@nathanfaucett/is_string"),
+    fileUtils = require("@nathanfaucett/file_utils"),
+    argv = require("@nathanfaucett/argv");
 
 
 var options = argv({
