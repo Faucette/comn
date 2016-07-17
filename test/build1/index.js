@@ -1,9 +1,9 @@
 (function(dependencies, chunks, undefined, global) {
-    
+
     var cache = [],
         cacheCallbacks = {},
-        nodes = [];
-    
+        locked = false;
+
 
     function Module() {
         this.id = null;
@@ -38,7 +38,7 @@
         return path;
     };
 
-    
+
     require.async = function async(index, callback) {
         var module = cache[index],
             callbacks, node;
@@ -51,7 +51,6 @@
             node = document.createElement("script");
             callbacks = cacheCallbacks[index] = [callback];
 
-            node.id = "__comn-module-" + index + "__";
             node.type = "text/javascript";
             node.charset = "utf-8";
             node.async = true;
@@ -60,11 +59,12 @@
                 var i = -1,
                     il = callbacks.length - 1;
 
-                nodes.splice(indexOfNode(node), 1);
+                locked = true;
 
                 while (i++ < il) {
                     callbacks[i](require(index));
                 }
+                delete cacheCallbacks[index];
             }
 
             if (node.attachEvent && !(node.attachEvent.toString && node.attachEvent.toString().indexOf("[native code") < 0)) {
@@ -73,30 +73,17 @@
                 node.addEventListener("load", onLoad, false);
             }
 
-            nodes[nodes.length] = node;
             node.src = chunks[index];
+            locked = false;
 
             document.head.appendChild(node);
         }
     };
 
-    function indexOfNode(node) {
-        var i = -1,
-            il = nodes.length - 1;
-
-        while (i++ < il) {
-            if (nodes[i] === node) {
-                return i;
-            }
-        }
-
-        return -1;
-    }
-
-    global.__COMN_DEFINE__ = function(node, asyncDependencies) {
+    global["4mofpASq-VLHs-4RCa-r7aZ-gDXv7B5DJWo5k"] = function(asyncDependencies) {
         var i, il, dependency, index;
 
-        if (indexOfNode(node) !== -1) {
+        if (!locked) {
             i = -1;
             il = asyncDependencies.length - 1;
 
@@ -111,7 +98,7 @@
         }
     };
 
-    
+
 
     if (typeof(define) === "function" && define.amd) {
         define([], function() {
@@ -120,31 +107,38 @@
     } else if (typeof(module) !== "undefined" && module.exports) {
         module.exports = require(0);
     } else {
-        
+
         require(0);
-        
+
     }
 }([
-function(require, exports, module, undefined, global) {
-/* index.js */
+    function(require, exports, module, undefined, global) {
+        /*/var/www/html/node/_commonjs/comn/test/test1/index.js*/
 
-window.onload = function onLoad() {
-    require.async(1, function(has) {
-        var a = require(4),
-            ab = require(5);
+        window.onload = function onLoad() {
+            require.async(1, function(has) {
+                var a = require(12),
+                    ab = require(13);
 
-        console.log(a(), ab(), has({}, "key"));
-    });
-};
+                console.log(a(), ab(), has({}, "key"));
+            });
+        };
 
 
-},
-null,
-null,
-null,
-null,
-null,
-null,
-null], {
-    "1": "build1/.._.._node_modules_has_src_index.js"
+    },
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null
+], {
+    "1": "build1/.._.._node_modules_@nathanfaucett_has_src_index.js"
 }, void(0), (new Function("return this;"))()));

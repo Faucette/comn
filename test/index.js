@@ -6,38 +6,28 @@ var fs = require("fs"),
 
 tape("comn(index : FilePath String, options : Object) some basic asynv chunks", function(assert) {
     var out = comn(filePath.join(__dirname, "test0", "index.js"), {
-            rename: function rename(path, relative /*, dirname, options */ ) {
-                return filePath.join("build0", relative.replace(/\/|\\/g, "_"));
-            }
-        }),
-        key;
-
-    if (typeof(out) === "string") {
-        fs.writeFileSync(filePath.join(__dirname, "build0", "index.js"), out);
-    } else {
-        for (key in out) {
-            fs.writeFileSync(filePath.join(__dirname, key), out[key]);
+        rename: function rename(relativePath /* ,fullPath, rootDirname, options */ ) {
+            return filePath.join("build0", relativePath.replace(/\//g, "_"));
         }
-    }
+    });
+
+    out.each(function(chunk) {
+        fs.writeFileSync(filePath.join(__dirname, chunk.name), chunk.source);
+    });
 
     assert.end();
 });
 
 tape("comn(index : FilePath String, options : Object) cyclic async deps", function(assert) {
     var out = comn(filePath.join(__dirname, "test1", "index.js"), {
-            rename: function rename(path, relative /*, dirname, options */ ) {
-                return filePath.join("build1", relative.replace(/\/|\\/g, "_"));
-            }
-        }),
-        key;
-
-    if (typeof(out) === "string") {
-        fs.writeFileSync(filePath.join(__dirname, "build1", "index.js"), out);
-    } else {
-        for (key in out) {
-            fs.writeFileSync(filePath.join(__dirname, key), out[key]);
+        rename: function rename(relativePath /*, fullPath, rootDirname, options */ ) {
+            return filePath.join("build1", relativePath.replace(/\//g, "_"));
         }
-    }
+    });
+
+    out.each(function(chunk) {
+        fs.writeFileSync(filePath.join(__dirname, chunk.name), chunk.source);
+    });
 
     assert.end();
 });
@@ -47,7 +37,9 @@ tape("comn(index : FilePath String, options : Object)", function(assert) {
         exportName: "io"
     });
 
-    fs.writeFileSync(filePath.join(__dirname, "build0", "socket_io-client.js"), out);
+    out.each(function(chunk) {
+        fs.writeFileSync(filePath.join(__dirname, "build0", "socket_io-client.js"), chunk.source);
+    });
 
     assert.end();
 });

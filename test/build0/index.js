@@ -1,9 +1,9 @@
 (function(dependencies, chunks, undefined, global) {
-    
+
     var cache = [],
         cacheCallbacks = {},
-        nodes = [];
-    
+        locked = false;
+
 
     function Module() {
         this.id = null;
@@ -38,7 +38,7 @@
         return path;
     };
 
-    
+
     require.async = function async(index, callback) {
         var module = cache[index],
             callbacks, node;
@@ -51,7 +51,6 @@
             node = document.createElement("script");
             callbacks = cacheCallbacks[index] = [callback];
 
-            node.id = "__comn-module-" + index + "__";
             node.type = "text/javascript";
             node.charset = "utf-8";
             node.async = true;
@@ -60,11 +59,12 @@
                 var i = -1,
                     il = callbacks.length - 1;
 
-                nodes.splice(indexOfNode(node), 1);
+                locked = true;
 
                 while (i++ < il) {
                     callbacks[i](require(index));
                 }
+                delete cacheCallbacks[index];
             }
 
             if (node.attachEvent && !(node.attachEvent.toString && node.attachEvent.toString().indexOf("[native code") < 0)) {
@@ -73,30 +73,17 @@
                 node.addEventListener("load", onLoad, false);
             }
 
-            nodes[nodes.length] = node;
             node.src = chunks[index];
+            locked = false;
 
             document.head.appendChild(node);
         }
     };
 
-    function indexOfNode(node) {
-        var i = -1,
-            il = nodes.length - 1;
-
-        while (i++ < il) {
-            if (nodes[i] === node) {
-                return i;
-            }
-        }
-
-        return -1;
-    }
-
-    global.__COMN_DEFINE__ = function(node, asyncDependencies) {
+    global["AiofVuuw-xvbw-4tvk-5NRM-jGp5j7FWmMTPs"] = function(asyncDependencies) {
         var i, il, dependency, index;
 
-        if (indexOfNode(node) !== -1) {
+        if (!locked) {
             i = -1;
             il = asyncDependencies.length - 1;
 
@@ -111,7 +98,7 @@
         }
     };
 
-    
+
 
     if (typeof(define) === "function" && define.amd) {
         define([], function() {
@@ -120,195 +107,200 @@
     } else if (typeof(module) !== "undefined" && module.exports) {
         module.exports = require(0);
     } else {
-        
+
         require(0);
-        
+
     }
 }([
-function(require, exports, module, undefined, global) {
-/* index.js */
+    function(require, exports, module, undefined, global) {
+        /*/var/www/html/node/_commonjs/comn/test/test0/index.js*/
 
-var process = require(1);
-var a = require(2),
-    log;
-
-
-var button = document.getElementById("button");
+        var process = require(1);
+        var a = require(2),
+            log;
 
 
-button.onclick = function onClick() {
-    require.async(4, function(ab) {
-        var abc = require(6);
-
-        if (ab() === "ab") {
-            log(abc());
-        }
-    });
-    require.async(4, function(ab) {
-        log(ab());
-    });
-};
-
-process.nextTick(function() {
-    log(a());
-});
-
-log = require(3);
-log(a());
+        var button = document.getElementById("button");
 
 
-},
-function(require, exports, module, undefined, global) {
-/* ../../node_modules/process/browser.js */
+        button.onclick = function onClick() {
+            require.async(4, function(ab) {
+                var abc = require(6);
 
-// shim for using process in browser
+                if (ab() === "ab") {
+                    log(abc());
+                }
+            });
+            require.async(4, function(ab) {
+                log(ab());
+            });
+        };
 
-var process = module.exports = {};
+        process.nextTick(function() {
+            log(a());
+        });
 
-// cached from whatever global is present so that test runners that stub it
-// don't break things.  But we need to wrap it in a try catch in case it is
-// wrapped in strict mode code which doesn't define any globals.  It's inside a
-// function because try/catches deoptimize in certain engines.
+        log = require(3);
+        log(a());
 
-var cachedSetTimeout;
-var cachedClearTimeout;
 
-(function () {
-  try {
-    cachedSetTimeout = setTimeout;
-  } catch (e) {
-    cachedSetTimeout = function () {
-      throw new Error('setTimeout is not defined');
-    }
-  }
-  try {
-    cachedClearTimeout = clearTimeout;
-  } catch (e) {
-    cachedClearTimeout = function () {
-      throw new Error('clearTimeout is not defined');
-    }
-  }
-} ())
-var queue = [];
-var draining = false;
-var currentQueue;
-var queueIndex = -1;
+    },
+    function(require, exports, module, undefined, global) {
+        /*process@0.11.5/browser.js*/
 
-function cleanUpNextTick() {
-    if (!draining || !currentQueue) {
-        return;
-    }
-    draining = false;
-    if (currentQueue.length) {
-        queue = currentQueue.concat(queue);
-    } else {
-        queueIndex = -1;
-    }
-    if (queue.length) {
-        drainQueue();
-    }
-}
+        // shim for using process in browser
 
-function drainQueue() {
-    if (draining) {
-        return;
-    }
-    var timeout = cachedSetTimeout(cleanUpNextTick);
-    draining = true;
+        var process = module.exports = {};
 
-    var len = queue.length;
-    while(len) {
-        currentQueue = queue;
-        queue = [];
-        while (++queueIndex < len) {
-            if (currentQueue) {
-                currentQueue[queueIndex].run();
+        // cached from whatever global is present so that test runners that stub it
+        // don't break things.  But we need to wrap it in a try catch in case it is
+        // wrapped in strict mode code which doesn't define any globals.  It's inside a
+        // function because try/catches deoptimize in certain engines.
+
+        var cachedSetTimeout;
+        var cachedClearTimeout;
+
+        (function() {
+            try {
+                cachedSetTimeout = setTimeout;
+            } catch (e) {
+                cachedSetTimeout = function() {
+                    throw new Error('setTimeout is not defined');
+                }
+            }
+            try {
+                cachedClearTimeout = clearTimeout;
+            } catch (e) {
+                cachedClearTimeout = function() {
+                    throw new Error('clearTimeout is not defined');
+                }
+            }
+        }())
+        var queue = [];
+        var draining = false;
+        var currentQueue;
+        var queueIndex = -1;
+
+        function cleanUpNextTick() {
+            if (!draining || !currentQueue) {
+                return;
+            }
+            draining = false;
+            if (currentQueue.length) {
+                queue = currentQueue.concat(queue);
+            } else {
+                queueIndex = -1;
+            }
+            if (queue.length) {
+                drainQueue();
             }
         }
-        queueIndex = -1;
-        len = queue.length;
-    }
-    currentQueue = null;
-    draining = false;
-    cachedClearTimeout(timeout);
-}
 
-process.nextTick = function (fun) {
-    var args = new Array(arguments.length - 1);
-    if (arguments.length > 1) {
-        for (var i = 1; i < arguments.length; i++) {
-            args[i - 1] = arguments[i];
+        function drainQueue() {
+            if (draining) {
+                return;
+            }
+            var timeout = cachedSetTimeout(cleanUpNextTick);
+            draining = true;
+
+            var len = queue.length;
+            while (len) {
+                currentQueue = queue;
+                queue = [];
+                while (++queueIndex < len) {
+                    if (currentQueue) {
+                        currentQueue[queueIndex].run();
+                    }
+                }
+                queueIndex = -1;
+                len = queue.length;
+            }
+            currentQueue = null;
+            draining = false;
+            cachedClearTimeout(timeout);
         }
-    }
-    queue.push(new Item(fun, args));
-    if (queue.length === 1 && !draining) {
-        cachedSetTimeout(drainQueue, 0);
-    }
-};
 
-// v8 likes predictible objects
-function Item(fun, array) {
-    this.fun = fun;
-    this.array = array;
-}
-Item.prototype.run = function () {
-    this.fun.apply(null, this.array);
-};
-process.title = 'browser';
-process.browser = true;
-process.env = {};
-process.argv = [];
-process.version = ''; // empty string to avoid regexp issues
-process.versions = {};
+        process.nextTick = function(fun) {
+            var args = new Array(arguments.length - 1);
+            if (arguments.length > 1) {
+                for (var i = 1; i < arguments.length; i++) {
+                    args[i - 1] = arguments[i];
+                }
+            }
+            queue.push(new Item(fun, args));
+            if (queue.length === 1 && !draining) {
+                cachedSetTimeout(drainQueue, 0);
+            }
+        };
 
-function noop() {}
+        // v8 likes predictible objects
+        function Item(fun, array) {
+            this.fun = fun;
+            this.array = array;
+        }
+        Item.prototype.run = function() {
+            this.fun.apply(null, this.array);
+        };
+        process.title = 'browser';
+        process.browser = true;
+        process.env = {};
+        process.argv = [];
+        process.version = ''; // empty string to avoid regexp issues
+        process.versions = {};
 
-process.on = noop;
-process.addListener = noop;
-process.once = noop;
-process.off = noop;
-process.removeListener = noop;
-process.removeAllListeners = noop;
-process.emit = noop;
+        function noop() {}
 
-process.binding = function (name) {
-    throw new Error('process.binding is not supported');
-};
+        process.on = noop;
+        process.addListener = noop;
+        process.once = noop;
+        process.off = noop;
+        process.removeListener = noop;
+        process.removeAllListeners = noop;
+        process.emit = noop;
 
-process.cwd = function () { return '/' };
-process.chdir = function (dir) {
-    throw new Error('process.chdir is not supported');
-};
-process.umask = function() { return 0; };
+        process.binding = function(name) {
+            throw new Error('process.binding is not supported');
+        };
 
-
-},
-function(require, exports, module, undefined, global) {
-/* a.js */
-
-module.exports = a;
-
-
-function a() {
-    return "a";
-}
-
-
-},
-function(require, exports, module, undefined, global) {
-/* log/index.js */
-
-module.exports = log;
+        process.cwd = function() {
+            return '/'
+        };
+        process.chdir = function(dir) {
+            throw new Error('process.chdir is not supported');
+        };
+        process.umask = function() {
+            return 0;
+        };
 
 
-function log() {
-    console.log.apply(console, arguments);
-}
+    },
+    function(require, exports, module, undefined, global) {
+        /*/var/www/html/node/_commonjs/comn/test/test0/a.js*/
+
+        module.exports = a;
 
 
-},
-null,
-null,
-null], {
+        function a() {
+            return "a";
+        }
+
+
+    },
+    function(require, exports, module, undefined, global) {
+        /*/var/www/html/node/_commonjs/comn/test/test0/log/index.js*/
+
+        module.exports = log;
+
+
+        function log() {
+            console.log.apply(console, arguments);
+        }
+
+
+    },
+    null,
+    null,
+    null
+], {
     "4": "build0/ab_src_index.js"
 }, void(0), (new Function("return this;"))()));

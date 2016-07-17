@@ -2,7 +2,7 @@
     <% if (parseAsync) { %>
     var cache = [],
         cacheCallbacks = {},
-        nodes = [];
+        locked = false;
     <% } else { %>
     var cache = [];
     <% } %>
@@ -53,7 +53,6 @@
             node = document.createElement("script");
             callbacks = cacheCallbacks[index] = [callback];
 
-            node.id = "__comn-module-" + index + "__";
             node.type = "text/javascript";
             node.charset = "utf-8";
             node.async = true;
@@ -62,11 +61,12 @@
                 var i = -1,
                     il = callbacks.length - 1;
 
-                nodes.splice(indexOfNode(node), 1);
+                locked = true;
 
                 while (i++ < il) {
                     callbacks[i](require(index));
                 }
+                delete cacheCallbacks[index];
             }
 
             if (node.attachEvent && !(node.attachEvent.toString && node.attachEvent.toString().indexOf("[native code") < 0)) {
@@ -75,30 +75,17 @@
                 node.addEventListener("load", onLoad, false);
             }
 
-            nodes[nodes.length] = node;
             node.src = chunks[index];
+            locked = false;
 
             document.head.appendChild(node);
         }
     };
 
-    function indexOfNode(node) {
-        var i = -1,
-            il = nodes.length - 1;
-
-        while (i++ < il) {
-            if (nodes[i] === node) {
-                return i;
-            }
-        }
-
-        return -1;
-    }
-
-    global.__COMN_DEFINE__ = function(node, asyncDependencies) {
+    global["<%= id %>"] = function(asyncDependencies) {
         var i, il, dependency, index;
 
-        if (indexOfNode(node) !== -1) {
+        if (!locked) {
             i = -1;
             il = asyncDependencies.length - 1;
 

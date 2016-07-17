@@ -2,6 +2,7 @@
 
 var comn = require(".."),
     isString = require("@nathanfaucett/is_string"),
+    filePath = require("@nathanfaucett/file_path"),
     fileUtils = require("@nathanfaucett/file_utils"),
     argv = require("@nathanfaucett/argv");
 
@@ -25,10 +26,10 @@ var out = comn(options.file, {
     ignore: options.ignore
 });
 
-if (isString(out)) {
-    fileUtils.writeFileSync(options.out, out);
+if (out.chunks.length === 1) {
+    fileUtils.writeFileSync(options.out, out.chunks[0].source);
 } else {
-    for (var path in out) {
-        fileUtils.writeFileSync(options.out + "/" + path, out[path]);
-    }
+    out.each(function each(chunk) {
+        fileUtils.writeFileSync(filePath.join(options.out, chunk.name), chunk.source);
+    });
 }

@@ -21,8 +21,9 @@ var out = comn("path/to/index.js", {
 
 ## Async Parsing
 ```javascript
-// can load node modules or files
-require("path/to/file", function(file) {
+// can load node modules or files parses path/to/file into seperate file unless
+// the parseAsync option is false
+require.async("path/to/file", function(file) {
     console.log(file);
 });
 ```
