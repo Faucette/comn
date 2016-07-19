@@ -11,8 +11,13 @@ tape("comn(index : FilePath String, options : Object) some basic asynv chunks", 
         }
     });
 
+    out.generateSourceMaps();
+
     out.each(function(chunk) {
-        fs.writeFileSync(filePath.join(__dirname, chunk.name), chunk.source);
+        fs.writeFileSync(
+            filePath.join(__dirname, chunk.name),
+            "//# sourceMappingURL=data:application/json;base64," + chunk.sourceMap.toBase64() + "\n" + chunk.source
+        );
     });
 
     assert.end();
@@ -25,8 +30,14 @@ tape("comn(index : FilePath String, options : Object) cyclic async deps", functi
         }
     });
 
+    out.generateSourceMaps();
+
     out.each(function(chunk) {
-        fs.writeFileSync(filePath.join(__dirname, chunk.name), chunk.source);
+        fs.writeFileSync(filePath.join(__dirname, chunk.name + ".map"), chunk.sourceMap.toJSON());
+        fs.writeFileSync(
+            filePath.join(__dirname, chunk.name),
+            "//# sourceMappingURL=../" + chunk.name + ".map" + "\n" + chunk.source
+        );
     });
 
     assert.end();

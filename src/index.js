@@ -31,7 +31,6 @@ function comn(indexPath, options) {
 
     options = options || {};
 
-    options.sourceMaps = options.sourceMaps === true;
     options.extensions = options.extensions || options.exts || ["js", "json"];
     options.ignore = options.ignore || [];
     options.builtin = extend({}, builtin, options.builtin);
@@ -167,19 +166,25 @@ function beforeParse(dependency) {
         dependency.isJSON = true;
         dependency.content = content;
     } else {
+        dependency.extraLines = 0;
+
         if (moduleName !== "process" && reProcess.test(content)) {
             content = includeProcess + content;
+            dependency.extraLines += 1;
         }
         if (moduleName !== "buffer" && reBuffer.test(content)) {
             content = includeBuffer + content;
+            dependency.extraLines += 1;
         }
         if (reFilename.test(content)) {
             relativePath = relative(filePath.dirname(tree.fullPath), fullPath);
             content = includeFilename + relativePath + newline + content;
+            dependency.extraLines += 1;
         }
         if (reDirname.test(content)) {
             relativeDir = filePath.dir(relativePath || relative(filePath.dirname(tree.fullPath), fullPath));
             content = includeDirname + relativeDir + newline + content;
+            dependency.extraLines += 1;
         }
 
         dependency.content = content;

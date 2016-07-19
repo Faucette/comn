@@ -1,8 +1,8 @@
+//# sourceMappingURL=../build1/index.js.map
 (function(dependencies, chunks, undefined, global) {
 
     var cache = [],
-        cacheCallbacks = {},
-        locked = false;
+        cacheCallbacks = {};
 
 
     function Module() {
@@ -59,8 +59,6 @@
                 var i = -1,
                     il = callbacks.length - 1;
 
-                locked = true;
-
                 while (i++ < il) {
                     callbacks[i](require(index));
                 }
@@ -74,26 +72,22 @@
             }
 
             node.src = chunks[index];
-            locked = false;
 
             document.head.appendChild(node);
         }
     };
 
-    global["4mofpASq-VLHs-4RCa-r7aZ-gDXv7B5DJWo5k"] = function(asyncDependencies) {
-        var i, il, dependency, index;
+    global["P9Mc2Ulb-E5c1-4AC2-4wnb-Y4R5eTBTfg8Jy"] = function(asyncDependencies) {
+        var i = -1,
+            il = asyncDependencies.length - 1,
+            dependency, index;
 
-        if (!locked) {
-            i = -1;
-            il = asyncDependencies.length - 1;
+        while (i++ < il) {
+            dependency = asyncDependencies[i];
+            index = dependency[0];
 
-            while (i++ < il) {
-                dependency = asyncDependencies[i];
-                index = dependency[0];
-
-                if (dependencies[index] === null) {
-                    dependencies[index] = dependency[1];
-                }
+            if (dependencies[index] === null) {
+                dependencies[index] = dependency[1];
             }
         }
     };
@@ -113,8 +107,7 @@
     }
 }([
     function(require, exports, module, undefined, global) {
-        /*/var/www/html/node/_commonjs/comn/test/test1/index.js*/
-
+        /*@=-/var/www/html/node/_commonjs/comn/test/test1/index.js-=@*/
         window.onload = function onLoad() {
             require.async(1, function(has) {
                 var a = require(12),
@@ -123,7 +116,6 @@
                 console.log(a(), ab(), has({}, "key"));
             });
         };
-
 
     },
     null,
