@@ -6,7 +6,7 @@ module.exports = parsePositions;
 
 function parsePositions(source, treeChunk, positions) {
     var lexer = new Lexer(source),
-        ch, id;
+        ch, matches, id, dependency;
 
     while (lexer.index < lexer.length) {
         ch = lexer.source[lexer.index++];
@@ -14,10 +14,17 @@ function parsePositions(source, treeChunk, positions) {
         switch (ch) {
             case '/':
                 if (lexer.source[lexer.index] === '*') {
-                    if ((id = getDependencyId(lexer))) {
+                    matches = getDependencyId(lexer);
+
+                    if (matches) {
+                        id = matches[1];
+                        dependency = treeChunk.getDependency(id);
+
                         positions[positions.length] = {
                             id: id,
-                            line: lexer.line + 1
+                            line: lexer.line,
+                            startIndex: lexer.index + 1,
+                            endIndex: getEndIndex(lexer) - 2
                         };
                     }
                 }
@@ -41,6 +48,7 @@ function getDependencyId(lexer) {
         ch = lexer.source[lexer.index++];
 
         if (ch === '*' && lexer.source[lexer.index] === '/') {
+            lexer.index++;
             comment += "*/";
             break;
         } else {
@@ -51,10 +59,31 @@ function getDependencyId(lexer) {
     matches = reDependencyId.exec(comment);
 
     if (matches) {
-        return matches[1];
+        return matches;
     } else {
         return false;
     }
+}
+
+function getEndIndex(lexer) {
+    var brackets = 1,
+        ch;
+
+    while (lexer.index < lexer.length) {
+        ch = lexer.source[lexer.index++];
+
+        if (ch === '}') {
+            brackets -= 1;
+        } else if (ch === '{') {
+            brackets += 1;
+        }
+
+        if (brackets === 0) {
+            break;
+        }
+    }
+
+    return lexer.index;
 }
 
 function Lexer(source) {
