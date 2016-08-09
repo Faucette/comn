@@ -1,4 +1,4 @@
-window["NevmwX4P-5J91-4nDp-acHy-fmbr8geHPLnmm"]([
+window["UB753HG6-kc1j-4D9A-cvIb-sDWZecip5vojB"]([
 [4, function(require, exports, module, undefined, global) {
 /*@=-/var/www/html/node/_commonjs/comn/test/test0/ab/src/index.js-=@*/
 var a = require(2),
