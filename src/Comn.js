@@ -75,7 +75,8 @@ ComnChunk.prototype.generateSourceMap = function() {
                 source: fs.readFileSync(dependency.fullPath).toString("utf-8"),
                 sourceFile: dependency.fullPath
             }, {
-                line: position.line
+                line: position.line,
+                column: position.column
             });
         });
 

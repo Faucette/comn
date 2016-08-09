@@ -76,7 +76,7 @@
         }
     };
 
-    global["RPHwDFFD-7wHn-4tX8-ZXy8-rxIReNEc7xQMD"] = function(asyncDependencies) {
+    global["StwDvhif-Sltv-4cYQ-4oDJ-lCpqD5DoUjQwk"] = function(asyncDependencies) {
         var i = -1,
             il = asyncDependencies.length - 1,
             dependency, index;
@@ -11790,9 +11790,8 @@
 
     },
     function(require, exports, module, undefined, global) {
-        /*@=-process@0.11.5/browser.js-=@*/
+        /*@=-process@0.11.8/browser.js-=@*/
         // shim for using process in browser
-
         var process = module.exports = {};
 
         // cached from whatever global is present so that test runners that stub it
@@ -11819,6 +11818,50 @@
                 }
             }
         }())
+
+        function runTimeout(fun) {
+            if (cachedSetTimeout === setTimeout) {
+                //normal enviroments in sane situations
+                return setTimeout(fun, 0);
+            }
+            try {
+                // when when somebody has screwed with setTimeout but no I.E. maddness
+                return cachedSetTimeout(fun, 0);
+            } catch (e) {
+                try {
+                    // When we are in I.E. but the script has been evaled so I.E. doesn't trust the global object when called normally
+                    return cachedSetTimeout.call(null, fun, 0);
+                } catch (e) {
+                    // same as above but when it's a version of I.E. that must have the global object for 'this', hopfully our context correct otherwise it will throw a global error
+                    return cachedSetTimeout.call(this, fun, 0);
+                }
+            }
+
+
+        }
+
+        function runClearTimeout(marker) {
+            if (cachedClearTimeout === clearTimeout) {
+                //normal enviroments in sane situations
+                return clearTimeout(marker);
+            }
+            try {
+                // when when somebody has screwed with setTimeout but no I.E. maddness
+                return cachedClearTimeout(marker);
+            } catch (e) {
+                try {
+                    // When we are in I.E. but the script has been evaled so I.E. doesn't  trust the global object when called normally
+                    return cachedClearTimeout.call(null, marker);
+                } catch (e) {
+                    // same as above but when it's a version of I.E. that must have the global object for 'this', hopfully our context correct otherwise it will throw a global error.
+                    // Some versions of I.E. have different rules for clearTimeout vs setTimeout
+                    return cachedClearTimeout.call(this, marker);
+                }
+            }
+
+
+
+        }
         var queue = [];
         var draining = false;
         var currentQueue;
@@ -11843,7 +11886,7 @@
             if (draining) {
                 return;
             }
-            var timeout = cachedSetTimeout(cleanUpNextTick);
+            var timeout = runTimeout(cleanUpNextTick);
             draining = true;
 
             var len = queue.length;
@@ -11860,7 +11903,7 @@
             }
             currentQueue = null;
             draining = false;
-            cachedClearTimeout(timeout);
+            runClearTimeout(timeout);
         }
 
         process.nextTick = function(fun) {
@@ -11872,7 +11915,7 @@
             }
             queue.push(new Item(fun, args));
             if (queue.length === 1 && !draining) {
-                cachedSetTimeout(drainQueue, 0);
+                runTimeout(drainQueue);
             }
         };
 
@@ -13253,7 +13296,7 @@
 
     },
     function(require, exports, module, undefined, global) {
-        /*@=-stream-http@2.3.0/index.js-=@*/
+        /*@=-stream-http@2.3.1/index.js-=@*/
         var ClientRequest = require(72)
         var extend = require(73)
         var statusCodes = require(74)
@@ -15598,7 +15641,7 @@
 
     },
     function(require, exports, module, undefined, global) {
-        /*@=-stream-http@2.3.0/lib/request.js-=@*/
+        /*@=-stream-http@2.3.1/lib/request.js-=@*/
         var Buffer = require(9).Buffer;
         var process = require(51);
         var capability = require(75)
@@ -15971,8 +16014,8 @@
 
     },
     function(require, exports, module, undefined, global) {
-        /*@=-stream-http@2.3.0/lib/capability.js-=@*/
-        exports.fetch = isFunction(global.fetch) && isFunction(global.ReadableByteStream)
+        /*@=-stream-http@2.3.1/lib/capability.js-=@*/
+        exports.fetch = isFunction(global.fetch) && isFunction(global.ReadableStream)
 
         exports.blobConstructor = false
         try {
@@ -16015,7 +16058,7 @@
 
     },
     function(require, exports, module, undefined, global) {
-        /*@=-stream-http@2.3.0/lib/response.js-=@*/
+        /*@=-stream-http@2.3.1/lib/response.js-=@*/
         var Buffer = require(9).Buffer;
         var process = require(51);
         var capability = require(75)
@@ -22942,7 +22985,7 @@
 
     },
     function(require, exports, module, undefined, global) {
-        /*@=-bn.js@4.11.5/lib/bn.js-=@*/
+        /*@=-bn.js@4.11.6/lib/bn.js-=@*/
         var Buffer = require(9).Buffer;
         (function(module, exports) {
             'use strict';
@@ -25047,6 +25090,10 @@
                 var s = (bits - r) / 26;
 
                 assert(this.negative === 0, 'imaskn works only with positive numbers');
+
+                if (this.length <= s) {
+                    return this;
+                }
 
                 if (r !== 0) {
                     s++;
@@ -36524,15 +36571,15 @@
 
     },
     function(require, exports, module, undefined, global) {
-        /*@=-pako@0.2.8/lib/zlib/messages.js-=@*/
+        /*@=-pako@0.2.9/lib/zlib/messages.js-=@*/
         'use strict';
 
         module.exports = {
-            '2': 'need dictionary',
+            2: 'need dictionary',
             /* Z_NEED_DICT       2  */
-            '1': 'stream end',
+            1: 'stream end',
             /* Z_STREAM_END      1  */
-            '0': '',
+            0: '',
             /* Z_OK              0  */
             '-1': 'file error',
             /* Z_ERRNO         (-1) */
@@ -36549,7 +36596,7 @@
 
     },
     function(require, exports, module, undefined, global) {
-        /*@=-pako@0.2.8/lib/zlib/zstream.js-=@*/
+        /*@=-pako@0.2.9/lib/zlib/zstream.js-=@*/
         'use strict';
 
 
@@ -36582,7 +36629,7 @@
 
     },
     function(require, exports, module, undefined, global) {
-        /*@=-pako@0.2.8/lib/zlib/deflate.js-=@*/
+        /*@=-pako@0.2.9/lib/zlib/deflate.js-=@*/
         var Buffer = require(9).Buffer;
         'use strict';
 
@@ -36780,6 +36827,7 @@
 
             strm.avail_in -= len;
 
+            // zmemcpy(buf, strm->next_in, len);
             utils.arraySet(buf, strm.input, strm.next_in, len, start);
             if (strm.state.wrap === 1) {
                 strm.adler = adler32(strm.adler, buf, len, start);
@@ -37617,13 +37665,13 @@
          * exclude worst case performance for pathological files. Better values may be
          * found for specific files.
          */
-        var Config = function(good_length, max_lazy, nice_length, max_chain, func) {
+        function Config(good_length, max_lazy, nice_length, max_chain, func) {
             this.good_length = good_length;
             this.max_lazy = max_lazy;
             this.nice_length = nice_length;
             this.max_chain = max_chain;
             this.func = func;
-        };
+        }
 
         var configuration_table;
 
@@ -37965,9 +38013,16 @@
             s.lit_bufsize = 1 << (memLevel + 6); /* 16K elements by default */
 
             s.pending_buf_size = s.lit_bufsize * 4;
+
+            //overlay = (ushf *) ZALLOC(strm, s->lit_bufsize, sizeof(ush)+2);
+            //s->pending_buf = (uchf *) overlay;
             s.pending_buf = new utils.Buf8(s.pending_buf_size);
 
-            s.d_buf = s.lit_bufsize >> 1;
+            // It is offset from `s.pending_buf` (size is `s.lit_bufsize * 2`)
+            //s->d_buf = overlay + s->lit_bufsize/sizeof(ush);
+            s.d_buf = 1 * s.lit_bufsize;
+
+            //s->l_buf = s->pending_buf + (1+sizeof(ush))*s->lit_bufsize;
             s.l_buf = (1 + 2) * s.lit_bufsize;
 
             s.level = level;
@@ -38340,12 +38395,94 @@
             return status === BUSY_STATE ? err(strm, Z_DATA_ERROR) : Z_OK;
         }
 
+
         /* =========================================================================
-         * Copy the source state to the destination state
+         * Initializes the compression dictionary from the given byte
+         * sequence without producing any compressed output.
          */
-        //function deflateCopy(dest, source) {
-        //
-        //}
+        function deflateSetDictionary(strm, dictionary) {
+            var dictLength = dictionary.length;
+
+            var s;
+            var str, n;
+            var wrap;
+            var avail;
+            var next;
+            var input;
+            var tmpDict;
+
+            if (!strm /*== Z_NULL*/ || !strm.state /*== Z_NULL*/ ) {
+                return Z_STREAM_ERROR;
+            }
+
+            s = strm.state;
+            wrap = s.wrap;
+
+            if (wrap === 2 || (wrap === 1 && s.status !== INIT_STATE) || s.lookahead) {
+                return Z_STREAM_ERROR;
+            }
+
+            /* when using zlib wrappers, compute Adler-32 for provided dictionary */
+            if (wrap === 1) {
+                /* adler32(strm->adler, dictionary, dictLength); */
+                strm.adler = adler32(strm.adler, dictionary, dictLength, 0);
+            }
+
+            s.wrap = 0; /* avoid computing Adler-32 in read_buf */
+
+            /* if dictionary would fill window, just replace the history */
+            if (dictLength >= s.w_size) {
+                if (wrap === 0) { /* already empty otherwise */
+                    /*** CLEAR_HASH(s); ***/
+                    zero(s.head); // Fill with NIL (= 0);
+                    s.strstart = 0;
+                    s.block_start = 0;
+                    s.insert = 0;
+                }
+                /* use the tail */
+                // dictionary = dictionary.slice(dictLength - s.w_size);
+                tmpDict = new utils.Buf8(s.w_size);
+                utils.arraySet(tmpDict, dictionary, dictLength - s.w_size, s.w_size, 0);
+                dictionary = tmpDict;
+                dictLength = s.w_size;
+            }
+            /* insert dictionary into window and hash */
+            avail = strm.avail_in;
+            next = strm.next_in;
+            input = strm.input;
+            strm.avail_in = dictLength;
+            strm.next_in = 0;
+            strm.input = dictionary;
+            fill_window(s);
+            while (s.lookahead >= MIN_MATCH) {
+                str = s.strstart;
+                n = s.lookahead - (MIN_MATCH - 1);
+                do {
+                    /* UPDATE_HASH(s, s->ins_h, s->window[str + MIN_MATCH-1]); */
+                    s.ins_h = ((s.ins_h << s.hash_shift) ^ s.window[str + MIN_MATCH - 1]) & s.hash_mask;
+
+                    s.prev[str & s.w_mask] = s.head[s.ins_h];
+
+                    s.head[s.ins_h] = str;
+                    str++;
+                } while (--n);
+                s.strstart = str;
+                s.lookahead = MIN_MATCH - 1;
+                fill_window(s);
+            }
+            s.strstart += s.lookahead;
+            s.block_start = s.strstart;
+            s.insert = s.lookahead;
+            s.lookahead = 0;
+            s.match_length = s.prev_length = MIN_MATCH - 1;
+            s.match_available = 0;
+            strm.next_in = next;
+            strm.input = input;
+            strm.avail_in = avail;
+            s.wrap = wrap;
+            return Z_OK;
+        }
+
 
         exports.deflateInit = deflateInit;
         exports.deflateInit2 = deflateInit2;
@@ -38354,12 +38491,12 @@
         exports.deflateSetHeader = deflateSetHeader;
         exports.deflate = deflate;
         exports.deflateEnd = deflateEnd;
+        exports.deflateSetDictionary = deflateSetDictionary;
         exports.deflateInfo = 'pako deflate (from Nodeca project)';
 
         /* Not implemented
         exports.deflateBound = deflateBound;
         exports.deflateCopy = deflateCopy;
-        exports.deflateSetDictionary = deflateSetDictionary;
         exports.deflateParams = deflateParams;
         exports.deflatePending = deflatePending;
         exports.deflatePrime = deflatePrime;
@@ -38368,7 +38505,7 @@
 
     },
     function(require, exports, module, undefined, global) {
-        /*@=-pako@0.2.8/lib/zlib/inflate.js-=@*/
+        /*@=-pako@0.2.9/lib/zlib/inflate.js-=@*/
         'use strict';
 
 
@@ -38463,7 +38600,7 @@
         var DEF_WBITS = MAX_WBITS;
 
 
-        function ZSWAP32(q) {
+        function zswap32(q) {
             return (((q >>> 24) & 0xff) +
                 ((q >>> 8) & 0xff00) +
                 ((q & 0xff00) << 8) +
@@ -39126,7 +39263,7 @@
                                 state.head.hcrc = ((state.flags >> 9) & 1);
                                 state.head.done = true;
                             }
-                            strm.adler = state.check = 0 /*crc32(0L, Z_NULL, 0)*/ ;
+                            strm.adler = state.check = 0;
                             state.mode = TYPE;
                             break;
                         case DICTID:
@@ -39140,7 +39277,7 @@
                                 bits += 8;
                             }
                             //===//
-                            strm.adler = state.check = ZSWAP32(hold);
+                            strm.adler = state.check = zswap32(hold);
                             //=== INITBITS();
                             hold = 0;
                             bits = 0;
@@ -39842,8 +39979,8 @@
 
                                 }
                                 _out = left;
-                                // NB: crc32 stored as signed 32-bit int, ZSWAP32 returns signed too
-                                if ((state.flags ? hold : ZSWAP32(hold)) !== state.check) {
+                                // NB: crc32 stored as signed 32-bit int, zswap32 returns signed too
+                                if ((state.flags ? hold : zswap32(hold)) !== state.check) {
                                     strm.msg = 'incorrect data check';
                                     state.mode = BAD;
                                     break;
@@ -39971,6 +40108,43 @@
             return Z_OK;
         }
 
+        function inflateSetDictionary(strm, dictionary) {
+            var dictLength = dictionary.length;
+
+            var state;
+            var dictid;
+            var ret;
+
+            /* check state */
+            if (!strm /* == Z_NULL */ || !strm.state /* == Z_NULL */ ) {
+                return Z_STREAM_ERROR;
+            }
+            state = strm.state;
+
+            if (state.wrap !== 0 && state.mode !== DICT) {
+                return Z_STREAM_ERROR;
+            }
+
+            /* check for correct dictionary identifier */
+            if (state.mode === DICT) {
+                dictid = 1; /* adler32(0, null, 0)*/
+                /* dictid = adler32(dictid, dictionary, dictLength); */
+                dictid = adler32(dictid, dictionary, dictLength, 0);
+                if (dictid !== state.check) {
+                    return Z_DATA_ERROR;
+                }
+            }
+            /* copy dictionary to window using updatewindow(), which will amend the
+             existing dictionary if appropriate */
+            ret = updatewindow(strm, dictionary, dictLength, dictLength);
+            if (ret) {
+                state.mode = MEM;
+                return Z_MEM_ERROR;
+            }
+            state.havedict = 1;
+            // Tracev((stderr, "inflate:   dictionary set\n"));
+            return Z_OK;
+        }
 
         exports.inflateReset = inflateReset;
         exports.inflateReset2 = inflateReset2;
@@ -39980,6 +40154,7 @@
         exports.inflate = inflate;
         exports.inflateEnd = inflateEnd;
         exports.inflateGetHeader = inflateGetHeader;
+        exports.inflateSetDictionary = inflateSetDictionary;
         exports.inflateInfo = 'pako inflate (from Nodeca project)';
 
         /* Not implemented
@@ -39987,7 +40162,6 @@
         exports.inflateGetDictionary = inflateGetDictionary;
         exports.inflateMark = inflateMark;
         exports.inflatePrime = inflatePrime;
-        exports.inflateSetDictionary = inflateSetDictionary;
         exports.inflateSync = inflateSync;
         exports.inflateSyncPoint = inflateSyncPoint;
         exports.inflateUndermine = inflateUndermine;
@@ -39995,7 +40169,10 @@
 
     },
     function(require, exports, module, undefined, global) {
-        /*@=-pako@0.2.8/lib/zlib/constants.js-=@*/
+        /*@=-pako@0.2.9/lib/zlib/constants.js-=@*/
+        'use strict';
+
+
         module.exports = {
 
             /* Allowed flush values; see deflate() and inflate() below for details */
@@ -40046,7 +40223,7 @@
 
     },
     function(require, exports, module, undefined, global) {
-        /*@=-pako@0.2.8/lib/utils/common.js-=@*/
+        /*@=-pako@0.2.9/lib/utils/common.js-=@*/
         'use strict';
 
 
@@ -40158,7 +40335,7 @@
 
     },
     function(require, exports, module, undefined, global) {
-        /*@=-pako@0.2.8/lib/zlib/trees.js-=@*/
+        /*@=-pako@0.2.9/lib/zlib/trees.js-=@*/
         'use strict';
 
 
@@ -40250,6 +40427,7 @@
         var REPZ_11_138 = 18;
         /* repeat a zero length 11-138 times  (7 bits of repeat count) */
 
+        /* eslint-disable comma-spacing,array-bracket-spacing */
         var extra_lbits = /* extra bits for each length code */ [0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 2, 2, 2, 2, 3, 3, 3, 3, 4, 4, 4, 4, 5, 5, 5, 5, 0];
 
         var extra_dbits = /* extra bits for each distance code */ [0, 0, 0, 0, 1, 1, 2, 2, 3, 3, 4, 4, 5, 5, 6, 6, 7, 7, 8, 8, 9, 9, 10, 10, 11, 11, 12, 12, 13, 13];
@@ -40257,6 +40435,8 @@
         var extra_blbits = /* extra bits for each bit length code */ [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 3, 7];
 
         var bl_order = [16, 17, 18, 0, 8, 7, 9, 6, 10, 5, 11, 4, 12, 3, 13, 2, 14, 1, 15];
+        /* eslint-enable comma-spacing,array-bracket-spacing */
+
         /* The lengths of the bit length codes are sent in order of decreasing
          * probability, to avoid transmitting the lengths for unused bit length codes.
          */
@@ -40304,7 +40484,7 @@
         /* First normalized distance for each code (0 = distance of 1) */
 
 
-        var StaticTreeDesc = function(static_tree, extra_bits, extra_base, elems, max_length) {
+        function StaticTreeDesc(static_tree, extra_bits, extra_base, elems, max_length) {
 
             this.static_tree = static_tree; /* static tree or NULL */
             this.extra_bits = extra_bits; /* extra bits for each code or NULL */
@@ -40314,7 +40494,7 @@
 
             // show if `static_tree` has data or dummy - needed for monomorphic objects
             this.has_stree = static_tree && static_tree.length;
-        };
+        }
 
 
         var static_l_desc;
@@ -40322,11 +40502,11 @@
         var static_bl_desc;
 
 
-        var TreeDesc = function(dyn_tree, stat_desc) {
+        function TreeDesc(dyn_tree, stat_desc) {
             this.dyn_tree = dyn_tree; /* the dynamic tree */
             this.max_code = 0; /* largest code with non zero frequency */
             this.stat_desc = stat_desc; /* the corresponding static tree */
-        };
+        }
 
 
 
@@ -41387,7 +41567,7 @@
 
     },
     function(require, exports, module, undefined, global) {
-        /*@=-pako@0.2.8/lib/zlib/adler32.js-=@*/
+        /*@=-pako@0.2.9/lib/zlib/adler32.js-=@*/
         'use strict';
 
         // Note: adler32 takes 12% for level 0 and 2% for level 6.
@@ -41423,7 +41603,7 @@
 
     },
     function(require, exports, module, undefined, global) {
-        /*@=-pako@0.2.8/lib/zlib/crc32.js-=@*/
+        /*@=-pako@0.2.9/lib/zlib/crc32.js-=@*/
         'use strict';
 
         // Note: we can't get significant speed boost here.
@@ -41454,7 +41634,7 @@
             var t = crcTable,
                 end = pos + len;
 
-            crc = crc ^ (-1);
+            crc ^= -1;
 
             for (var i = pos; i < end; i++) {
                 crc = (crc >>> 8) ^ t[(crc ^ buf[i]) & 0xFF];
@@ -41468,7 +41648,7 @@
 
     },
     function(require, exports, module, undefined, global) {
-        /*@=-pako@0.2.8/lib/zlib/inffast.js-=@*/
+        /*@=-pako@0.2.9/lib/zlib/inffast.js-=@*/
         'use strict';
 
         // See state defs from inflate.js
@@ -41789,7 +41969,7 @@
 
     },
     function(require, exports, module, undefined, global) {
-        /*@=-pako@0.2.8/lib/zlib/inftrees.js-=@*/
+        /*@=-pako@0.2.9/lib/zlib/inftrees.js-=@*/
         var process = require(51);
         'use strict';
 

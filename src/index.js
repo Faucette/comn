@@ -87,14 +87,17 @@ function comn(indexPath, options) {
     return out;
 }
 
-function replaceString(str, oldValue, value, removeQuotes) {
-    var index = str.indexOf(oldValue);
+function replaceString(dependency, str, oldValue, value, removeQuotes) {
+    var index = str.indexOf(oldValue),
+        newStr;
 
     if (removeQuotes) {
-        return str.substr(0, index - 1) + value + str.substr(index + oldValue.length + 1);
+        newStr = str.substr(0, index - 1) + value + str.substr(index + oldValue.length + 1);
     } else {
-        return str.substr(0, index) + value + str.substr(index + oldValue.length);
+        newStr = str.substr(0, index) + value + str.substr(index + oldValue.length);
     }
+
+    return newStr;
 }
 
 function replacePaths(tree, dependencies, reInclude, options) {
@@ -114,17 +117,18 @@ function replacePaths(tree, dependencies, reInclude, options) {
                     if (!dep) {
                         return match;
                     } else {
-                        return replaceString(match, dependencyPath, relative(dependency.rootDirname, resolved.fullPath));
+                        return replaceString(dependency, match, dependencyPath, relative(dependency.rootDirname, resolved.fullPath));
                     }
                 } else {
                     if (!dep) {
                         return match;
                     } else {
-                        return replaceString(match, dependencyPath, dep.index, true);
+                        return replaceString(dependency, match, dependencyPath, dep.index, true);
                     }
                 }
             }
         );
+        dependency.contentSize = dependency.content.length;
     });
     options.throwError = true;
 }
@@ -162,12 +166,13 @@ function beforeParse(dependency) {
         tree = dependency.chunk.tree,
         relativePath, relativeDir;
 
+    dependency.extraLines = 0;
+    dependency.originalContentSize = content.length;
+
     if (filePath.ext(fullPath) === ".json") {
         dependency.isJSON = true;
         dependency.content = content;
     } else {
-        dependency.extraLines = 0;
-
         if (moduleName !== "process" && reProcess.test(content)) {
             content = includeProcess + content;
             dependency.extraLines += 1;

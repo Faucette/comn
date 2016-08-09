@@ -1,3 +1,6 @@
+var Lexer = require("./Lexer");
+
+
 var reDependencyId = /\/\*\@\=\-(.+?)\-\=\@\*\//;
 
 
@@ -8,34 +11,22 @@ function parsePositions(source, treeChunk, positions) {
     var lexer = new Lexer(source),
         ch, matches, id, dependency;
 
-    while (lexer.index < lexer.length) {
-        ch = lexer.source[lexer.index++];
+    while ((ch = lexer.next()) !== lexer.EOF) {
+        if (ch === '/') {
+            matches = getDependencyId(lexer);
 
-        switch (ch) {
-            case '/':
-                if (lexer.source[lexer.index] === '*') {
-                    matches = getDependencyId(lexer);
+            if (matches) {
+                id = matches[1];
+                dependency = treeChunk.getDependency(id);
 
-                    if (matches) {
-                        id = matches[1];
-                        dependency = treeChunk.getDependency(id);
-
-                        positions[positions.length] = {
-                            id: id,
-                            line: lexer.line,
-                            startIndex: lexer.index + 1,
-                            endIndex: getEndIndex(lexer) - 2
-                        };
-                    }
-                }
-                break;
-            case '\n':
-            case '\r':
-                lexer.line += 1;
-                lexer.column = 1;
-                break;
-            default:
-                lexer.column += 1;
+                positions[positions.length] = {
+                    id: id,
+                    startIndex: getStartIndex(dependency.extraLines, lexer),
+                    line: lexer.line,
+                    column: lexer.column,
+                    endIndex: getEndIndex(lexer)
+                };
+            }
         }
     }
 }
@@ -44,11 +35,9 @@ function getDependencyId(lexer) {
     var comment = '/',
         ch, matches;
 
-    while (lexer.index < lexer.length) {
-        ch = lexer.source[lexer.index++];
-
-        if (ch === '*' && lexer.source[lexer.index] === '/') {
-            lexer.index++;
+    while ((ch = lexer.next()) !== lexer.EOF) {
+        if (ch === '*' && lexer.peak(0) === '/') {
+            lexer.next();
             comment += "*/";
             break;
         } else {
@@ -65,13 +54,27 @@ function getDependencyId(lexer) {
     }
 }
 
+function getStartIndex(extraLines, lexer) {
+    var lines = extraLines + 1,
+        ch;
+
+    while ((ch = lexer.next()) !== lexer.EOF) {
+        if (ch === '\n' || ch === '\r') {
+            lines -= 1;
+        }
+        if (lines === 0) {
+            break;
+        }
+    }
+
+    return lexer.index;
+}
+
 function getEndIndex(lexer) {
     var brackets = 1,
         ch;
 
-    while (lexer.index < lexer.length) {
-        ch = lexer.source[lexer.index++];
-
+    while ((ch = lexer.next()) !== lexer.EOF) {
         if (ch === '}') {
             brackets -= 1;
         } else if (ch === '{') {
@@ -83,13 +86,5 @@ function getEndIndex(lexer) {
         }
     }
 
-    return lexer.index;
-}
-
-function Lexer(source) {
-    this.source = source;
-    this.index = 0;
-    this.length = source.length;
-    this.line = 1;
-    this.column = 1;
+    return lexer.index - 2;
 }
