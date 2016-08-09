@@ -22,10 +22,13 @@ function parsePositions(source, treeChunk, positions) {
                 positions[positions.length] = {
                     id: id,
                     startIndex: getStartIndex(dependency.extraLines, lexer),
-                    line: lexer.line,
+                    line: lexer.line - 1,
                     column: lexer.column,
                     endIndex: getEndIndex(lexer)
                 };
+
+                //var p = positions[positions.length - 1];
+                //console.log(source.slice(p.startIndex, p.endIndex));
             }
         }
     }
@@ -37,7 +40,7 @@ function getDependencyId(lexer) {
 
     while ((ch = lexer.next()) !== lexer.EOF) {
         if (ch === '*' && lexer.peak(0) === '/') {
-            lexer.next();
+            ch = lexer.next();
             comment += "*/";
             break;
         } else {
@@ -55,14 +58,18 @@ function getDependencyId(lexer) {
 }
 
 function getStartIndex(extraLines, lexer) {
-    var lines = extraLines + 1,
-        ch;
+    var lines = extraLines,
+        ch = lexer.peak();
+
+    if (ch === '\n' || ch === '\r') {
+        lines++;
+    }
 
     while ((ch = lexer.next()) !== lexer.EOF) {
         if (ch === '\n' || ch === '\r') {
-            lines -= 1;
+            lines--;
         }
-        if (lines === 0) {
+        if (lines < 1) {
             break;
         }
     }

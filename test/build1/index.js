@@ -1,9 +1,8 @@
-//# sourceMappingURL=../build1/index.js.map
 (function(dependencies, chunks, undefined, global) {
-
+    
     var cache = [],
         cacheCallbacks = {};
-
+    
 
     function Module() {
         this.id = null;
@@ -38,7 +37,7 @@
         return path;
     };
 
-
+    
     require.async = function async(index, callback) {
         var module = cache[index],
             callbacks, node;
@@ -77,7 +76,7 @@
         }
     };
 
-    global["YkTIw908-wEgG-4cOd-xLVs-dOuIvrlFkJ1mE"] = function(asyncDependencies) {
+    global["H8W78SuO-8k1i-4pL3-qM2z-H9hK1ZRUwnBmn"] = function(asyncDependencies) {
         var i = -1,
             il = asyncDependencies.length - 1,
             dependency, index;
@@ -92,7 +91,7 @@
         }
     };
 
-
+    
 
     if (typeof(define) === "function" && define.amd) {
         define([], function() {
@@ -101,36 +100,37 @@
     } else if (typeof(module) !== "undefined" && module.exports) {
         module.exports = require(0);
     } else {
-
+        
         require(0);
-
+        
     }
 }([
-    function(require, exports, module, undefined, global) {
-        /*@=-/var/www/html/node/_commonjs/comn/test/test1/index.js-=@*/
-        window.onload = function onLoad() {
-            require.async(1, function(has) {
-                var a = require(12),
-                    ab = require(13);
+function(require, exports, module, undefined, global) {
+/*@=-/var/www/html/node/_commonjs/comn/test/test1/index.js-=@*/
+window.onload = function onLoad() {
+    require.async(1, function(has) {
+        var a = require(12),
+            ab = require(13);
 
-                console.log(a(), ab(), has({}, "key"));
-            });
-        };
+        console.log(a(), ab(), has({}, "key"));
+    });
+};
 
-    },
-    null,
-    null,
-    null,
-    null,
-    null,
-    null,
-    null,
-    null,
-    null,
-    null,
-    null,
-    null,
-    null
-], {
+},
+null,
+null,
+null,
+null,
+null,
+null,
+null,
+null,
+null,
+null,
+null,
+null,
+null], {
     "1": "build1/.._.._node_modules_@nathanfaucett_has_src_index.js"
 }, void(0), (new Function("return this;"))()));
+
+//# sourceMappingURL=../build1/index.js.map
