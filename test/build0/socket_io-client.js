@@ -76,7 +76,7 @@
         }
     };
 
-    global["Wlayjjpf-xqhv-4lX0-9PDz-EiHiHQHEzKZv7"] = function(asyncDependencies) {
+    global["994wUQwR-lzBp-437d-dLkU-6eB0ohMyj2v9S"] = function(asyncDependencies) {
         var i = -1,
             il = asyncDependencies.length - 1,
             dependency, index;
@@ -106,7 +106,7 @@
     }
 }([
 function(require, exports, module, undefined, global) {
-/*@=-socket.io-client@1.4.8/lib/index.js-=@*/
+/*@=-socket.io-client@1.4.8\lib\index.js-=@*/
 
 /**
  * Module dependencies.
@@ -202,7 +202,7 @@ exports.Socket = require(5);
 
 },
 function(require, exports, module, undefined, global) {
-/*@=-/var/www/html/node/_commonjs/comn/node_modules/socket.io-client/lib/url.js-=@*/
+/*@=-c:\xampp\htdocs\node\comn\node_modules\socket.io-client\lib\url.js-=@*/
 
 /**
  * Module dependencies.
@@ -282,7 +282,7 @@ function url(uri, loc){
 
 },
 function(require, exports, module, undefined, global) {
-/*@=-socket.io-parser@2.2.6/index.js-=@*/
+/*@=-socket.io-parser@2.2.6\index.js-=@*/
 var Buffer = require(9).Buffer;
 
 /**
@@ -687,7 +687,7 @@ function error(data){
 
 },
 function(require, exports, module, undefined, global) {
-/*@=-/var/www/html/node/_commonjs/comn/node_modules/socket.io-client/lib/manager.js-=@*/
+/*@=-c:\xampp\htdocs\node\comn\node_modules\socket.io-client\lib\manager.js-=@*/
 
 /**
  * Module dependencies.
@@ -1248,7 +1248,7 @@ Manager.prototype.onreconnect = function(){
 
 },
 function(require, exports, module, undefined, global) {
-/*@=-debug@2.2.0/browser.js-=@*/
+/*@=-debug@2.2.0\browser.js-=@*/
 
 /**
  * This is the web browser implementation of `debug()`.
@@ -1420,7 +1420,7 @@ function localstorage(){
 
 },
 function(require, exports, module, undefined, global) {
-/*@=-/var/www/html/node/_commonjs/comn/node_modules/socket.io-client/lib/socket.js-=@*/
+/*@=-c:\xampp\htdocs\node\comn\node_modules\socket.io-client\lib\socket.js-=@*/
 
 /**
  * Module dependencies.
@@ -1428,11 +1428,11 @@ function(require, exports, module, undefined, global) {
 
 var parser = require(2);
 var Emitter = require(19);
-var toArray = require(225);
+var toArray = require(226);
 var on = require(20);
 var bind = require(21);
 var debug = require(4)('socket.io-client:socket');
-var hasBin = require(226);
+var hasBin = require(227);
 
 /**
  * Module exports.
@@ -1836,7 +1836,7 @@ Socket.prototype.compress = function(compress){
 
 },
 function(require, exports, module, undefined, global) {
-/*@=-parseuri@0.0.4/index.js-=@*/
+/*@=-parseuri@0.0.4\index.js-=@*/
 /**
  * Parses an URI
  *
@@ -1879,7 +1879,7 @@ module.exports = function parseuri(str) {
 
 },
 function(require, exports, module, undefined, global) {
-/*@=-debug@2.2.0/debug.js-=@*/
+/*@=-debug@2.2.0\debug.js-=@*/
 
 /**
  * This is the common logic for both the Node.js and web browser
@@ -2080,7 +2080,7 @@ function coerce(val) {
 
 },
 function(require, exports, module, undefined, global) {
-/*@=-ms@0.7.1/index.js-=@*/
+/*@=-ms@0.7.1\index.js-=@*/
 /**
  * Helpers.
  */
@@ -2209,7 +2209,7 @@ function plural(ms, n, name) {
 
 },
 function(require, exports, module, undefined, global) {
-/*@=-buffer@3.6.0/index.js-=@*/
+/*@=-buffer@3.6.0\index.js-=@*/
 /*!
  * The buffer module from node.js, for the browser.
  *
@@ -3761,7 +3761,7 @@ function blitBuffer (src, dst, offset, length) {
 
 },
 function(require, exports, module, undefined, global) {
-/*@=-json3@3.3.2/lib/json3.js-=@*/
+/*@=-json3@3.3.2\lib\json3.js-=@*/
 /*! JSON v3.3.2 | http://bestiejs.github.io/json3 | Copyright 2012-2014, Kit Cambridge | http://kit.mit-license.org */
 ;(function () {
   // Detect the `define` function exposed by asynchronous module loaders. The
@@ -4667,14 +4667,14 @@ function(require, exports, module, undefined, global) {
 
 },
 function(require, exports, module, undefined, global) {
-/*@=-isarray@0.0.1/index.js-=@*/
+/*@=-isarray@0.0.1\index.js-=@*/
 module.exports = Array.isArray || function (arr) {
   return Object.prototype.toString.call(arr) == '[object Array]';
 };
 
 },
 function(require, exports, module, undefined, global) {
-/*@=-component-emitter@1.1.2/index.js-=@*/
+/*@=-component-emitter@1.1.2\index.js-=@*/
 
 /**
  * Expose `Emitter`.
@@ -4842,7 +4842,7 @@ Emitter.prototype.hasListeners = function(event){
 
 },
 function(require, exports, module, undefined, global) {
-/*@=-socket.io-parser@2.2.6/binary.js-=@*/
+/*@=-socket.io-parser@2.2.6\binary.js-=@*/
 var Buffer = require(9).Buffer;
 /*global Blob,File*/
 
@@ -4988,7 +4988,7 @@ exports.removeBlobs = function(data, callback) {
 
 },
 function(require, exports, module, undefined, global) {
-/*@=-socket.io-parser@2.2.6/is-buffer.js-=@*/
+/*@=-socket.io-parser@2.2.6\is-buffer.js-=@*/
 var Buffer = require(9).Buffer;
 
 module.exports = isBuf;
@@ -5006,7 +5006,7 @@ function isBuf(obj) {
 
 },
 function(require, exports, module, undefined, global) {
-/*@=-base64-js@0.0.8/lib/b64.js-=@*/
+/*@=-base64-js@0.0.8\lib\b64.js-=@*/
 var lookup = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/';
 
 ;(function (exports) {
@@ -5134,7 +5134,7 @@ var lookup = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/';
 
 },
 function(require, exports, module, undefined, global) {
-/*@=-ieee754@1.1.6/index.js-=@*/
+/*@=-ieee754@1.1.6\index.js-=@*/
 exports.read = function (buffer, offset, isLE, mLen, nBytes) {
   var e, m
   var eLen = nBytes * 8 - mLen - 1
@@ -5222,7 +5222,7 @@ exports.write = function (buffer, value, offset, isLE, mLen, nBytes) {
 
 },
 function(require, exports, module, undefined, global) {
-/*@=-isarray@1.0.0/index.js-=@*/
+/*@=-isarray@1.0.0\index.js-=@*/
 var toString = {}.toString;
 
 module.exports = Array.isArray || function (arr) {
@@ -5231,13 +5231,13 @@ module.exports = Array.isArray || function (arr) {
 
 },
 function(require, exports, module, undefined, global) {
-/*@=-engine.io-client@1.6.11/index.js-=@*/
+/*@=-engine.io-client@1.6.11\index.js-=@*/
 
 module.exports =  require(24);
 
 },
 function(require, exports, module, undefined, global) {
-/*@=-component-emitter@1.2.0/index.js-=@*/
+/*@=-component-emitter@1.2.0\index.js-=@*/
 
 /**
  * Expose `Emitter`.
@@ -5402,7 +5402,7 @@ Emitter.prototype.hasListeners = function(event){
 
 },
 function(require, exports, module, undefined, global) {
-/*@=-/var/www/html/node/_commonjs/comn/node_modules/socket.io-client/lib/on.js-=@*/
+/*@=-c:\xampp\htdocs\node\comn\node_modules\socket.io-client\lib\on.js-=@*/
 
 /**
  * Module exports.
@@ -5430,7 +5430,7 @@ function on(obj, ev, fn) {
 
 },
 function(require, exports, module, undefined, global) {
-/*@=-component-bind@1.0.0/index.js-=@*/
+/*@=-component-bind@1.0.0\index.js-=@*/
 /**
  * Slice reference.
  */
@@ -5457,7 +5457,7 @@ module.exports = function(obj, fn){
 
 },
 function(require, exports, module, undefined, global) {
-/*@=-indexof@0.0.1/index.js-=@*/
+/*@=-indexof@0.0.1\index.js-=@*/
 
 var indexOf = [].indexOf;
 
@@ -5470,7 +5470,7 @@ module.exports = function(arr, obj){
 };
 },
 function(require, exports, module, undefined, global) {
-/*@=-backo2@1.0.2/index.js-=@*/
+/*@=-backo2@1.0.2\index.js-=@*/
 
 /**
  * Expose `Backoff`.
@@ -5559,7 +5559,7 @@ Backoff.prototype.setJitter = function(jitter){
 
 },
 function(require, exports, module, undefined, global) {
-/*@=-engine.io-client@1.6.11/lib/index.js-=@*/
+/*@=-engine.io-client@1.6.11\lib\index.js-=@*/
 
 module.exports = require(25);
 
@@ -5573,7 +5573,7 @@ module.exports.parser = require(26);
 
 },
 function(require, exports, module, undefined, global) {
-/*@=-engine.io-client@1.6.11/lib/socket.js-=@*/
+/*@=-engine.io-client@1.6.11\lib\socket.js-=@*/
 /**
  * Module dependencies.
  */
@@ -6305,7 +6305,7 @@ Socket.prototype.filterUpgrades = function (upgrades) {
 
 },
 function(require, exports, module, undefined, global) {
-/*@=-engine.io-parser@1.2.4/lib/browser.js-=@*/
+/*@=-engine.io-parser@1.2.4\lib\browser.js-=@*/
 /**
  * Module dependencies.
  */
@@ -6903,7 +6903,7 @@ exports.decodePayloadAsBinary = function (data, binaryType, callback) {
 
 },
 function(require, exports, module, undefined, global) {
-/*@=-engine.io-client@1.6.11/lib/transports/index.js-=@*/
+/*@=-engine.io-client@1.6.11\lib\transports\index.js-=@*/
 /**
  * Module dependencies
  */
@@ -6960,7 +6960,7 @@ function polling(opts){
 
 },
 function(require, exports, module, undefined, global) {
-/*@=-parsejson@0.0.1/index.js-=@*/
+/*@=-parsejson@0.0.1\index.js-=@*/
 /**
  * JSON parse.
  *
@@ -6995,7 +6995,7 @@ module.exports = function parsejson(data) {
 };
 },
 function(require, exports, module, undefined, global) {
-/*@=-parseqs@0.0.2/index.js-=@*/
+/*@=-parseqs@0.0.2\index.js-=@*/
 /**
  * Compiles a querystring
  * Returns string representation of the object
@@ -7036,7 +7036,7 @@ exports.decode = function(qs){
 
 },
 function(require, exports, module, undefined, global) {
-/*@=-engine.io-client@1.6.11/lib/transport.js-=@*/
+/*@=-engine.io-client@1.6.11\lib\transport.js-=@*/
 /**
  * Module dependencies.
  */
@@ -7195,7 +7195,7 @@ Transport.prototype.onClose = function () {
 
 },
 function(require, exports, module, undefined, global) {
-/*@=-engine.io-client@1.6.11/lib/xmlhttprequest.js-=@*/
+/*@=-engine.io-client@1.6.11\lib\xmlhttprequest.js-=@*/
 // browser shim for xmlhttprequest module
 var hasCORS = require(35);
 
@@ -7235,7 +7235,7 @@ module.exports = function(opts) {
 
 },
 function(require, exports, module, undefined, global) {
-/*@=-engine.io-client@1.6.11/lib/transports/polling-xhr.js-=@*/
+/*@=-engine.io-client@1.6.11\lib\transports\polling-xhr.js-=@*/
 /**
  * Module requirements.
  */
@@ -7651,7 +7651,7 @@ function unloadHandler() {
 
 },
 function(require, exports, module, undefined, global) {
-/*@=-engine.io-client@1.6.11/lib/transports/polling-jsonp.js-=@*/
+/*@=-engine.io-client@1.6.11\lib\transports\polling-jsonp.js-=@*/
 
 /**
  * Module requirements.
@@ -7893,7 +7893,7 @@ JSONPPolling.prototype.doWrite = function (data, fn) {
 
 },
 function(require, exports, module, undefined, global) {
-/*@=-engine.io-client@1.6.11/lib/transports/websocket.js-=@*/
+/*@=-engine.io-client@1.6.11\lib\transports\websocket.js-=@*/
 var Buffer = require(9).Buffer;
 /**
  * Module dependencies.
@@ -8186,7 +8186,7 @@ WS.prototype.check = function(){
 
 },
 function(require, exports, module, undefined, global) {
-/*@=-has-cors@1.1.0/index.js-=@*/
+/*@=-has-cors@1.1.0\index.js-=@*/
 
 /**
  * Module exports.
@@ -8207,7 +8207,7 @@ try {
 
 },
 function(require, exports, module, undefined, global) {
-/*@=-engine.io-client@1.6.11/lib/transports/polling.js-=@*/
+/*@=-engine.io-client@1.6.11\lib\transports\polling.js-=@*/
 /**
  * Module dependencies.
  */
@@ -8458,7 +8458,7 @@ Polling.prototype.uri = function(){
 
 },
 function(require, exports, module, undefined, global) {
-/*@=-component-inherit@0.0.3/index.js-=@*/
+/*@=-component-inherit@0.0.3\index.js-=@*/
 
 module.exports = function(a, b){
   var fn = function(){};
@@ -8468,7 +8468,7 @@ module.exports = function(a, b){
 };
 },
 function(require, exports, module, undefined, global) {
-/*@=-yeast@0.1.2/index.js-=@*/
+/*@=-yeast@0.1.2\index.js-=@*/
 'use strict';
 
 var alphabet = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz-_'.split('')
@@ -8540,7 +8540,7 @@ module.exports = yeast;
 
 },
 function(require, exports, module, undefined, global) {
-/*@=-engine.io-parser@1.2.4/lib/keys.js-=@*/
+/*@=-engine.io-parser@1.2.4\lib\keys.js-=@*/
 
 /**
  * Gets the keys for an object.
@@ -8563,7 +8563,7 @@ module.exports = Object.keys || function keys (obj){
 
 },
 function(require, exports, module, undefined, global) {
-/*@=-has-binary@0.1.6/index.js-=@*/
+/*@=-has-binary@0.1.6\index.js-=@*/
 var Buffer = require(9).Buffer;
 
 /*
@@ -8626,7 +8626,7 @@ function hasBinary(data) {
 
 },
 function(require, exports, module, undefined, global) {
-/*@=-arraybuffer.slice@0.0.6/index.js-=@*/
+/*@=-arraybuffer.slice@0.0.6\index.js-=@*/
 /**
  * An abstraction for slicing an arraybuffer even when
  * ArrayBuffer.prototype.slice is not supported
@@ -8659,7 +8659,7 @@ module.exports = function(arraybuffer, start, end) {
 
 },
 function(require, exports, module, undefined, global) {
-/*@=-base64-arraybuffer@0.1.2/lib/base64-arraybuffer.js-=@*/
+/*@=-base64-arraybuffer@0.1.2\lib\base64-arraybuffer.js-=@*/
 /*
  * base64-arraybuffer
  * https://github.com/niklasvh/base64-arraybuffer
@@ -8722,7 +8722,7 @@ function(require, exports, module, undefined, global) {
 
 },
 function(require, exports, module, undefined, global) {
-/*@=-after@0.8.1/index.js-=@*/
+/*@=-after@0.8.1\index.js-=@*/
 module.exports = after
 
 function after(count, callback, err_cb) {
@@ -8754,7 +8754,7 @@ function noop() {}
 
 },
 function(require, exports, module, undefined, global) {
-/*@=-utf8@2.1.0/utf8.js-=@*/
+/*@=-utf8@2.1.0\utf8.js-=@*/
 /*! https://mths.be/utf8js v2.0.0 by @mathias */
 ;(function(root) {
 
@@ -9002,7 +9002,7 @@ function(require, exports, module, undefined, global) {
 
 },
 function(require, exports, module, undefined, global) {
-/*@=-blob@0.0.4/index.js-=@*/
+/*@=-blob@0.0.4\index.js-=@*/
 /**
  * Create a blob builder even when vendor prefixes exist
  */
@@ -9102,7 +9102,7 @@ module.exports = (function() {
 
 },
 function(require, exports, module, undefined, global) {
-/*@=-ws@1.0.1/index.js-=@*/
+/*@=-ws@1.0.1\index.js-=@*/
 'use strict';
 
 /*!
@@ -9155,7 +9155,7 @@ WS.connect = WS.createConnection = function connect(address, fn) {
 
 },
 function(require, exports, module, undefined, global) {
-/*@=-ws@1.0.1/lib/WebSocket.js-=@*/
+/*@=-ws@1.0.1\lib\WebSocket.js-=@*/
 var Buffer = require(9).Buffer;
 var process = require(51);
 'use strict';
@@ -10126,7 +10126,7 @@ function cleanupWebsocketResources(error) {
 
 },
 function(require, exports, module, undefined, global) {
-/*@=-ws@1.0.1/lib/WebSocketServer.js-=@*/
+/*@=-ws@1.0.1\lib\WebSocketServer.js-=@*/
 var Buffer = require(9).Buffer;
 var process = require(51);
 /*!
@@ -10143,7 +10143,7 @@ var util = require(53)
   , WebSocket = require(47)
   , Extensions = require(62)
   , PerMessageDeflate = require(63)
-  , tls = require(198)
+  , tls = require(199)
   , url = require(52);
 
 /**
@@ -10645,7 +10645,7 @@ function abortConnection(socket, code, name) {
 
 },
 function(require, exports, module, undefined, global) {
-/*@=-ws@1.0.1/lib/Sender.js-=@*/
+/*@=-ws@1.0.1\lib\Sender.js-=@*/
 var Buffer = require(9).Buffer;
 /*!
  * ws: a node.js websocket client
@@ -10656,8 +10656,8 @@ var Buffer = require(9).Buffer;
 var events = require(64)
   , util = require(53)
   , EventEmitter = events.EventEmitter
-  , ErrorCodes = require(199)
-  , bufferUtil = require(200).BufferUtil
+  , ErrorCodes = require(200)
+  , bufferUtil = require(201).BufferUtil
   , PerMessageDeflate = require(63);
 
 /**
@@ -10974,7 +10974,7 @@ function getRandomMask() {
 
 },
 function(require, exports, module, undefined, global) {
-/*@=-ws@1.0.1/lib/Receiver.js-=@*/
+/*@=-ws@1.0.1\lib\Receiver.js-=@*/
 var Buffer = require(9).Buffer;
 /*!
  * ws: a node.js websocket client
@@ -10983,10 +10983,10 @@ var Buffer = require(9).Buffer;
  */
 
 var util = require(53)
-  , Validation = require(220).Validation
-  , ErrorCodes = require(199)
-  , BufferPool = require(221)
-  , bufferUtil = require(200).BufferUtil
+  , Validation = require(221).Validation
+  , ErrorCodes = require(200)
+  , BufferPool = require(222)
+  , bufferUtil = require(201).BufferUtil
   , PerMessageDeflate = require(63);
 
 /**
@@ -11681,7 +11681,7 @@ var opcodes = {
 
 },
 function(require, exports, module, undefined, global) {
-/*@=-process@0.11.8/browser.js-=@*/
+/*@=-process@0.11.8\browser.js-=@*/
 // shim for using process in browser
 var process = module.exports = {};
 
@@ -11845,7 +11845,7 @@ process.umask = function() { return 0; };
 
 },
 function(require, exports, module, undefined, global) {
-/*@=-url@0.11.0/url.js-=@*/
+/*@=-url@0.11.0\url.js-=@*/
 // Copyright Joyent, Inc. and other Node contributors.
 //
 // Permission is hereby granted, free of charge, to any person obtaining a
@@ -12581,7 +12581,7 @@ Url.prototype.parseHost = function() {
 
 },
 function(require, exports, module, undefined, global) {
-/*@=-util@0.10.3/util.js-=@*/
+/*@=-util@0.10.3\util.js-=@*/
 var process = require(51);
 // Copyright Joyent, Inc. and other Node contributors.
 //
@@ -13172,7 +13172,7 @@ function hasOwnProperty(obj, prop) {
 
 },
 function(require, exports, module, undefined, global) {
-/*@=-stream-http@2.3.1/index.js-=@*/
+/*@=-stream-http@2.3.1\index.js-=@*/
 var ClientRequest = require(72)
 var extend = require(73)
 var statusCodes = require(74)
@@ -13254,7 +13254,7 @@ http.METHODS = [
 ]
 },
 function(require, exports, module, undefined, global) {
-/*@=-https-browserify@0.0.1/index.js-=@*/
+/*@=-https-browserify@0.0.1\index.js-=@*/
 var http = require(54);
 
 var https = module.exports;
@@ -13272,23 +13272,23 @@ https.request = function (params, cb) {
 
 },
 function(require, exports, module, undefined, global) {
-/*@=-crypto-browserify@3.11.0/index.js-=@*/
+/*@=-crypto-browserify@3.11.0\index.js-=@*/
 'use strict'
 
-exports.randomBytes = exports.rng = exports.pseudoRandomBytes = exports.prng = require(89)
-exports.createHash = exports.Hash = require(90)
-exports.createHmac = exports.Hmac = require(91)
+exports.randomBytes = exports.rng = exports.pseudoRandomBytes = exports.prng = require(90)
+exports.createHash = exports.Hash = require(91)
+exports.createHmac = exports.Hmac = require(92)
 
-var hashes = ['sha1', 'sha224', 'sha256', 'sha384', 'sha512', 'md5', 'rmd160'].concat(Object.keys(require(92)))
+var hashes = ['sha1', 'sha224', 'sha256', 'sha384', 'sha512', 'md5', 'rmd160'].concat(Object.keys(require(93)))
 exports.getHashes = function () {
   return hashes
 }
 
-var p = require(93)
+var p = require(94)
 exports.pbkdf2 = p.pbkdf2
 exports.pbkdf2Sync = p.pbkdf2Sync
 
-var aes = require(94)
+var aes = require(95)
 ;[
   'Cipher',
   'createCipher',
@@ -13304,7 +13304,7 @@ var aes = require(94)
   exports[key] = aes[key]
 })
 
-var dh = require(95)
+var dh = require(96)
 ;[
   'DiffieHellmanGroup',
   'createDiffieHellmanGroup',
@@ -13315,7 +13315,7 @@ var dh = require(95)
   exports[key] = dh[key]
 })
 
-var sign = require(96)
+var sign = require(97)
 ;[
   'createSign',
   'Sign',
@@ -13325,9 +13325,9 @@ var sign = require(96)
   exports[key] = sign[key]
 })
 
-exports.createECDH = require(97)
+exports.createECDH = require(98)
 
-var publicEncrypt = require(98)
+var publicEncrypt = require(99)
 
 ;[
   'publicEncrypt',
@@ -13353,7 +13353,7 @@ var publicEncrypt = require(98)
 
 },
 function(require, exports, module, undefined, global) {
-/*@=-stream-browserify@2.0.1/index.js-=@*/
+/*@=-stream-browserify@2.0.1\index.js-=@*/
 // Copyright Joyent, Inc. and other Node contributors.
 //
 // Permission is hereby granted, free of charge, to any person obtaining a
@@ -13382,10 +13382,10 @@ var inherits = require(71);
 
 inherits(Stream, EE);
 Stream.Readable = require(77);
-Stream.Writable = require(111);
-Stream.Duplex = require(112);
-Stream.Transform = require(113);
-Stream.PassThrough = require(114);
+Stream.Writable = require(112);
+Stream.Duplex = require(113);
+Stream.Transform = require(114);
+Stream.PassThrough = require(115);
 
 // Backwards-compat with node 0.4.x
 Stream.Stream = Stream;
@@ -13484,7 +13484,7 @@ Stream.prototype.pipe = function(dest, options) {
 
 },
 function(require, exports, module, undefined, global) {
-/*@=-ultron@1.0.2/index.js-=@*/
+/*@=-ultron@1.0.2\index.js-=@*/
 'use strict';
 
 var has = Object.prototype.hasOwnProperty;
@@ -13617,13 +13617,13 @@ module.exports = Ultron;
 
 },
 function(require, exports, module, undefined, global) {
-/*@=-options@0.0.6/lib/options.js-=@*/
+/*@=-options@0.0.6\lib\options.js-=@*/
 /*!
  * Copyright(c) 2011 Einar Otto Stangvik <einaros@gmail.com>
  * MIT Licensed
  */
 
-var fs = require(198);
+var fs = require(199);
 
 function Options(defaults) {
   var internalValues = {};
@@ -13707,7 +13707,7 @@ module.exports = Options;
 
 },
 function(require, exports, module, undefined, global) {
-/*@=-ws@1.0.1/lib/Sender.hixie.js-=@*/
+/*@=-ws@1.0.1\lib\Sender.hixie.js-=@*/
 var Buffer = require(9).Buffer;
 /*!
  * ws: a node.js websocket client
@@ -13836,7 +13836,7 @@ Sender.prototype.error = function (reason) {
 
 },
 function(require, exports, module, undefined, global) {
-/*@=-ws@1.0.1/lib/Receiver.hixie.js-=@*/
+/*@=-ws@1.0.1\lib\Receiver.hixie.js-=@*/
 var Buffer = require(9).Buffer;
 /*!
  * ws: a node.js websocket client
@@ -14025,7 +14025,7 @@ function bufferIndex(buffer, byte) {
 
 },
 function(require, exports, module, undefined, global) {
-/*@=-ws@1.0.1/lib/Extensions.js-=@*/
+/*@=-ws@1.0.1\lib\Extensions.js-=@*/
 
 var util = require(53);
 
@@ -14099,10 +14099,10 @@ function format(value) {
 
 },
 function(require, exports, module, undefined, global) {
-/*@=-ws@1.0.1/lib/PerMessageDeflate.js-=@*/
+/*@=-ws@1.0.1\lib\PerMessageDeflate.js-=@*/
 var Buffer = require(9).Buffer;
 
-var zlib = require(206);
+var zlib = require(207);
 
 var AVAILABLE_WINDOW_BITS = [8, 9, 10, 11, 12, 13, 14, 15];
 var DEFAULT_WINDOW_BITS = 15;
@@ -14429,7 +14429,7 @@ module.exports = PerMessageDeflate;
 
 },
 function(require, exports, module, undefined, global) {
-/*@=-events@1.1.1/events.js-=@*/
+/*@=-events@1.1.1\events.js-=@*/
 // Copyright Joyent, Inc. and other Node contributors.
 //
 // Permission is hereby granted, free of charge, to any person obtaining a
@@ -14735,7 +14735,7 @@ function isUndefined(arg) {
 
 },
 function(require, exports, module, undefined, global) {
-/*@=-punycode@1.4.1/punycode.js-=@*/
+/*@=-punycode@1.4.1\punycode.js-=@*/
 var process = require(51);
 /*! https://mths.be/punycode v1.4.1 by @mathias */
 ;(function(root) {
@@ -15273,7 +15273,7 @@ var process = require(51);
 
 },
 function(require, exports, module, undefined, global) {
-/*@=-url@0.11.0/util.js-=@*/
+/*@=-url@0.11.0\util.js-=@*/
 'use strict';
 
 module.exports = {
@@ -15293,7 +15293,7 @@ module.exports = {
 
 },
 function(require, exports, module, undefined, global) {
-/*@=-querystring-es3@0.2.1/index.js-=@*/
+/*@=-querystring-es3@0.2.1\index.js-=@*/
 'use strict';
 
 exports.decode = exports.parse = require(68);
@@ -15301,7 +15301,7 @@ exports.encode = exports.stringify = require(69);
 
 },
 function(require, exports, module, undefined, global) {
-/*@=-querystring-es3@0.2.1/decode.js-=@*/
+/*@=-querystring-es3@0.2.1\decode.js-=@*/
 // Copyright Joyent, Inc. and other Node contributors.
 //
 // Permission is hereby granted, free of charge, to any person obtaining a
@@ -15389,7 +15389,7 @@ var isArray = Array.isArray || function (xs) {
 
 },
 function(require, exports, module, undefined, global) {
-/*@=-querystring-es3@0.2.1/encode.js-=@*/
+/*@=-querystring-es3@0.2.1\encode.js-=@*/
 // Copyright Joyent, Inc. and other Node contributors.
 //
 // Permission is hereby granted, free of charge, to any person obtaining a
@@ -15478,7 +15478,7 @@ var objectKeys = Object.keys || function (obj) {
 
 },
 function(require, exports, module, undefined, global) {
-/*@=-util@0.10.3/support/isBuffer.js-=@*/
+/*@=-util@0.10.3\support\isBuffer.js-=@*/
 var Buffer = require(9).Buffer;
 module.exports = function isBuffer(arg) {
   return arg instanceof Buffer;
@@ -15486,7 +15486,7 @@ module.exports = function isBuffer(arg) {
 
 },
 function(require, exports, module, undefined, global) {
-/*@=-inherits@2.0.1/inherits_browser.js-=@*/
+/*@=-inherits@2.0.1\inherits_browser.js-=@*/
 if (typeof Object.create === 'function') {
   // implementation from standard node.js 'util' module
   module.exports = function inherits(ctor, superCtor) {
@@ -15513,7 +15513,7 @@ if (typeof Object.create === 'function') {
 
 },
 function(require, exports, module, undefined, global) {
-/*@=-stream-http@2.3.1/lib/request.js-=@*/
+/*@=-stream-http@2.3.1\lib\request.js-=@*/
 var Buffer = require(9).Buffer;
 var process = require(51);
 var capability = require(75)
@@ -15796,7 +15796,7 @@ var unsafeHeaders = [
 
 },
 function(require, exports, module, undefined, global) {
-/*@=-xtend@4.0.1/immutable.js-=@*/
+/*@=-xtend@4.0.1\immutable.js-=@*/
 module.exports = extend
 
 var hasOwnProperty = Object.prototype.hasOwnProperty;
@@ -15819,7 +15819,7 @@ function extend() {
 
 },
 function(require, exports, module, undefined, global) {
-/*@=-builtin-status-codes@2.0.0/browser.js-=@*/
+/*@=-builtin-status-codes@2.0.0\browser.js-=@*/
 module.exports = {
   "100": "Continue",
   "101": "Switching Protocols",
@@ -15886,7 +15886,7 @@ module.exports = {
 
 },
 function(require, exports, module, undefined, global) {
-/*@=-stream-http@2.3.1/lib/capability.js-=@*/
+/*@=-stream-http@2.3.1\lib\capability.js-=@*/
 exports.fetch = isFunction(global.fetch) && isFunction(global.ReadableStream)
 
 exports.blobConstructor = false
@@ -15930,7 +15930,7 @@ xhr = null // Help gc
 
 },
 function(require, exports, module, undefined, global) {
-/*@=-stream-http@2.3.1/lib/response.js-=@*/
+/*@=-stream-http@2.3.1\lib\response.js-=@*/
 var Buffer = require(9).Buffer;
 var process = require(51);
 var capability = require(75)
@@ -16116,7 +16116,7 @@ IncomingMessage.prototype._onXHRProgress = function () {
 
 },
 function(require, exports, module, undefined, global) {
-/*@=-readable-stream@2.1.4/readable.js-=@*/
+/*@=-readable-stream@2.1.5\readable.js-=@*/
 var process = require(51);
 var Stream = (function (){
   try {
@@ -16137,7 +16137,7 @@ if (!process.browser && process.env.READABLE_STREAM === 'disable' && Stream) {
 
 },
 function(require, exports, module, undefined, global) {
-/*@=-to-arraybuffer@1.0.1/index.js-=@*/
+/*@=-to-arraybuffer@1.0.1\index.js-=@*/
 var Buffer = require(9).Buffer;
 var Buffer = require(9).Buffer
 
@@ -16169,7 +16169,7 @@ module.exports = function (buf) {
 
 },
 function(require, exports, module, undefined, global) {
-/*@=-readable-stream@2.1.4/lib/_stream_readable.js-=@*/
+/*@=-readable-stream@2.1.5\lib\_stream_readable.js-=@*/
 var Buffer = require(9).Buffer;
 var process = require(51);
 'use strict';
@@ -16225,21 +16225,21 @@ if (debugUtil && debugUtil.debuglog) {
 }
 /*</replacement>*/
 
+var BufferList = require(87);
 var StringDecoder;
 
 util.inherits(Readable, Stream);
 
-var hasPrependListener = typeof EE.prototype.prependListener === 'function';
-
 function prependListener(emitter, event, fn) {
-  if (hasPrependListener) return emitter.prependListener(event, fn);
-
-  // This is a brutally ugly hack to make sure that our error handler
-  // is attached before any userland ones.  NEVER DO THIS. This is here
-  // only because this code needs to continue to work with older versions
-  // of Node.js that do not include the prependListener() method. The goal
-  // is to eventually remove this hack.
-  if (!emitter._events || !emitter._events[event]) emitter.on(event, fn);else if (isArray(emitter._events[event])) emitter._events[event].unshift(fn);else emitter._events[event] = [fn, emitter._events[event]];
+  if (typeof emitter.prependListener === 'function') {
+    return emitter.prependListener(event, fn);
+  } else {
+    // This is a hack to make sure that our error handler is attached before any
+    // userland ones.  NEVER DO THIS. This is here only because this code needs
+    // to continue to work with older versions of Node.js that do not include
+    // the prependListener() method. The goal is to eventually remove this hack.
+    if (!emitter._events || !emitter._events[event]) emitter.on(event, fn);else if (isArray(emitter._events[event])) emitter._events[event].unshift(fn);else emitter._events[event] = [fn, emitter._events[event]];
+  }
 }
 
 var Duplex;
@@ -16263,7 +16263,10 @@ function ReadableState(options, stream) {
   // cast to ints.
   this.highWaterMark = ~ ~this.highWaterMark;
 
-  this.buffer = [];
+  // A linked list is used to store data chunks instead of an array because the
+  // linked list can remove elements from the beginning faster than
+  // array.shift()
+  this.buffer = new BufferList();
   this.length = 0;
   this.pipes = null;
   this.pipesCount = 0;
@@ -16303,7 +16306,7 @@ function ReadableState(options, stream) {
   this.decoder = null;
   this.encoding = null;
   if (options.encoding) {
-    if (!StringDecoder) StringDecoder = require(87).StringDecoder;
+    if (!StringDecoder) StringDecoder = require(88).StringDecoder;
     this.decoder = new StringDecoder(options.encoding);
     this.encoding = options.encoding;
   }
@@ -16414,7 +16417,7 @@ function needMoreData(state) {
 
 // backwards compatibility.
 Readable.prototype.setEncoding = function (enc) {
-  if (!StringDecoder) StringDecoder = require(87).StringDecoder;
+  if (!StringDecoder) StringDecoder = require(88).StringDecoder;
   this._readableState.decoder = new StringDecoder(enc);
   this._readableState.encoding = enc;
   return this;
@@ -16426,7 +16429,8 @@ function computeNewHighWaterMark(n) {
   if (n >= MAX_HWM) {
     n = MAX_HWM;
   } else {
-    // Get the next highest power of 2
+    // Get the next highest power of 2 to prevent increasing hwm excessively in
+    // tiny amounts
     n--;
     n |= n >>> 1;
     n |= n >>> 2;
@@ -16438,44 +16442,34 @@ function computeNewHighWaterMark(n) {
   return n;
 }
 
+// This function is designed to be inlinable, so please take care when making
+// changes to the function body.
 function howMuchToRead(n, state) {
-  if (state.length === 0 && state.ended) return 0;
-
-  if (state.objectMode) return n === 0 ? 0 : 1;
-
-  if (n === null || isNaN(n)) {
-    // only flow one buffer at a time
-    if (state.flowing && state.buffer.length) return state.buffer[0].length;else return state.length;
+  if (n <= 0 || state.length === 0 && state.ended) return 0;
+  if (state.objectMode) return 1;
+  if (n !== n) {
+    // Only flow one buffer at a time
+    if (state.flowing && state.length) return state.buffer.head.data.length;else return state.length;
   }
-
-  if (n <= 0) return 0;
-
-  // If we're asking for more than the target buffer level,
-  // then raise the water mark.  Bump up to the next highest
-  // power of 2, to prevent increasing it excessively in tiny
-  // amounts.
+  // If we're asking for more than the current hwm, then raise the hwm.
   if (n > state.highWaterMark) state.highWaterMark = computeNewHighWaterMark(n);
-
-  // don't have that much.  return null, unless we've ended.
-  if (n > state.length) {
-    if (!state.ended) {
-      state.needReadable = true;
-      return 0;
-    } else {
-      return state.length;
-    }
+  if (n <= state.length) return n;
+  // Don't have enough
+  if (!state.ended) {
+    state.needReadable = true;
+    return 0;
   }
-
-  return n;
+  return state.length;
 }
 
 // you can override either this method, or the async _read(n) below.
 Readable.prototype.read = function (n) {
   debug('read', n);
+  n = parseInt(n, 10);
   var state = this._readableState;
   var nOrig = n;
 
-  if (typeof n !== 'number' || n > 0) state.emittedReadable = false;
+  if (n !== 0) state.emittedReadable = false;
 
   // if we're doing read(0) to trigger a readable event, but we
   // already have a bunch of data in the buffer, then just trigger
@@ -16531,9 +16525,7 @@ Readable.prototype.read = function (n) {
   if (state.ended || state.reading) {
     doRead = false;
     debug('reading or ended', doRead);
-  }
-
-  if (doRead) {
+  } else if (doRead) {
     debug('do read');
     state.reading = true;
     state.sync = true;
@@ -16542,11 +16534,10 @@ Readable.prototype.read = function (n) {
     // call internal read method
     this._read(state.highWaterMark);
     state.sync = false;
+    // If _read pushed data synchronously, then `reading` will be false,
+    // and we need to re-evaluate how much data we can return to the user.
+    if (!state.reading) n = howMuchToRead(nOrig, state);
   }
-
-  // If _read pushed data synchronously, then `reading` will be false,
-  // and we need to re-evaluate how much data we can return to the user.
-  if (doRead && !state.reading) n = howMuchToRead(nOrig, state);
 
   var ret;
   if (n > 0) ret = fromList(n, state);else ret = null;
@@ -16554,16 +16545,18 @@ Readable.prototype.read = function (n) {
   if (ret === null) {
     state.needReadable = true;
     n = 0;
+  } else {
+    state.length -= n;
   }
 
-  state.length -= n;
+  if (state.length === 0) {
+    // If we have nothing in the buffer, then we want to know
+    // as soon as we *do* get something into the buffer.
+    if (!state.ended) state.needReadable = true;
 
-  // If we have nothing in the buffer, then we want to know
-  // as soon as we *do* get something into the buffer.
-  if (state.length === 0 && !state.ended) state.needReadable = true;
-
-  // If we tried to read() past the EOF, then emit end on the next tick.
-  if (nOrig !== n && state.ended && state.length === 0) endReadable(this);
+    // If we tried to read() past the EOF, then emit end on the next tick.
+    if (nOrig !== n && state.ended) endReadable(this);
+  }
 
   if (ret !== null) this.emit('data', ret);
 
@@ -16711,11 +16704,17 @@ Readable.prototype.pipe = function (dest, pipeOpts) {
     if (state.awaitDrain && (!dest._writableState || dest._writableState.needDrain)) ondrain();
   }
 
+  // If the user pushes more data while we're writing to dest then we'll end up
+  // in ondata again. However, we only want to increase awaitDrain once because
+  // dest will only emit one 'drain' event for the multiple writes.
+  // => Introduce a guard on increasing awaitDrain.
+  var increasedAwaitDrain = false;
   src.on('data', ondata);
   function ondata(chunk) {
     debug('ondata');
+    increasedAwaitDrain = false;
     var ret = dest.write(chunk);
-    if (false === ret) {
+    if (false === ret && !increasedAwaitDrain) {
       // If the user unpiped during `dest.write()`, it is possible
       // to get stuck in a permanently paused state if that write
       // also returned false.
@@ -16723,6 +16722,7 @@ Readable.prototype.pipe = function (dest, pipeOpts) {
       if ((state.pipesCount === 1 && state.pipes === dest || state.pipesCount > 1 && indexOf(state.pipes, dest) !== -1) && !cleanedUp) {
         debug('false write response, pause', src._readableState.awaitDrain);
         src._readableState.awaitDrain++;
+        increasedAwaitDrain = true;
       }
       src.pause();
     }
@@ -16836,18 +16836,14 @@ Readable.prototype.unpipe = function (dest) {
 Readable.prototype.on = function (ev, fn) {
   var res = Stream.prototype.on.call(this, ev, fn);
 
-  // If listening to data, and it has not explicitly been paused,
-  // then call resume to start the flow of data on the next tick.
-  if (ev === 'data' && false !== this._readableState.flowing) {
-    this.resume();
-  }
-
-  if (ev === 'readable' && !this._readableState.endEmitted) {
+  if (ev === 'data') {
+    // Start flowing on next tick if stream isn't explicitly paused
+    if (this._readableState.flowing !== false) this.resume();
+  } else if (ev === 'readable') {
     var state = this._readableState;
-    if (!state.readableListening) {
-      state.readableListening = true;
+    if (!state.endEmitted && !state.readableListening) {
+      state.readableListening = state.needReadable = true;
       state.emittedReadable = false;
-      state.needReadable = true;
       if (!state.reading) {
         processNextTick(nReadingNextTick, this);
       } else if (state.length) {
@@ -16891,6 +16887,7 @@ function resume_(stream, state) {
   }
 
   state.resumeScheduled = false;
+  state.awaitDrain = 0;
   stream.emit('resume');
   flow(stream);
   if (state.flowing && !state.reading) stream.read(0);
@@ -16909,11 +16906,7 @@ Readable.prototype.pause = function () {
 function flow(stream) {
   var state = stream._readableState;
   debug('flow', state.flowing);
-  if (state.flowing) {
-    do {
-      var chunk = stream.read();
-    } while (null !== chunk && state.flowing);
-  }
+  while (state.flowing && stream.read() !== null) {}
 }
 
 // wrap an old-style stream as the async data source.
@@ -16984,50 +16977,101 @@ Readable._fromList = fromList;
 
 // Pluck off n bytes from an array of buffers.
 // Length is the combined lengths of all the buffers in the list.
+// This function is designed to be inlinable, so please take care when making
+// changes to the function body.
 function fromList(n, state) {
-  var list = state.buffer;
-  var length = state.length;
-  var stringMode = !!state.decoder;
-  var objectMode = !!state.objectMode;
+  // nothing buffered
+  if (state.length === 0) return null;
+
   var ret;
-
-  // nothing in the list, definitely empty.
-  if (list.length === 0) return null;
-
-  if (length === 0) ret = null;else if (objectMode) ret = list.shift();else if (!n || n >= length) {
-    // read it all, truncate the array.
-    if (stringMode) ret = list.join('');else if (list.length === 1) ret = list[0];else ret = Buffer.concat(list, length);
-    list.length = 0;
+  if (state.objectMode) ret = state.buffer.shift();else if (!n || n >= state.length) {
+    // read it all, truncate the list
+    if (state.decoder) ret = state.buffer.join('');else if (state.buffer.length === 1) ret = state.buffer.head.data;else ret = state.buffer.concat(state.length);
+    state.buffer.clear();
   } else {
-    // read just some of it.
-    if (n < list[0].length) {
-      // just take a part of the first list item.
-      // slice is the same for buffers and strings.
-      var buf = list[0];
-      ret = buf.slice(0, n);
-      list[0] = buf.slice(n);
-    } else if (n === list[0].length) {
-      // first list is a perfect match
-      ret = list.shift();
-    } else {
-      // complex case.
-      // we have enough to cover it, but it spans past the first buffer.
-      if (stringMode) ret = '';else ret = bufferShim.allocUnsafe(n);
-
-      var c = 0;
-      for (var i = 0, l = list.length; i < l && c < n; i++) {
-        var _buf = list[0];
-        var cpy = Math.min(n - c, _buf.length);
-
-        if (stringMode) ret += _buf.slice(0, cpy);else _buf.copy(ret, c, 0, cpy);
-
-        if (cpy < _buf.length) list[0] = _buf.slice(cpy);else list.shift();
-
-        c += cpy;
-      }
-    }
+    // read part of list
+    ret = fromListPartial(n, state.buffer, state.decoder);
   }
 
+  return ret;
+}
+
+// Extracts only enough buffered data to satisfy the amount requested.
+// This function is designed to be inlinable, so please take care when making
+// changes to the function body.
+function fromListPartial(n, list, hasStrings) {
+  var ret;
+  if (n < list.head.data.length) {
+    // slice is the same for buffers and strings
+    ret = list.head.data.slice(0, n);
+    list.head.data = list.head.data.slice(n);
+  } else if (n === list.head.data.length) {
+    // first chunk is a perfect match
+    ret = list.shift();
+  } else {
+    // result spans more than one buffer
+    ret = hasStrings ? copyFromBufferString(n, list) : copyFromBuffer(n, list);
+  }
+  return ret;
+}
+
+// Copies a specified amount of characters from the list of buffered data
+// chunks.
+// This function is designed to be inlinable, so please take care when making
+// changes to the function body.
+function copyFromBufferString(n, list) {
+  var p = list.head;
+  var c = 1;
+  var ret = p.data;
+  n -= ret.length;
+  while (p = p.next) {
+    var str = p.data;
+    var nb = n > str.length ? str.length : n;
+    if (nb === str.length) ret += str;else ret += str.slice(0, n);
+    n -= nb;
+    if (n === 0) {
+      if (nb === str.length) {
+        ++c;
+        if (p.next) list.head = p.next;else list.head = list.tail = null;
+      } else {
+        list.head = p;
+        p.data = str.slice(nb);
+      }
+      break;
+    }
+    ++c;
+  }
+  list.length -= c;
+  return ret;
+}
+
+// Copies a specified amount of bytes from the list of buffered data chunks.
+// This function is designed to be inlinable, so please take care when making
+// changes to the function body.
+function copyFromBuffer(n, list) {
+  var ret = bufferShim.allocUnsafe(n);
+  var p = list.head;
+  var c = 1;
+  p.data.copy(ret);
+  n -= p.data.length;
+  while (p = p.next) {
+    var buf = p.data;
+    var nb = n > buf.length ? buf.length : n;
+    buf.copy(ret, ret.length - n, 0, nb);
+    n -= nb;
+    if (n === 0) {
+      if (nb === buf.length) {
+        ++c;
+        if (p.next) list.head = p.next;else list.head = list.tail = null;
+      } else {
+        list.head = p;
+        p.data = buf.slice(nb);
+      }
+      break;
+    }
+    ++c;
+  }
+  list.length -= c;
   return ret;
 }
 
@@ -17067,7 +17111,7 @@ function indexOf(xs, x) {
 }
 },
 function(require, exports, module, undefined, global) {
-/*@=-readable-stream@2.1.4/lib/_stream_writable.js-=@*/
+/*@=-readable-stream@2.1.5\lib\_stream_writable.js-=@*/
 var Buffer = require(9).Buffer;
 var process = require(51);
 // A bit simpler than readable streams.
@@ -17095,7 +17139,7 @@ util.inherits = require(71);
 
 /*<replacement>*/
 var internalUtil = {
-  deprecate: require(88)
+  deprecate: require(89)
 };
 /*</replacement>*/
 
@@ -17598,7 +17642,7 @@ function CorkedRequest(state) {
 }
 },
 function(require, exports, module, undefined, global) {
-/*@=-readable-stream@2.1.4/lib/_stream_duplex.js-=@*/
+/*@=-readable-stream@2.1.5\lib\_stream_duplex.js-=@*/
 var process = require(51);
 // a duplex stream is just a stream that is both readable and writable.
 // Since JS doesn't have multiple prototypal inheritance, this class
@@ -17677,7 +17721,7 @@ function forEach(xs, f) {
 }
 },
 function(require, exports, module, undefined, global) {
-/*@=-readable-stream@2.1.4/lib/_stream_transform.js-=@*/
+/*@=-readable-stream@2.1.5\lib\_stream_transform.js-=@*/
 // a transform stream is a readable/writable stream where you do
 // something with the data.  Sometimes it's called a "filter",
 // but that's not a great name for it, since that implies a thing where
@@ -17860,7 +17904,7 @@ function done(stream, er) {
 }
 },
 function(require, exports, module, undefined, global) {
-/*@=-readable-stream@2.1.4/lib/_stream_passthrough.js-=@*/
+/*@=-readable-stream@2.1.5\lib\_stream_passthrough.js-=@*/
 // a passthrough stream.
 // basically just the most minimal sort of Transform stream.
 // Every written chunk gets output as-is.
@@ -17889,7 +17933,7 @@ PassThrough.prototype._transform = function (chunk, encoding, cb) {
 };
 },
 function(require, exports, module, undefined, global) {
-/*@=-process-nextick-args@1.0.7/index.js-=@*/
+/*@=-process-nextick-args@1.0.7\index.js-=@*/
 var process = require(51);
 'use strict';
 
@@ -17937,7 +17981,7 @@ function nextTick(fn, arg1, arg2, arg3) {
 
 },
 function(require, exports, module, undefined, global) {
-/*@=-buffer-shims@1.0.0/index.js-=@*/
+/*@=-buffer-shims@1.0.0\index.js-=@*/
 var Buffer = require(9).Buffer;
 'use strict';
 
@@ -18050,7 +18094,7 @@ exports.allocUnsafeSlow = function allocUnsafeSlow(size) {
 
 },
 function(require, exports, module, undefined, global) {
-/*@=-core-util-is@1.0.2/lib/util.js-=@*/
+/*@=-core-util-is@1.0.2\lib\util.js-=@*/
 var Buffer = require(9).Buffer;
 // Copyright Joyent, Inc. and other Node contributors.
 //
@@ -18162,7 +18206,75 @@ function objectToString(o) {
 
 },
 function(require, exports, module, undefined, global) {
-/*@=-string_decoder@0.10.31/index.js-=@*/
+/*@=-readable-stream@2.1.5\lib\internal\streams\BufferList.js-=@*/
+var Buffer = require(9).Buffer;
+'use strict';
+
+var Buffer = require(9).Buffer;
+/*<replacement>*/
+var bufferShim = require(85);
+/*</replacement>*/
+
+module.exports = BufferList;
+
+function BufferList() {
+  this.head = null;
+  this.tail = null;
+  this.length = 0;
+}
+
+BufferList.prototype.push = function (v) {
+  var entry = { data: v, next: null };
+  if (this.length > 0) this.tail.next = entry;else this.head = entry;
+  this.tail = entry;
+  ++this.length;
+};
+
+BufferList.prototype.unshift = function (v) {
+  var entry = { data: v, next: this.head };
+  if (this.length === 0) this.tail = entry;
+  this.head = entry;
+  ++this.length;
+};
+
+BufferList.prototype.shift = function () {
+  if (this.length === 0) return;
+  var ret = this.head.data;
+  if (this.length === 1) this.head = this.tail = null;else this.head = this.head.next;
+  --this.length;
+  return ret;
+};
+
+BufferList.prototype.clear = function () {
+  this.head = this.tail = null;
+  this.length = 0;
+};
+
+BufferList.prototype.join = function (s) {
+  if (this.length === 0) return '';
+  var p = this.head;
+  var ret = '' + p.data;
+  while (p = p.next) {
+    ret += s + p.data;
+  }return ret;
+};
+
+BufferList.prototype.concat = function (n) {
+  if (this.length === 0) return bufferShim.alloc(0);
+  if (this.length === 1) return this.head.data;
+  var ret = bufferShim.allocUnsafe(n >>> 0);
+  var p = this.head;
+  var i = 0;
+  while (p) {
+    p.data.copy(ret, i);
+    i += p.data.length;
+    p = p.next;
+  }
+  return ret;
+};
+},
+function(require, exports, module, undefined, global) {
+/*@=-string_decoder@0.10.31\index.js-=@*/
 var Buffer = require(9).Buffer;
 // Copyright Joyent, Inc. and other Node contributors.
 //
@@ -18388,7 +18500,7 @@ function base64DetectIncompleteChar(buffer) {
 
 },
 function(require, exports, module, undefined, global) {
-/*@=-util-deprecate@1.0.2/browser.js-=@*/
+/*@=-util-deprecate@1.0.2\browser.js-=@*/
 
 /**
  * Module exports.
@@ -18459,7 +18571,7 @@ function config (name) {
 
 },
 function(require, exports, module, undefined, global) {
-/*@=-randombytes@2.0.3/browser.js-=@*/
+/*@=-randombytes@2.0.3\browser.js-=@*/
 var Buffer = require(9).Buffer;
 var process = require(51);
 'use strict'
@@ -18501,15 +18613,15 @@ function randomBytes (size, cb) {
 
 },
 function(require, exports, module, undefined, global) {
-/*@=-create-hash@1.1.2/browser.js-=@*/
+/*@=-create-hash@1.1.2\browser.js-=@*/
 var Buffer = require(9).Buffer;
 'use strict';
 var inherits = require(71)
-var md5 = require(99)
-var rmd160 = require(100)
-var sha = require(101)
+var md5 = require(100)
+var rmd160 = require(101)
+var sha = require(102)
 
-var Base = require(102)
+var Base = require(103)
 
 function HashNoConstructor(hash) {
   Base.call(this, 'digest')
@@ -18558,10 +18670,10 @@ module.exports = function createHash (alg) {
 
 },
 function(require, exports, module, undefined, global) {
-/*@=-create-hmac@1.1.4/browser.js-=@*/
+/*@=-create-hmac@1.1.4\browser.js-=@*/
 var Buffer = require(9).Buffer;
 'use strict';
-var createHash = require(90);
+var createHash = require(91);
 var inherits = require(71)
 
 var Transform = require(57).Transform
@@ -18631,7 +18743,7 @@ module.exports = function createHmac(alg, key) {
 
 },
 function(require, exports, module, undefined, global) {
-/*@=-browserify-sign@4.0.0/algos.js-=@*/
+/*@=-browserify-sign@4.0.0\algos.js-=@*/
 var Buffer = require(9).Buffer;
 'use strict'
 exports['RSA-SHA224'] = exports.sha224WithRSAEncryption = {
@@ -18708,9 +18820,9 @@ exports['RSA-MD5'] = exports.md5WithRSAEncryption = {
 
 },
 function(require, exports, module, undefined, global) {
-/*@=-pbkdf2@3.0.4/browser.js-=@*/
+/*@=-pbkdf2@3.0.4\browser.js-=@*/
 var Buffer = require(9).Buffer;
-var createHmac = require(91)
+var createHmac = require(92)
 var MAX_ALLOC = Math.pow(2, 30) - 1 // default in iojs
 
 exports.pbkdf2 = pbkdf2
@@ -18793,12 +18905,12 @@ function pbkdf2Sync (password, salt, iterations, keylen, digest) {
 
 },
 function(require, exports, module, undefined, global) {
-/*@=-browserify-cipher@1.0.0/browser.js-=@*/
-var ebtk = require(115)
-var aes = require(116)
-var DES = require(117)
-var desModes = require(118)
-var aesModes = require(119)
+/*@=-browserify-cipher@1.0.0\browser.js-=@*/
+var ebtk = require(116)
+var aes = require(117)
+var DES = require(118)
+var desModes = require(119)
+var aesModes = require(120)
 function createCipher (suite, password) {
   var keyLen, ivLen
   suite = suite.toLowerCase()
@@ -18870,12 +18982,12 @@ exports.listCiphers = exports.getCiphers = getCiphers
 
 },
 function(require, exports, module, undefined, global) {
-/*@=-diffie-hellman@5.0.2/browser.js-=@*/
+/*@=-diffie-hellman@5.0.2\browser.js-=@*/
 var Buffer = require(9).Buffer;
-var generatePrime = require(141)
-var primes = require(142)
+var generatePrime = require(142)
+var primes = require(143)
 
-var DH = require(143)
+var DH = require(144)
 
 function getDiffieHellman (mod) {
   var prime = new Buffer(primes[mod].prime, 'hex')
@@ -18917,14 +19029,14 @@ exports.createDiffieHellman = exports.DiffieHellman = createDiffieHellman
 
 },
 function(require, exports, module, undefined, global) {
-/*@=-browserify-sign@4.0.0/browser.js-=@*/
+/*@=-browserify-sign@4.0.0\browser.js-=@*/
 var Buffer = require(9).Buffer;
-var _algos = require(92)
-var createHash = require(90)
+var _algos = require(93)
+var createHash = require(91)
 var inherits = require(71)
-var sign = require(147)
+var sign = require(148)
 var stream = require(57)
-var verify = require(148)
+var verify = require(149)
 
 var algos = {}
 Object.keys(_algos).forEach(function (key) {
@@ -19025,10 +19137,10 @@ module.exports = {
 
 },
 function(require, exports, module, undefined, global) {
-/*@=-create-ecdh@4.0.0/browser.js-=@*/
+/*@=-create-ecdh@4.0.0\browser.js-=@*/
 var Buffer = require(9).Buffer;
-var elliptic = require(151);
-var BN = require(144);
+var elliptic = require(152);
+var BN = require(145);
 
 module.exports = function createECDH(curve) {
 	return new ECDH(curve);
@@ -19152,9 +19264,9 @@ function formatReturnValue(bn, enc, len) {
 
 },
 function(require, exports, module, undefined, global) {
-/*@=-public-encrypt@4.0.0/browser.js-=@*/
-exports.publicEncrypt = require(193);
-exports.privateDecrypt = require(194);
+/*@=-public-encrypt@4.0.0\browser.js-=@*/
+exports.publicEncrypt = require(194);
+exports.privateDecrypt = require(195);
 
 exports.privateEncrypt = function privateEncrypt(key, buf) {
   return exports.publicEncrypt(key, buf, true);
@@ -19165,7 +19277,7 @@ exports.publicDecrypt = function publicDecrypt(key, buf) {
 };
 },
 function(require, exports, module, undefined, global) {
-/*@=-create-hash@1.1.2/md5.js-=@*/
+/*@=-create-hash@1.1.2\md5.js-=@*/
 'use strict';
 /*
  * A JavaScript implementation of the RSA Data Security, Inc. MD5 Message
@@ -19176,7 +19288,7 @@ function(require, exports, module, undefined, global) {
  * See http://pajhome.org.uk/crypt/md5 for more info.
  */
 
-var helpers = require(103);
+var helpers = require(104);
 
 /*
  * Calculate the MD5 of an array of little-endian words, and a bit length
@@ -19324,7 +19436,7 @@ module.exports = function md5(buf) {
 };
 },
 function(require, exports, module, undefined, global) {
-/*@=-ripemd160@1.0.1/lib/ripemd160.js-=@*/
+/*@=-ripemd160@1.0.1\lib\ripemd160.js-=@*/
 var Buffer = require(9).Buffer;
 /*
 CryptoJS v3.1.2
@@ -19539,7 +19651,7 @@ module.exports = ripemd160
 
 },
 function(require, exports, module, undefined, global) {
-/*@=-sha.js@2.4.5/index.js-=@*/
+/*@=-sha.js@2.4.5\index.js-=@*/
 var exports = module.exports = function SHA (algorithm) {
   algorithm = algorithm.toLowerCase()
 
@@ -19549,20 +19661,20 @@ var exports = module.exports = function SHA (algorithm) {
   return new Algorithm()
 }
 
-exports.sha = require(104)
-exports.sha1 = require(105)
-exports.sha224 = require(106)
-exports.sha256 = require(107)
-exports.sha384 = require(108)
-exports.sha512 = require(109)
+exports.sha = require(105)
+exports.sha1 = require(106)
+exports.sha224 = require(107)
+exports.sha256 = require(108)
+exports.sha384 = require(109)
+exports.sha512 = require(110)
 
 },
 function(require, exports, module, undefined, global) {
-/*@=-cipher-base@1.0.2/index.js-=@*/
+/*@=-cipher-base@1.0.2\index.js-=@*/
 var Buffer = require(9).Buffer;
 var Transform = require(57).Transform
 var inherits = require(71)
-var StringDecoder = require(87).StringDecoder
+var StringDecoder = require(88).StringDecoder
 module.exports = CipherBase
 inherits(CipherBase, Transform)
 function CipherBase (hashMode) {
@@ -19653,7 +19765,7 @@ CipherBase.prototype._toString = function (value, enc, final) {
 
 },
 function(require, exports, module, undefined, global) {
-/*@=-create-hash@1.1.2/helpers.js-=@*/
+/*@=-create-hash@1.1.2\helpers.js-=@*/
 var Buffer = require(9).Buffer;
 'use strict';
 var intSize = 4;
@@ -19691,7 +19803,7 @@ function hash(buf, fn, hashSize, bigEndian) {
 exports.hash = hash;
 },
 function(require, exports, module, undefined, global) {
-/*@=-sha.js@2.4.5/sha.js-=@*/
+/*@=-sha.js@2.4.5\sha.js-=@*/
 var Buffer = require(9).Buffer;
 /*
  * A JavaScript implementation of the Secure Hash Algorithm, SHA-0, as defined
@@ -19702,7 +19814,7 @@ var Buffer = require(9).Buffer;
  */
 
 var inherits = require(71)
-var Hash = require(110)
+var Hash = require(111)
 
 var K = [
   0x5a827999, 0x6ed9eba1, 0x8f1bbcdc | 0, 0xca62c1d6 | 0
@@ -19789,7 +19901,7 @@ module.exports = Sha
 
 },
 function(require, exports, module, undefined, global) {
-/*@=-sha.js@2.4.5/sha1.js-=@*/
+/*@=-sha.js@2.4.5\sha1.js-=@*/
 var Buffer = require(9).Buffer;
 /*
  * A JavaScript implementation of the Secure Hash Algorithm, SHA-1, as defined
@@ -19801,7 +19913,7 @@ var Buffer = require(9).Buffer;
  */
 
 var inherits = require(71)
-var Hash = require(110)
+var Hash = require(111)
 
 var K = [
   0x5a827999, 0x6ed9eba1, 0x8f1bbcdc | 0, 0xca62c1d6 | 0
@@ -19892,7 +20004,7 @@ module.exports = Sha1
 
 },
 function(require, exports, module, undefined, global) {
-/*@=-sha.js@2.4.5/sha224.js-=@*/
+/*@=-sha.js@2.4.5\sha224.js-=@*/
 var Buffer = require(9).Buffer;
 /**
  * A JavaScript implementation of the Secure Hash Algorithm, SHA-256, as defined
@@ -19903,8 +20015,8 @@ var Buffer = require(9).Buffer;
  */
 
 var inherits = require(71)
-var Sha256 = require(107)
-var Hash = require(110)
+var Sha256 = require(108)
+var Hash = require(111)
 
 var W = new Array(64)
 
@@ -19949,7 +20061,7 @@ module.exports = Sha224
 
 },
 function(require, exports, module, undefined, global) {
-/*@=-sha.js@2.4.5/sha256.js-=@*/
+/*@=-sha.js@2.4.5\sha256.js-=@*/
 var Buffer = require(9).Buffer;
 /**
  * A JavaScript implementation of the Secure Hash Algorithm, SHA-256, as defined
@@ -19960,7 +20072,7 @@ var Buffer = require(9).Buffer;
  */
 
 var inherits = require(71)
-var Hash = require(110)
+var Hash = require(111)
 
 var K = [
   0x428A2F98, 0x71374491, 0xB5C0FBCF, 0xE9B5DBA5,
@@ -20088,11 +20200,11 @@ module.exports = Sha256
 
 },
 function(require, exports, module, undefined, global) {
-/*@=-sha.js@2.4.5/sha384.js-=@*/
+/*@=-sha.js@2.4.5\sha384.js-=@*/
 var Buffer = require(9).Buffer;
 var inherits = require(71)
-var SHA512 = require(109)
-var Hash = require(110)
+var SHA512 = require(110)
+var Hash = require(111)
 
 var W = new Array(160)
 
@@ -20149,10 +20261,10 @@ module.exports = Sha384
 
 },
 function(require, exports, module, undefined, global) {
-/*@=-sha.js@2.4.5/sha512.js-=@*/
+/*@=-sha.js@2.4.5\sha512.js-=@*/
 var Buffer = require(9).Buffer;
 var inherits = require(71)
-var Hash = require(110)
+var Hash = require(111)
 
 var K = [
   0x428a2f98, 0xd728ae22, 0x71374491, 0x23ef65cd,
@@ -20413,7 +20525,7 @@ module.exports = Sha512
 
 },
 function(require, exports, module, undefined, global) {
-/*@=-sha.js@2.4.5/hash.js-=@*/
+/*@=-sha.js@2.4.5\hash.js-=@*/
 var Buffer = require(9).Buffer;
 // prototype class for hash functions
 function Hash (blockSize, finalSize) {
@@ -20487,29 +20599,29 @@ module.exports = Hash
 
 },
 function(require, exports, module, undefined, global) {
-/*@=-readable-stream@2.1.4/writable.js-=@*/
+/*@=-readable-stream@2.1.5\writable.js-=@*/
 module.exports = require(80)
 
 },
 function(require, exports, module, undefined, global) {
-/*@=-readable-stream@2.1.4/duplex.js-=@*/
+/*@=-readable-stream@2.1.5\duplex.js-=@*/
 module.exports = require(81)
 
 },
 function(require, exports, module, undefined, global) {
-/*@=-readable-stream@2.1.4/transform.js-=@*/
+/*@=-readable-stream@2.1.5\transform.js-=@*/
 module.exports = require(82)
 
 },
 function(require, exports, module, undefined, global) {
-/*@=-readable-stream@2.1.4/passthrough.js-=@*/
+/*@=-readable-stream@2.1.5\passthrough.js-=@*/
 module.exports = require(83)
 
 },
 function(require, exports, module, undefined, global) {
-/*@=-evp_bytestokey@1.0.0/index.js-=@*/
+/*@=-evp_bytestokey@1.0.0\index.js-=@*/
 var Buffer = require(9).Buffer;
-var md5 = require(99)
+var md5 = require(100)
 module.exports = EVP_BytesToKey
 function EVP_BytesToKey (password, salt, keyLen, ivLen) {
   if (!Buffer.isBuffer(password)) {
@@ -20580,14 +20692,14 @@ function EVP_BytesToKey (password, salt, keyLen, ivLen) {
 
 },
 function(require, exports, module, undefined, global) {
-/*@=-browserify-aes@1.0.6/browser.js-=@*/
-var ciphers = require(120)
+/*@=-browserify-aes@1.0.6\browser.js-=@*/
+var ciphers = require(121)
 exports.createCipher = exports.Cipher = ciphers.createCipher
 exports.createCipheriv = exports.Cipheriv = ciphers.createCipheriv
-var deciphers = require(121)
+var deciphers = require(122)
 exports.createDecipher = exports.Decipher = deciphers.createDecipher
 exports.createDecipheriv = exports.Decipheriv = deciphers.createDecipheriv
-var modes = require(119)
+var modes = require(120)
 function getCiphers () {
   return Object.keys(modes)
 }
@@ -20595,10 +20707,10 @@ exports.listCiphers = exports.getCiphers = getCiphers
 
 },
 function(require, exports, module, undefined, global) {
-/*@=-browserify-des@1.0.0/index.js-=@*/
+/*@=-browserify-des@1.0.0\index.js-=@*/
 var Buffer = require(9).Buffer;
-var CipherBase = require(102)
-var des = require(134)
+var CipherBase = require(103)
+var des = require(135)
 var inherits = require(71)
 
 var modes = {
@@ -20643,7 +20755,7 @@ DES.prototype._final = function () {
 
 },
 function(require, exports, module, undefined, global) {
-/*@=-browserify-des@1.0.0/modes.js-=@*/
+/*@=-browserify-des@1.0.0\modes.js-=@*/
 exports['des-ecb'] = {
   key: 8,
   iv: 0
@@ -20671,7 +20783,7 @@ exports['des-ede'] = {
 
 },
 function(require, exports, module, undefined, global) {
-/*@=-browserify-aes@1.0.6/modes.js-=@*/
+/*@=-browserify-aes@1.0.6\modes.js-=@*/
 exports['aes-128-ecb'] = {
   cipher: 'AES',
   key: 128,
@@ -20846,15 +20958,15 @@ exports['aes-256-gcm'] = {
 
 },
 function(require, exports, module, undefined, global) {
-/*@=-browserify-aes@1.0.6/encrypter.js-=@*/
+/*@=-browserify-aes@1.0.6\encrypter.js-=@*/
 var Buffer = require(9).Buffer;
-var aes = require(122)
-var Transform = require(102)
+var aes = require(123)
+var Transform = require(103)
 var inherits = require(71)
-var modes = require(119)
-var ebtk = require(115)
-var StreamCipher = require(123)
-var AuthCipher = require(124)
+var modes = require(120)
+var ebtk = require(116)
+var StreamCipher = require(124)
+var AuthCipher = require(125)
 inherits(Cipher, Transform)
 function Cipher (mode, key, iv) {
   if (!(this instanceof Cipher)) {
@@ -20925,14 +21037,14 @@ Splitter.prototype.flush = function () {
   return out
 }
 var modelist = {
-  ECB: require(125),
-  CBC: require(126),
-  CFB: require(127),
-  CFB8: require(128),
-  CFB1: require(129),
-  OFB: require(130),
-  CTR: require(131),
-  GCM: require(131)
+  ECB: require(126),
+  CBC: require(127),
+  CFB: require(128),
+  CFB8: require(129),
+  CFB1: require(130),
+  OFB: require(131),
+  CTR: require(132),
+  GCM: require(132)
 }
 
 function createCipheriv (suite, password, iv) {
@@ -20973,15 +21085,15 @@ exports.createCipher = createCipher
 
 },
 function(require, exports, module, undefined, global) {
-/*@=-browserify-aes@1.0.6/decrypter.js-=@*/
+/*@=-browserify-aes@1.0.6\decrypter.js-=@*/
 var Buffer = require(9).Buffer;
-var aes = require(122)
-var Transform = require(102)
+var aes = require(123)
+var Transform = require(103)
 var inherits = require(71)
-var modes = require(119)
-var StreamCipher = require(123)
-var AuthCipher = require(124)
-var ebtk = require(115)
+var modes = require(120)
+var StreamCipher = require(124)
+var AuthCipher = require(125)
+var ebtk = require(116)
 
 inherits(Decipher, Transform)
 function Decipher (mode, key, iv) {
@@ -21067,14 +21179,14 @@ function unpad (last) {
 }
 
 var modelist = {
-  ECB: require(125),
-  CBC: require(126),
-  CFB: require(127),
-  CFB8: require(128),
-  CFB1: require(129),
-  OFB: require(130),
-  CTR: require(131),
-  GCM: require(131)
+  ECB: require(126),
+  CBC: require(127),
+  CFB: require(128),
+  CFB8: require(129),
+  CFB1: require(130),
+  OFB: require(131),
+  CTR: require(132),
+  GCM: require(132)
 }
 
 function createDecipheriv (suite, password, iv) {
@@ -21115,7 +21227,7 @@ exports.createDecipheriv = createDecipheriv
 
 },
 function(require, exports, module, undefined, global) {
-/*@=-browserify-aes@1.0.6/aes.js-=@*/
+/*@=-browserify-aes@1.0.6\aes.js-=@*/
 var Buffer = require(9).Buffer;
 // based on the aes implimentation in triple sec
 // https://github.com/keybase/triplesec
@@ -21297,10 +21409,10 @@ exports.AES = AES
 
 },
 function(require, exports, module, undefined, global) {
-/*@=-browserify-aes@1.0.6/streamCipher.js-=@*/
+/*@=-browserify-aes@1.0.6\streamCipher.js-=@*/
 var Buffer = require(9).Buffer;
-var aes = require(122)
-var Transform = require(102)
+var aes = require(123)
+var Transform = require(103)
 var inherits = require(71)
 
 inherits(StreamCipher, Transform)
@@ -21327,13 +21439,13 @@ StreamCipher.prototype._final = function () {
 
 },
 function(require, exports, module, undefined, global) {
-/*@=-browserify-aes@1.0.6/authCipher.js-=@*/
+/*@=-browserify-aes@1.0.6\authCipher.js-=@*/
 var Buffer = require(9).Buffer;
-var aes = require(122)
-var Transform = require(102)
+var aes = require(123)
+var Transform = require(103)
 var inherits = require(71)
-var GHASH = require(132)
-var xor = require(133)
+var GHASH = require(133)
+var xor = require(134)
 inherits(StreamCipher, Transform)
 module.exports = StreamCipher
 
@@ -21429,7 +21541,7 @@ function xorTest (a, b) {
 
 },
 function(require, exports, module, undefined, global) {
-/*@=-browserify-aes@1.0.6/modes/ecb.js-=@*/
+/*@=-browserify-aes@1.0.6\modes\ecb.js-=@*/
 exports.encrypt = function (self, block) {
   return self._cipher.encryptBlock(block)
 }
@@ -21439,8 +21551,8 @@ exports.decrypt = function (self, block) {
 
 },
 function(require, exports, module, undefined, global) {
-/*@=-browserify-aes@1.0.6/modes/cbc.js-=@*/
-var xor = require(133)
+/*@=-browserify-aes@1.0.6\modes\cbc.js-=@*/
+var xor = require(134)
 
 exports.encrypt = function (self, block) {
   var data = xor(block, self._prev)
@@ -21460,9 +21572,9 @@ exports.decrypt = function (self, block) {
 
 },
 function(require, exports, module, undefined, global) {
-/*@=-browserify-aes@1.0.6/modes/cfb.js-=@*/
+/*@=-browserify-aes@1.0.6\modes\cfb.js-=@*/
 var Buffer = require(9).Buffer;
-var xor = require(133)
+var xor = require(134)
 
 exports.encrypt = function (self, data, decrypt) {
   var out = new Buffer('')
@@ -21496,7 +21608,7 @@ function encryptStart (self, data, decrypt) {
 
 },
 function(require, exports, module, undefined, global) {
-/*@=-browserify-aes@1.0.6/modes/cfb8.js-=@*/
+/*@=-browserify-aes@1.0.6\modes\cfb8.js-=@*/
 var Buffer = require(9).Buffer;
 function encryptByte (self, byteParam, decrypt) {
   var pad = self._cipher.encryptBlock(self._prev)
@@ -21516,7 +21628,7 @@ exports.encrypt = function (self, chunk, decrypt) {
 
 },
 function(require, exports, module, undefined, global) {
-/*@=-browserify-aes@1.0.6/modes/cfb1.js-=@*/
+/*@=-browserify-aes@1.0.6\modes\cfb1.js-=@*/
 var Buffer = require(9).Buffer;
 function encryptByte (self, byteParam, decrypt) {
   var pad
@@ -21555,9 +21667,9 @@ function shiftIn (buffer, value) {
 
 },
 function(require, exports, module, undefined, global) {
-/*@=-browserify-aes@1.0.6/modes/ofb.js-=@*/
+/*@=-browserify-aes@1.0.6\modes\ofb.js-=@*/
 var Buffer = require(9).Buffer;
-var xor = require(133)
+var xor = require(134)
 
 function getBlock (self) {
   self._prev = self._cipher.encryptBlock(self._prev)
@@ -21576,9 +21688,9 @@ exports.encrypt = function (self, chunk) {
 
 },
 function(require, exports, module, undefined, global) {
-/*@=-browserify-aes@1.0.6/modes/ctr.js-=@*/
+/*@=-browserify-aes@1.0.6\modes\ctr.js-=@*/
 var Buffer = require(9).Buffer;
-var xor = require(133)
+var xor = require(134)
 
 function incr32 (iv) {
   var len = iv.length
@@ -21612,7 +21724,7 @@ exports.encrypt = function (self, chunk) {
 
 },
 function(require, exports, module, undefined, global) {
-/*@=-browserify-aes@1.0.6/ghash.js-=@*/
+/*@=-browserify-aes@1.0.6\ghash.js-=@*/
 var Buffer = require(9).Buffer;
 var zeros = new Buffer(16)
 zeros.fill(0)
@@ -21715,7 +21827,7 @@ function xor (a, b) {
 
 },
 function(require, exports, module, undefined, global) {
-/*@=-buffer-xor@1.0.3/index.js-=@*/
+/*@=-buffer-xor@1.0.3\index.js-=@*/
 var Buffer = require(9).Buffer;
 module.exports = function xor (a, b) {
   var length = Math.min(a.length, b.length)
@@ -21730,18 +21842,18 @@ module.exports = function xor (a, b) {
 
 },
 function(require, exports, module, undefined, global) {
-/*@=-des.js@1.0.0/lib/des.js-=@*/
+/*@=-des.js@1.0.0\lib\des.js-=@*/
 'use strict';
 
-exports.utils = require(135);
-exports.Cipher = require(136);
-exports.DES = require(137);
-exports.CBC = require(138);
-exports.EDE = require(139);
+exports.utils = require(136);
+exports.Cipher = require(137);
+exports.DES = require(138);
+exports.CBC = require(139);
+exports.EDE = require(140);
 
 },
 function(require, exports, module, undefined, global) {
-/*@=-des.js@1.0.0/lib/des/utils.js-=@*/
+/*@=-des.js@1.0.0\lib\des\utils.js-=@*/
 'use strict';
 
 exports.readUInt32BE = function readUInt32BE(bytes, off) {
@@ -22001,11 +22113,11 @@ exports.padSplit = function padSplit(num, size, group) {
 
 },
 function(require, exports, module, undefined, global) {
-/*@=-des.js@1.0.0/lib/des/cipher.js-=@*/
+/*@=-des.js@1.0.0\lib\des\cipher.js-=@*/
 var Buffer = require(9).Buffer;
 'use strict';
 
-var assert = require(140);
+var assert = require(141);
 
 function Cipher(options) {
   this.options = options;
@@ -22147,13 +22259,13 @@ Cipher.prototype._finalDecrypt = function _finalDecrypt() {
 
 },
 function(require, exports, module, undefined, global) {
-/*@=-des.js@1.0.0/lib/des/des.js-=@*/
+/*@=-des.js@1.0.0\lib\des\des.js-=@*/
 'use strict';
 
-var assert = require(140);
+var assert = require(141);
 var inherits = require(71);
 
-var des = require(134);
+var des = require(135);
 var utils = des.utils;
 var Cipher = des.Cipher;
 
@@ -22294,10 +22406,10 @@ DES.prototype._decrypt = function _decrypt(state, lStart, rStart, out, off) {
 
 },
 function(require, exports, module, undefined, global) {
-/*@=-des.js@1.0.0/lib/des/cbc.js-=@*/
+/*@=-des.js@1.0.0\lib\des\cbc.js-=@*/
 'use strict';
 
-var assert = require(140);
+var assert = require(141);
 var inherits = require(71);
 
 var proto = {};
@@ -22363,13 +22475,13 @@ proto._update = function _update(inp, inOff, out, outOff) {
 
 },
 function(require, exports, module, undefined, global) {
-/*@=-des.js@1.0.0/lib/des/ede.js-=@*/
+/*@=-des.js@1.0.0\lib\des\ede.js-=@*/
 'use strict';
 
-var assert = require(140);
+var assert = require(141);
 var inherits = require(71);
 
-var des = require(134);
+var des = require(135);
 var Cipher = des.Cipher;
 var DES = des.DES;
 
@@ -22422,7 +22534,7 @@ EDE.prototype._unpad = DES.prototype._unpad;
 
 },
 function(require, exports, module, undefined, global) {
-/*@=-minimalistic-assert@1.0.0/index.js-=@*/
+/*@=-minimalistic-assert@1.0.0\index.js-=@*/
 module.exports = assert;
 
 function assert(val, msg) {
@@ -22437,14 +22549,14 @@ assert.equal = function assertEqual(l, r, msg) {
 
 },
 function(require, exports, module, undefined, global) {
-/*@=-diffie-hellman@5.0.2/lib/generatePrime.js-=@*/
-var randomBytes = require(89);
+/*@=-diffie-hellman@5.0.2\lib\generatePrime.js-=@*/
+var randomBytes = require(90);
 module.exports = findPrime;
 findPrime.simpleSieve = simpleSieve;
 findPrime.fermatTest = fermatTest;
-var BN = require(144);
+var BN = require(145);
 var TWENTYFOUR = new BN(24);
-var MillerRabin = require(145);
+var MillerRabin = require(146);
 var millerRabin = new MillerRabin();
 var ONE = new BN(1);
 var TWO = new BN(2);
@@ -22546,7 +22658,7 @@ function findPrime(bits, gen) {
 
 },
 function(require, exports, module, undefined, global) {
-/*@=-diffie-hellman@5.0.2/lib/primes.json-=@*/
+/*@=-diffie-hellman@5.0.2\lib\primes.json-=@*/
 module.exports = {
     "modp1": {
         "gen": "02",
@@ -22583,18 +22695,18 @@ module.exports = {
 };
 },
 function(require, exports, module, undefined, global) {
-/*@=-diffie-hellman@5.0.2/lib/dh.js-=@*/
+/*@=-diffie-hellman@5.0.2\lib\dh.js-=@*/
 var Buffer = require(9).Buffer;
-var BN = require(144);
-var MillerRabin = require(145);
+var BN = require(145);
+var MillerRabin = require(146);
 var millerRabin = new MillerRabin();
 var TWENTYFOUR = new BN(24);
 var ELEVEN = new BN(11);
 var TEN = new BN(10);
 var THREE = new BN(3);
 var SEVEN = new BN(7);
-var primes = require(141);
-var randomBytes = require(89);
+var primes = require(142);
+var randomBytes = require(90);
 module.exports = DH;
 
 function setPublicKey(pub, enc) {
@@ -22752,7 +22864,7 @@ function formatReturnValue(bn, enc) {
 
 },
 function(require, exports, module, undefined, global) {
-/*@=-bn.js@4.11.6/lib/bn.js-=@*/
+/*@=-bn.js@4.11.6\lib\bn.js-=@*/
 var Buffer = require(9).Buffer;
 (function (module, exports) {
   'use strict';
@@ -26184,9 +26296,9 @@ var Buffer = require(9).Buffer;
 
 },
 function(require, exports, module, undefined, global) {
-/*@=-miller-rabin@4.0.0/lib/mr.js-=@*/
-var bn = require(144);
-var brorand = require(146);
+/*@=-miller-rabin@4.0.0\lib\mr.js-=@*/
+var bn = require(145);
+var brorand = require(147);
 
 function MillerRabin(rand) {
   this.rand = rand || new brorand.Rand();
@@ -26301,7 +26413,7 @@ MillerRabin.prototype.getDivisor = function getDivisor(n, k) {
 
 },
 function(require, exports, module, undefined, global) {
-/*@=-brorand@1.0.5/index.js-=@*/
+/*@=-brorand@1.0.5\index.js-=@*/
 var r;
 
 module.exports = function rand(len) {
@@ -26362,16 +26474,16 @@ if (typeof window === 'object') {
 
 },
 function(require, exports, module, undefined, global) {
-/*@=-browserify-sign@4.0.0/sign.js-=@*/
+/*@=-browserify-sign@4.0.0\sign.js-=@*/
 var Buffer = require(9).Buffer;
 // much of this based on https://github.com/indutny/self-signed/blob/gh-pages/lib/rsa.js
-var createHmac = require(91)
-var crt = require(149)
-var curves = require(150)
-var elliptic = require(151)
-var parseKeys = require(152)
+var createHmac = require(92)
+var crt = require(150)
+var curves = require(151)
+var elliptic = require(152)
+var parseKeys = require(153)
 
-var BN = require(144)
+var BN = require(145)
 var EC = elliptic.ec
 
 function sign (hash, key, hashType, signType) {
@@ -26552,14 +26664,14 @@ module.exports.makeKey = makeKey
 
 },
 function(require, exports, module, undefined, global) {
-/*@=-browserify-sign@4.0.0/verify.js-=@*/
+/*@=-browserify-sign@4.0.0\verify.js-=@*/
 var Buffer = require(9).Buffer;
 // much of this based on https://github.com/indutny/self-signed/blob/gh-pages/lib/rsa.js
-var curves = require(150)
-var elliptic = require(151)
-var parseKeys = require(152)
+var curves = require(151)
+var elliptic = require(152)
+var parseKeys = require(153)
 
-var BN = require(144)
+var BN = require(145)
 var EC = elliptic.ec
 
 function verify (sig, hash, key, signType) {
@@ -26660,10 +26772,10 @@ module.exports = verify
 
 },
 function(require, exports, module, undefined, global) {
-/*@=-browserify-rsa@4.0.1/index.js-=@*/
+/*@=-browserify-rsa@4.0.1\index.js-=@*/
 var Buffer = require(9).Buffer;
-var bn = require(144);
-var randomBytes = require(89);
+var bn = require(145);
+var randomBytes = require(90);
 module.exports = crt;
 function blind(priv) {
   var r = getr(priv);
@@ -26705,7 +26817,7 @@ function getr(priv) {
 
 },
 function(require, exports, module, undefined, global) {
-/*@=-browserify-sign@4.0.0/curves.js-=@*/
+/*@=-browserify-sign@4.0.0\curves.js-=@*/
 'use strict'
 exports['1.3.132.0.10'] = 'secp256k1'
 
@@ -26721,31 +26833,31 @@ exports['1.3.132.0.35'] = 'p521'
 
 },
 function(require, exports, module, undefined, global) {
-/*@=-elliptic@6.3.1/lib/elliptic.js-=@*/
+/*@=-elliptic@6.3.1\lib\elliptic.js-=@*/
 'use strict';
 
 var elliptic = exports;
 
-elliptic.version = require(153).version;
-elliptic.utils = require(154);
-elliptic.rand = require(146);
-elliptic.hmacDRBG = require(155);
-elliptic.curve = require(156);
-elliptic.curves = require(157);
+elliptic.version = require(154).version;
+elliptic.utils = require(155);
+elliptic.rand = require(147);
+elliptic.hmacDRBG = require(156);
+elliptic.curve = require(157);
+elliptic.curves = require(158);
 
 // Protocols
-elliptic.ec = require(158);
-elliptic.eddsa = require(159);
+elliptic.ec = require(159);
+elliptic.eddsa = require(160);
 
 },
 function(require, exports, module, undefined, global) {
-/*@=-parse-asn1@5.0.0/index.js-=@*/
+/*@=-parse-asn1@5.0.0\index.js-=@*/
 var Buffer = require(9).Buffer;
-var asn1 = require(175)
-var aesid = require(176)
-var fixProc = require(177)
-var ciphers = require(116)
-var compat = require(93)
+var asn1 = require(176)
+var aesid = require(177)
+var fixProc = require(178)
+var ciphers = require(117)
+var compat = require(94)
 module.exports = parseKeys
 
 function parseKeys (buffer) {
@@ -26845,20 +26957,12 @@ function decrypt (data, password) {
 
 },
 function(require, exports, module, undefined, global) {
-/*@=-elliptic@6.3.1/package.json-=@*/
+/*@=-elliptic@6.3.1\package.json-=@*/
 module.exports = {
   "_args": [
     [
-      {
-        "raw": "elliptic@^6.0.0",
-        "scope": null,
-        "escapedName": "elliptic",
-        "name": "elliptic",
-        "rawSpec": "^6.0.0",
-        "spec": ">=6.0.0 <7.0.0",
-        "type": "range"
-      },
-      "/var/www/html/node/_commonjs/comn/node_modules/browserify-sign"
+      "elliptic@^6.0.0",
+      "C:\\xampp\\htdocs\\node\\comn\\node_modules\\browserify-sign"
     ]
   ],
   "_from": "elliptic@>=6.0.0 <7.0.0",
@@ -26872,17 +26976,16 @@ module.exports = {
     "tmp": "tmp/elliptic-6.3.1.tgz_1465921413402_0.5202967382501811"
   },
   "_npmUser": {
-    "name": "indutny",
-    "email": "fedor@indutny.com"
+    "email": "fedor@indutny.com",
+    "name": "indutny"
   },
   "_npmVersion": "3.8.6",
   "_phantomChildren": {},
   "_requested": {
-    "raw": "elliptic@^6.0.0",
-    "scope": null,
-    "escapedName": "elliptic",
     "name": "elliptic",
+    "raw": "elliptic@^6.0.0",
     "rawSpec": "^6.0.0",
+    "scope": null,
     "spec": ">=6.0.0 <7.0.0",
     "type": "range"
   },
@@ -26894,10 +26997,10 @@ module.exports = {
   "_shasum": "17781f2109ab0ec686b146bdcff5d2e8c6aeceda",
   "_shrinkwrap": null,
   "_spec": "elliptic@^6.0.0",
-  "_where": "/var/www/html/node/_commonjs/comn/node_modules/browserify-sign",
+  "_where": "C:\\xampp\\htdocs\\node\\comn\\node_modules\\browserify-sign",
   "author": {
-    "name": "Fedor Indutny",
-    "email": "fedor@indutny.com"
+    "email": "fedor@indutny.com",
+    "name": "Fedor Indutny"
   },
   "bugs": {
     "url": "https://github.com/indutny/elliptic/issues"
@@ -26944,8 +27047,8 @@ module.exports = {
   "main": "lib/elliptic.js",
   "maintainers": [
     {
-      "name": "indutny",
-      "email": "fedor@indutny.com"
+      "email": "fedor@indutny.com",
+      "name": "indutny"
     }
   ],
   "name": "elliptic",
@@ -26968,11 +27071,11 @@ module.exports = {
 ;
 },
 function(require, exports, module, undefined, global) {
-/*@=-elliptic@6.3.1/lib/elliptic/utils.js-=@*/
+/*@=-elliptic@6.3.1\lib\elliptic\utils.js-=@*/
 'use strict';
 
 var utils = exports;
-var BN = require(144);
+var BN = require(145);
 
 utils.assert = function assert(val, msg) {
   if (!val)
@@ -27144,11 +27247,11 @@ utils.intFromLE = intFromLE;
 
 },
 function(require, exports, module, undefined, global) {
-/*@=-elliptic@6.3.1/lib/elliptic/hmac-drbg.js-=@*/
+/*@=-elliptic@6.3.1\lib\elliptic\hmac-drbg.js-=@*/
 'use strict';
 
-var hash = require(160);
-var elliptic = require(151);
+var hash = require(161);
+var elliptic = require(152);
 var utils = elliptic.utils;
 var assert = utils.assert;
 
@@ -27262,25 +27365,25 @@ HmacDRBG.prototype.generate = function generate(len, enc, add, addEnc) {
 
 },
 function(require, exports, module, undefined, global) {
-/*@=-elliptic@6.3.1/lib/elliptic/curve/index.js-=@*/
+/*@=-elliptic@6.3.1\lib\elliptic\curve\index.js-=@*/
 'use strict';
 
 var curve = exports;
 
-curve.base = require(166);
-curve.short = require(167);
-curve.mont = require(168);
-curve.edwards = require(169);
+curve.base = require(167);
+curve.short = require(168);
+curve.mont = require(169);
+curve.edwards = require(170);
 
 },
 function(require, exports, module, undefined, global) {
-/*@=-elliptic@6.3.1/lib/elliptic/curves.js-=@*/
+/*@=-elliptic@6.3.1\lib\elliptic\curves.js-=@*/
 'use strict';
 
 var curves = exports;
 
-var hash = require(160);
-var elliptic = require(151);
+var hash = require(161);
+var elliptic = require(152);
 
 var assert = elliptic.utils.assert;
 
@@ -27444,7 +27547,7 @@ defineCurve('ed25519', {
 
 var pre;
 try {
-  pre = require(170);
+  pre = require(171);
 } catch (e) {
   pre = undefined;
 }
@@ -27483,16 +27586,16 @@ defineCurve('secp256k1', {
 
 },
 function(require, exports, module, undefined, global) {
-/*@=-elliptic@6.3.1/lib/elliptic/ec/index.js-=@*/
+/*@=-elliptic@6.3.1\lib\elliptic\ec\index.js-=@*/
 'use strict';
 
-var BN = require(144);
-var elliptic = require(151);
+var BN = require(145);
+var elliptic = require(152);
 var utils = elliptic.utils;
 var assert = utils.assert;
 
-var KeyPair = require(171);
-var Signature = require(172);
+var KeyPair = require(172);
+var Signature = require(173);
 
 function EC(options) {
   if (!(this instanceof EC))
@@ -27723,16 +27826,16 @@ EC.prototype.getKeyRecoveryParam = function(e, signature, Q, enc) {
 
 },
 function(require, exports, module, undefined, global) {
-/*@=-elliptic@6.3.1/lib/elliptic/eddsa/index.js-=@*/
+/*@=-elliptic@6.3.1\lib\elliptic\eddsa\index.js-=@*/
 'use strict';
 
-var hash = require(160);
-var elliptic = require(151);
+var hash = require(161);
+var elliptic = require(152);
 var utils = elliptic.utils;
 var assert = utils.assert;
 var parseBytes = utils.parseBytes;
-var KeyPair = require(173);
-var Signature = require(174);
+var KeyPair = require(174);
+var Signature = require(175);
 
 function EDDSA(curve) {
   assert(curve === 'ed25519', 'only tested with ed25519 so far');
@@ -27845,14 +27948,14 @@ EDDSA.prototype.isPoint = function isPoint(val) {
 
 },
 function(require, exports, module, undefined, global) {
-/*@=-hash.js@1.0.3/lib/hash.js-=@*/
+/*@=-hash.js@1.0.3\lib\hash.js-=@*/
 var hash = exports;
 
-hash.utils = require(161);
-hash.common = require(162);
-hash.sha = require(163);
-hash.ripemd = require(164);
-hash.hmac = require(165);
+hash.utils = require(162);
+hash.common = require(163);
+hash.sha = require(164);
+hash.ripemd = require(165);
+hash.hmac = require(166);
 
 // Proxy hash functions to the main object
 hash.sha1 = hash.sha.sha1;
@@ -27864,7 +27967,7 @@ hash.ripemd160 = hash.ripemd.ripemd160;
 
 },
 function(require, exports, module, undefined, global) {
-/*@=-hash.js@1.0.3/lib/hash/utils.js-=@*/
+/*@=-hash.js@1.0.3\lib\hash\utils.js-=@*/
 var utils = exports;
 var inherits = require(71);
 
@@ -28125,8 +28228,8 @@ exports.shr64_lo = shr64_lo;
 
 },
 function(require, exports, module, undefined, global) {
-/*@=-hash.js@1.0.3/lib/hash/common.js-=@*/
-var hash = require(160);
+/*@=-hash.js@1.0.3\lib\hash\common.js-=@*/
+var hash = require(161);
 var utils = hash.utils;
 var assert = utils.assert;
 
@@ -28220,8 +28323,8 @@ BlockHash.prototype._pad = function pad() {
 
 },
 function(require, exports, module, undefined, global) {
-/*@=-hash.js@1.0.3/lib/hash/sha.js-=@*/
-var hash = require(160);
+/*@=-hash.js@1.0.3\lib\hash\sha.js-=@*/
+var hash = require(161);
 var utils = hash.utils;
 var assert = utils.assert;
 
@@ -28788,8 +28891,8 @@ function g1_512_lo(xh, xl) {
 
 },
 function(require, exports, module, undefined, global) {
-/*@=-hash.js@1.0.3/lib/hash/ripemd.js-=@*/
-var hash = require(160);
+/*@=-hash.js@1.0.3\lib\hash\ripemd.js-=@*/
+var hash = require(161);
 var utils = hash.utils;
 
 var rotl32 = utils.rotl32;
@@ -28936,10 +29039,10 @@ var sh = [
 
 },
 function(require, exports, module, undefined, global) {
-/*@=-hash.js@1.0.3/lib/hash/hmac.js-=@*/
+/*@=-hash.js@1.0.3\lib\hash\hmac.js-=@*/
 var hmac = exports;
 
-var hash = require(160);
+var hash = require(161);
 var utils = hash.utils;
 var assert = utils.assert;
 
@@ -28988,11 +29091,11 @@ Hmac.prototype.digest = function digest(enc) {
 
 },
 function(require, exports, module, undefined, global) {
-/*@=-elliptic@6.3.1/lib/elliptic/curve/base.js-=@*/
+/*@=-elliptic@6.3.1\lib\elliptic\curve\base.js-=@*/
 'use strict';
 
-var BN = require(144);
-var elliptic = require(151);
+var BN = require(145);
+var elliptic = require(152);
 var utils = elliptic.utils;
 var getNAF = utils.getNAF;
 var getJSF = utils.getJSF;
@@ -29367,12 +29470,12 @@ BasePoint.prototype.dblp = function dblp(k) {
 
 },
 function(require, exports, module, undefined, global) {
-/*@=-elliptic@6.3.1/lib/elliptic/curve/short.js-=@*/
+/*@=-elliptic@6.3.1\lib\elliptic\curve\short.js-=@*/
 'use strict';
 
-var curve = require(156);
-var elliptic = require(151);
-var BN = require(144);
+var curve = require(157);
+var elliptic = require(152);
+var BN = require(145);
 var inherits = require(71);
 var Base = curve.base;
 
@@ -30309,15 +30412,15 @@ JPoint.prototype.isInfinity = function isInfinity() {
 
 },
 function(require, exports, module, undefined, global) {
-/*@=-elliptic@6.3.1/lib/elliptic/curve/mont.js-=@*/
+/*@=-elliptic@6.3.1\lib\elliptic\curve\mont.js-=@*/
 'use strict';
 
-var curve = require(156);
-var BN = require(144);
+var curve = require(157);
+var BN = require(145);
 var inherits = require(71);
 var Base = curve.base;
 
-var elliptic = require(151);
+var elliptic = require(152);
 var utils = elliptic.utils;
 
 function MontCurve(conf) {
@@ -30493,12 +30596,12 @@ Point.prototype.getX = function getX() {
 
 },
 function(require, exports, module, undefined, global) {
-/*@=-elliptic@6.3.1/lib/elliptic/curve/edwards.js-=@*/
+/*@=-elliptic@6.3.1\lib\elliptic\curve\edwards.js-=@*/
 'use strict';
 
-var curve = require(156);
-var elliptic = require(151);
-var BN = require(144);
+var curve = require(157);
+var elliptic = require(152);
+var BN = require(145);
 var inherits = require(71);
 var Base = curve.base;
 
@@ -30930,7 +31033,7 @@ Point.prototype.mixedAdd = Point.prototype.add;
 
 },
 function(require, exports, module, undefined, global) {
-/*@=-elliptic@6.3.1/lib/elliptic/precomputed/secp256k1.js-=@*/
+/*@=-elliptic@6.3.1\lib\elliptic\precomputed\secp256k1.js-=@*/
 module.exports = {
   doubles: {
     step: 4,
@@ -31714,10 +31817,10 @@ module.exports = {
 
 },
 function(require, exports, module, undefined, global) {
-/*@=-elliptic@6.3.1/lib/elliptic/ec/key.js-=@*/
+/*@=-elliptic@6.3.1\lib\elliptic\ec\key.js-=@*/
 'use strict';
 
-var BN = require(144);
+var BN = require(145);
 
 function KeyPair(ec, options) {
   this.ec = ec;
@@ -31825,12 +31928,12 @@ KeyPair.prototype.inspect = function inspect() {
 
 },
 function(require, exports, module, undefined, global) {
-/*@=-elliptic@6.3.1/lib/elliptic/ec/signature.js-=@*/
+/*@=-elliptic@6.3.1\lib\elliptic\ec\signature.js-=@*/
 'use strict';
 
-var BN = require(144);
+var BN = require(145);
 
-var elliptic = require(151);
+var elliptic = require(152);
 var utils = elliptic.utils;
 var assert = utils.assert;
 
@@ -31964,10 +32067,10 @@ Signature.prototype.toDER = function toDER(enc) {
 
 },
 function(require, exports, module, undefined, global) {
-/*@=-elliptic@6.3.1/lib/elliptic/eddsa/key.js-=@*/
+/*@=-elliptic@6.3.1\lib\elliptic\eddsa\key.js-=@*/
 'use strict';
 
-var elliptic = require(151);
+var elliptic = require(152);
 var utils = elliptic.utils;
 var assert = utils.assert;
 var parseBytes = utils.parseBytes;
@@ -32064,11 +32167,11 @@ module.exports = KeyPair;
 
 },
 function(require, exports, module, undefined, global) {
-/*@=-elliptic@6.3.1/lib/elliptic/eddsa/signature.js-=@*/
+/*@=-elliptic@6.3.1\lib\elliptic\eddsa\signature.js-=@*/
 'use strict';
 
-var BN = require(144);
-var elliptic = require(151);
+var BN = require(145);
+var elliptic = require(152);
 var utils = elliptic.utils;
 var assert = utils.assert;
 var cachedProperty = utils.cachedProperty;
@@ -32134,11 +32237,11 @@ module.exports = Signature;
 
 },
 function(require, exports, module, undefined, global) {
-/*@=-parse-asn1@5.0.0/asn1.js-=@*/
+/*@=-parse-asn1@5.0.0\asn1.js-=@*/
 // from https://github.com/indutny/self-signed/blob/gh-pages/lib/asn1.js
 // Fedor, you are amazing.
 
-var asn1 = require(178)
+var asn1 = require(179)
 
 var RSAPrivateKey = asn1.define('RSAPrivateKey', function () {
   this.seq().obj(
@@ -32255,7 +32358,7 @@ exports.signature = asn1.define('signature', function () {
 
 },
 function(require, exports, module, undefined, global) {
-/*@=-parse-asn1@5.0.0/aesid.json-=@*/
+/*@=-parse-asn1@5.0.0\aesid.json-=@*/
 module.exports = {"2.16.840.1.101.3.4.1.1": "aes-128-ecb",
 "2.16.840.1.101.3.4.1.2": "aes-128-cbc",
 "2.16.840.1.101.3.4.1.3": "aes-128-ofb",
@@ -32271,14 +32374,14 @@ module.exports = {"2.16.840.1.101.3.4.1.1": "aes-128-ecb",
 };
 },
 function(require, exports, module, undefined, global) {
-/*@=-parse-asn1@5.0.0/fixProc.js-=@*/
+/*@=-parse-asn1@5.0.0\fixProc.js-=@*/
 var Buffer = require(9).Buffer;
 // adapted from https://github.com/apatil/pemstrip
 var findProc = /Proc-Type: 4,ENCRYPTED\r?\nDEK-Info: AES-((?:128)|(?:192)|(?:256))-CBC,([0-9A-H]+)\r?\n\r?\n([0-9A-z\n\r\+\/\=]+)\r?\n/m
 var startRegex = /^-----BEGIN (.*) KEY-----\r?\n/m
 var fullRegex = /^-----BEGIN (.*) KEY-----\r?\n([0-9A-z\n\r\+\/\=]+)\r?\n-----END \1 KEY-----$/m
-var evp = require(115)
-var ciphers = require(116)
+var evp = require(116)
+var ciphers = require(117)
 module.exports = function (okey, password) {
   var key = okey.toString()
   var match = key.match(findProc)
@@ -32306,21 +32409,21 @@ module.exports = function (okey, password) {
 
 },
 function(require, exports, module, undefined, global) {
-/*@=-asn1.js@4.8.0/lib/asn1.js-=@*/
+/*@=-asn1.js@4.8.0\lib\asn1.js-=@*/
 var asn1 = exports;
 
-asn1.bignum = require(144);
+asn1.bignum = require(145);
 
-asn1.define = require(179).define;
-asn1.base = require(180);
-asn1.constants = require(181);
-asn1.decoders = require(182);
-asn1.encoders = require(183);
+asn1.define = require(180).define;
+asn1.base = require(181);
+asn1.constants = require(182);
+asn1.decoders = require(183);
+asn1.encoders = require(184);
 
 },
 function(require, exports, module, undefined, global) {
-/*@=-asn1.js@4.8.0/lib/asn1/api.js-=@*/
-var asn1 = require(178);
+/*@=-asn1.js@4.8.0\lib\asn1\api.js-=@*/
+var asn1 = require(179);
 var inherits = require(71);
 
 var api = exports;
@@ -32340,7 +32443,7 @@ function Entity(name, body) {
 Entity.prototype._createNamed = function createNamed(base) {
   var named;
   try {
-    named = require(184).runInThisContext(
+    named = require(185).runInThisContext(
       '(function ' + this.name + '(entity) {\n' +
       '  this._initNamed(entity);\n' +
       '})'
@@ -32384,17 +32487,17 @@ Entity.prototype.encode = function encode(data, enc, /* internal */ reporter) {
 
 },
 function(require, exports, module, undefined, global) {
-/*@=-asn1.js@4.8.0/lib/asn1/base/index.js-=@*/
+/*@=-asn1.js@4.8.0\lib\asn1\base\index.js-=@*/
 var base = exports;
 
-base.Reporter = require(185).Reporter;
-base.DecoderBuffer = require(186).DecoderBuffer;
-base.EncoderBuffer = require(186).EncoderBuffer;
-base.Node = require(187);
+base.Reporter = require(186).Reporter;
+base.DecoderBuffer = require(187).DecoderBuffer;
+base.EncoderBuffer = require(187).EncoderBuffer;
+base.Node = require(188);
 
 },
 function(require, exports, module, undefined, global) {
-/*@=-asn1.js@4.8.0/lib/asn1/constants/index.js-=@*/
+/*@=-asn1.js@4.8.0\lib\asn1\constants\index.js-=@*/
 var constants = exports;
 
 // Helper
@@ -32413,27 +32516,27 @@ constants._reverse = function reverse(map) {
   return res;
 };
 
-constants.der = require(188);
+constants.der = require(189);
 
 },
 function(require, exports, module, undefined, global) {
-/*@=-asn1.js@4.8.0/lib/asn1/decoders/index.js-=@*/
+/*@=-asn1.js@4.8.0\lib\asn1\decoders\index.js-=@*/
 var decoders = exports;
 
-decoders.der = require(189);
-decoders.pem = require(190);
+decoders.der = require(190);
+decoders.pem = require(191);
 
 },
 function(require, exports, module, undefined, global) {
-/*@=-asn1.js@4.8.0/lib/asn1/encoders/index.js-=@*/
+/*@=-asn1.js@4.8.0\lib\asn1\encoders\index.js-=@*/
 var encoders = exports;
 
-encoders.der = require(191);
-encoders.pem = require(192);
+encoders.der = require(192);
+encoders.pem = require(193);
 
 },
 function(require, exports, module, undefined, global) {
-/*@=-vm-browserify@0.0.4/index.js-=@*/
+/*@=-vm-browserify@0.0.4\index.js-=@*/
 var indexOf = require(22);
 
 var Object_keys = function (obj) {
@@ -32575,7 +32678,7 @@ exports.createContext = Script.createContext = function (context) {
 
 },
 function(require, exports, module, undefined, global) {
-/*@=-asn1.js@4.8.0/lib/asn1/base/reporter.js-=@*/
+/*@=-asn1.js@4.8.0\lib\asn1\base\reporter.js-=@*/
 var inherits = require(71);
 
 function Reporter(options) {
@@ -32700,10 +32803,10 @@ ReporterError.prototype.rethrow = function rethrow(msg) {
 
 },
 function(require, exports, module, undefined, global) {
-/*@=-asn1.js@4.8.0/lib/asn1/base/buffer.js-=@*/
+/*@=-asn1.js@4.8.0\lib\asn1\base\buffer.js-=@*/
 var Buffer = require(9).Buffer;
 var inherits = require(71);
-var Reporter = require(180).Reporter;
+var Reporter = require(181).Reporter;
 var Buffer = require(9).Buffer;
 
 function DecoderBuffer(base, options) {
@@ -32821,11 +32924,11 @@ EncoderBuffer.prototype.join = function join(out, offset) {
 
 },
 function(require, exports, module, undefined, global) {
-/*@=-asn1.js@4.8.0/lib/asn1/base/node.js-=@*/
-var Reporter = require(180).Reporter;
-var EncoderBuffer = require(180).EncoderBuffer;
-var DecoderBuffer = require(180).DecoderBuffer;
-var assert = require(140);
+/*@=-asn1.js@4.8.0\lib\asn1\base\node.js-=@*/
+var Reporter = require(181).Reporter;
+var EncoderBuffer = require(181).EncoderBuffer;
+var DecoderBuffer = require(181).DecoderBuffer;
+var assert = require(141);
 
 // Supported tags
 var tags = [
@@ -33454,8 +33557,8 @@ Node.prototype._isPrintstr = function isPrintstr(str) {
 
 },
 function(require, exports, module, undefined, global) {
-/*@=-asn1.js@4.8.0/lib/asn1/constants/der.js-=@*/
-var constants = require(181);
+/*@=-asn1.js@4.8.0\lib\asn1\constants\der.js-=@*/
+var constants = require(182);
 
 exports.tagClass = {
   0: 'universal',
@@ -33500,10 +33603,10 @@ exports.tagByName = constants._reverse(exports.tag);
 
 },
 function(require, exports, module, undefined, global) {
-/*@=-asn1.js@4.8.0/lib/asn1/decoders/der.js-=@*/
+/*@=-asn1.js@4.8.0\lib\asn1\decoders\der.js-=@*/
 var inherits = require(71);
 
-var asn1 = require(178);
+var asn1 = require(179);
 var base = asn1.base;
 var bignum = asn1.bignum;
 
@@ -33826,12 +33929,12 @@ function derDecodeLen(buf, primitive, fail) {
 
 },
 function(require, exports, module, undefined, global) {
-/*@=-asn1.js@4.8.0/lib/asn1/decoders/pem.js-=@*/
+/*@=-asn1.js@4.8.0\lib\asn1\decoders\pem.js-=@*/
 var Buffer = require(9).Buffer;
 var inherits = require(71);
 var Buffer = require(9).Buffer;
 
-var DERDecoder = require(189);
+var DERDecoder = require(190);
 
 function PEMDecoder(entity) {
   DERDecoder.call(this, entity);
@@ -33880,12 +33983,12 @@ PEMDecoder.prototype.decode = function decode(data, options) {
 
 },
 function(require, exports, module, undefined, global) {
-/*@=-asn1.js@4.8.0/lib/asn1/encoders/der.js-=@*/
+/*@=-asn1.js@4.8.0\lib\asn1\encoders\der.js-=@*/
 var Buffer = require(9).Buffer;
 var inherits = require(71);
 var Buffer = require(9).Buffer;
 
-var asn1 = require(178);
+var asn1 = require(179);
 var base = asn1.base;
 
 // Import DER constants
@@ -34178,10 +34281,10 @@ function encodeTag(tag, primitive, cls, reporter) {
 
 },
 function(require, exports, module, undefined, global) {
-/*@=-asn1.js@4.8.0/lib/asn1/encoders/pem.js-=@*/
+/*@=-asn1.js@4.8.0\lib\asn1\encoders\pem.js-=@*/
 var inherits = require(71);
 
-var DEREncoder = require(191);
+var DEREncoder = require(192);
 
 function PEMEncoder(entity) {
   DEREncoder.call(this, entity);
@@ -34203,16 +34306,16 @@ PEMEncoder.prototype.encode = function encode(data, options) {
 
 },
 function(require, exports, module, undefined, global) {
-/*@=-public-encrypt@4.0.0/publicEncrypt.js-=@*/
+/*@=-public-encrypt@4.0.0\publicEncrypt.js-=@*/
 var Buffer = require(9).Buffer;
-var parseKeys = require(152);
-var randomBytes = require(89);
-var createHash = require(90);
-var mgf = require(195);
-var xor = require(196);
-var bn = require(144);
-var withPublic = require(197);
-var crt = require(149);
+var parseKeys = require(153);
+var randomBytes = require(90);
+var createHash = require(91);
+var mgf = require(196);
+var xor = require(197);
+var bn = require(145);
+var withPublic = require(198);
+var crt = require(150);
 
 var constants = {
   RSA_PKCS1_OAEP_PADDING: 4,
@@ -34302,15 +34405,15 @@ function nonZero(len, crypto) {
 }
 },
 function(require, exports, module, undefined, global) {
-/*@=-public-encrypt@4.0.0/privateDecrypt.js-=@*/
+/*@=-public-encrypt@4.0.0\privateDecrypt.js-=@*/
 var Buffer = require(9).Buffer;
-var parseKeys = require(152);
-var mgf = require(195);
-var xor = require(196);
-var bn = require(144);
-var crt = require(149);
-var createHash = require(90);
-var withPublic = require(197);
+var parseKeys = require(153);
+var mgf = require(196);
+var xor = require(197);
+var bn = require(145);
+var crt = require(150);
+var createHash = require(91);
+var withPublic = require(198);
 module.exports = function privateDecrypt(private_key, enc, reverse) {
   var padding;
   if (private_key.padding) {
@@ -34414,9 +34517,9 @@ function compare(a, b){
 }
 },
 function(require, exports, module, undefined, global) {
-/*@=-public-encrypt@4.0.0/mgf.js-=@*/
+/*@=-public-encrypt@4.0.0\mgf.js-=@*/
 var Buffer = require(9).Buffer;
-var createHash = require(90);
+var createHash = require(91);
 module.exports = function (seed, len) {
   var t = new Buffer('');
   var  i = 0, c;
@@ -34434,7 +34537,7 @@ function i2ops(c) {
 }
 },
 function(require, exports, module, undefined, global) {
-/*@=-public-encrypt@4.0.0/xor.js-=@*/
+/*@=-public-encrypt@4.0.0\xor.js-=@*/
 module.exports = function xor(a, b) {
   var len = a.length;
   var i = -1;
@@ -34445,9 +34548,9 @@ module.exports = function xor(a, b) {
 };
 },
 function(require, exports, module, undefined, global) {
-/*@=-public-encrypt@4.0.0/withPublic.js-=@*/
+/*@=-public-encrypt@4.0.0\withPublic.js-=@*/
 var Buffer = require(9).Buffer;
-var bn = require(144);
+var bn = require(145);
 function withPublic(paddedMsg, key) {
   return new Buffer(paddedMsg
     .toRed(bn.mont(key.modulus))
@@ -34459,12 +34562,12 @@ function withPublic(paddedMsg, key) {
 module.exports = withPublic;
 },
 function(require, exports, module, undefined, global) {
-/*@=-/var/www/html/node/_commonjs/comn/src/_empty.js-=@*/
+/*@=-C:\xampp\htdocs\node\comn\src\_empty.js-=@*/
 
 
 },
 function(require, exports, module, undefined, global) {
-/*@=-ws@1.0.1/lib/ErrorCodes.js-=@*/
+/*@=-ws@1.0.1\lib\ErrorCodes.js-=@*/
 /*!
  * ws: a node.js websocket client
  * Copyright(c) 2011 Einar Otto Stangvik <einaros@gmail.com>
@@ -34491,7 +34594,7 @@ module.exports = {
 };
 },
 function(require, exports, module, undefined, global) {
-/*@=-ws@1.0.1/lib/BufferUtil.js-=@*/
+/*@=-ws@1.0.1\lib\BufferUtil.js-=@*/
 'use strict';
 
 /*!
@@ -34501,25 +34604,25 @@ function(require, exports, module, undefined, global) {
  */
 
 try {
-  module.exports = require(201);
-} catch (e) {
   module.exports = require(202);
+} catch (e) {
+  module.exports = require(203);
 }
 
 },
 function(require, exports, module, undefined, global) {
-/*@=-bufferutil@1.2.1/index.js-=@*/
+/*@=-bufferutil@1.2.1\index.js-=@*/
 'use strict';
 
 try {
-  module.exports = require(203)('bufferutil');
+  module.exports = require(204)('bufferutil');
 } catch (e) {
-  module.exports = require(204);
+  module.exports = require(205);
 }
 
 },
 function(require, exports, module, undefined, global) {
-/*@=-ws@1.0.1/lib/BufferUtil.fallback.js-=@*/
+/*@=-ws@1.0.1\lib\BufferUtil.fallback.js-=@*/
 /*!
  * ws: a node.js websocket client
  * Copyright(c) 2011 Einar Otto Stangvik <einaros@gmail.com>
@@ -34570,16 +34673,16 @@ module.exports.BufferUtil = {
 
 },
 function(require, exports, module, undefined, global) {
-/*@=-bindings@1.2.1/bindings.js-=@*/
-var __filename = module.id = module.filename = "../../bindings/bindings.js";
+/*@=-bindings@1.2.1\bindings.js-=@*/
+var __filename = module.id = module.filename = "..\..\bindings\bindings.js";
 var process = require(51);
 
 /**
  * Module dependencies.
  */
 
-var fs = require(198)
-  , path = require(205)
+var fs = require(199)
+  , path = require(206)
   , join = path.join
   , dirname = path.dirname
   , exists = fs.existsSync || path.existsSync
@@ -34742,7 +34845,7 @@ exports.getRoot = function getRoot (file) {
 
 },
 function(require, exports, module, undefined, global) {
-/*@=-bufferutil@1.2.1/fallback.js-=@*/
+/*@=-bufferutil@1.2.1\fallback.js-=@*/
 'use strict';
 
 /*!
@@ -34803,7 +34906,7 @@ module.exports.BufferUtil = {
 
 },
 function(require, exports, module, undefined, global) {
-/*@=-path-browserify@0.0.0/index.js-=@*/
+/*@=-path-browserify@0.0.0\index.js-=@*/
 var process = require(51);
 // Copyright Joyent, Inc. and other Node contributors.
 //
@@ -35032,7 +35135,7 @@ var substr = 'ab'.substr(-1) === 'b'
 
 },
 function(require, exports, module, undefined, global) {
-/*@=-browserify-zlib@0.1.4/src/index.js-=@*/
+/*@=-browserify-zlib@0.1.4\src\index.js-=@*/
 var Buffer = require(9).Buffer;
 var process = require(51);
 // Copyright Joyent, Inc. and other Node contributors.
@@ -35058,9 +35161,9 @@ var process = require(51);
 
 var Transform = require(77);
 
-var binding = require(207);
+var binding = require(208);
 var util = require(53);
-var assert = require(208).ok;
+var assert = require(209).ok;
 
 // zlib doesn't provide these, so kludge them in following the same
 // const naming scheme zlib uses.
@@ -35648,14 +35751,14 @@ util.inherits(Unzip, Zlib);
 
 },
 function(require, exports, module, undefined, global) {
-/*@=-browserify-zlib@0.1.4/src/binding.js-=@*/
+/*@=-browserify-zlib@0.1.4\src\binding.js-=@*/
 var Buffer = require(9).Buffer;
 var process = require(51);
-var msg = require(209);
-var zstream = require(210);
-var zlib_deflate = require(211);
-var zlib_inflate = require(212);
-var constants = require(213);
+var msg = require(210);
+var zstream = require(211);
+var zlib_deflate = require(212);
+var zlib_inflate = require(213);
+var constants = require(214);
 
 for (var key in constants) {
   exports[key] = constants[key];
@@ -35890,7 +35993,7 @@ exports.Zlib = Zlib;
 
 },
 function(require, exports, module, undefined, global) {
-/*@=-assert@1.3.0/assert.js-=@*/
+/*@=-assert@1.3.0\assert.js-=@*/
 // http://wiki.commonjs.org/wiki/Unit_Testing/1.0
 //
 // THIS IS NOT TESTED NOR LIKELY TO WORK OUTSIDE V8!
@@ -36253,7 +36356,7 @@ var objectKeys = Object.keys || function (obj) {
 
 },
 function(require, exports, module, undefined, global) {
-/*@=-pako@0.2.9/lib/zlib/messages.js-=@*/
+/*@=-pako@0.2.9\lib\zlib\messages.js-=@*/
 'use strict';
 
 module.exports = {
@@ -36270,7 +36373,7 @@ module.exports = {
 
 },
 function(require, exports, module, undefined, global) {
-/*@=-pako@0.2.9/lib/zlib/zstream.js-=@*/
+/*@=-pako@0.2.9\lib\zlib\zstream.js-=@*/
 'use strict';
 
 
@@ -36303,15 +36406,15 @@ module.exports = ZStream;
 
 },
 function(require, exports, module, undefined, global) {
-/*@=-pako@0.2.9/lib/zlib/deflate.js-=@*/
+/*@=-pako@0.2.9\lib\zlib\deflate.js-=@*/
 var Buffer = require(9).Buffer;
 'use strict';
 
-var utils   = require(214);
-var trees   = require(215);
-var adler32 = require(216);
-var crc32   = require(217);
-var msg     = require(209);
+var utils   = require(215);
+var trees   = require(216);
+var adler32 = require(217);
+var crc32   = require(218);
+var msg     = require(210);
 
 /* Public constants ==========================================================*/
 /* ===========================================================================*/
@@ -38163,15 +38266,15 @@ exports.deflateTune = deflateTune;
 
 },
 function(require, exports, module, undefined, global) {
-/*@=-pako@0.2.9/lib/zlib/inflate.js-=@*/
+/*@=-pako@0.2.9\lib\zlib\inflate.js-=@*/
 'use strict';
 
 
-var utils         = require(214);
-var adler32       = require(216);
-var crc32         = require(217);
-var inflate_fast  = require(218);
-var inflate_table = require(219);
+var utils         = require(215);
+var adler32       = require(217);
+var crc32         = require(218);
+var inflate_fast  = require(219);
+var inflate_table = require(220);
 
 var CODES = 0;
 var LENS = 1;
@@ -39705,7 +39808,7 @@ exports.inflateUndermine = inflateUndermine;
 
 },
 function(require, exports, module, undefined, global) {
-/*@=-pako@0.2.9/lib/zlib/constants.js-=@*/
+/*@=-pako@0.2.9\lib\zlib\constants.js-=@*/
 'use strict';
 
 
@@ -39759,7 +39862,7 @@ module.exports = {
 
 },
 function(require, exports, module, undefined, global) {
-/*@=-pako@0.2.9/lib/utils/common.js-=@*/
+/*@=-pako@0.2.9\lib\utils\common.js-=@*/
 'use strict';
 
 
@@ -39865,11 +39968,11 @@ exports.setTyped(TYPED_OK);
 
 },
 function(require, exports, module, undefined, global) {
-/*@=-pako@0.2.9/lib/zlib/trees.js-=@*/
+/*@=-pako@0.2.9\lib\zlib\trees.js-=@*/
 'use strict';
 
 
-var utils = require(214);
+var utils = require(215);
 
 /* Public constants ==========================================================*/
 /* ===========================================================================*/
@@ -41071,7 +41174,7 @@ exports._tr_align = _tr_align;
 
 },
 function(require, exports, module, undefined, global) {
-/*@=-pako@0.2.9/lib/zlib/adler32.js-=@*/
+/*@=-pako@0.2.9\lib\zlib\adler32.js-=@*/
 'use strict';
 
 // Note: adler32 takes 12% for level 0 and 2% for level 6.
@@ -41107,7 +41210,7 @@ module.exports = adler32;
 
 },
 function(require, exports, module, undefined, global) {
-/*@=-pako@0.2.9/lib/zlib/crc32.js-=@*/
+/*@=-pako@0.2.9\lib\zlib\crc32.js-=@*/
 'use strict';
 
 // Note: we can't get significant speed boost here.
@@ -41152,7 +41255,7 @@ module.exports = crc32;
 
 },
 function(require, exports, module, undefined, global) {
-/*@=-pako@0.2.9/lib/zlib/inffast.js-=@*/
+/*@=-pako@0.2.9\lib\zlib\inffast.js-=@*/
 'use strict';
 
 // See state defs from inflate.js
@@ -41482,12 +41585,12 @@ module.exports = function inflate_fast(strm, start) {
 
 },
 function(require, exports, module, undefined, global) {
-/*@=-pako@0.2.9/lib/zlib/inftrees.js-=@*/
+/*@=-pako@0.2.9\lib\zlib\inftrees.js-=@*/
 var process = require(51);
 'use strict';
 
 
-var utils = require(214);
+var utils = require(215);
 
 var MAXBITS = 15;
 var ENOUGH_LENS = 852;
@@ -41814,7 +41917,7 @@ module.exports = function inflate_table(type, lens, lens_index, codes, table, ta
 
 },
 function(require, exports, module, undefined, global) {
-/*@=-ws@1.0.1/lib/Validation.js-=@*/
+/*@=-ws@1.0.1\lib\Validation.js-=@*/
 'use strict';
 
 /*!
@@ -41824,14 +41927,14 @@ function(require, exports, module, undefined, global) {
  */
 
 try {
-  module.exports = require(222);
-} catch (e) {
   module.exports = require(223);
+} catch (e) {
+  module.exports = require(224);
 }
 
 },
 function(require, exports, module, undefined, global) {
-/*@=-ws@1.0.1/lib/BufferPool.js-=@*/
+/*@=-ws@1.0.1\lib\BufferPool.js-=@*/
 var Buffer = require(9).Buffer;
 /*!
  * ws: a node.js websocket client
@@ -41899,18 +42002,18 @@ module.exports = BufferPool;
 
 },
 function(require, exports, module, undefined, global) {
-/*@=-utf-8-validate@1.2.1/index.js-=@*/
+/*@=-utf-8-validate@1.2.1\index.js-=@*/
 'use strict';
 
 try {
-  module.exports = require(203)('validation');
+  module.exports = require(204)('validation');
 } catch (e) {
-  module.exports = require(224);
+  module.exports = require(225);
 }
 
 },
 function(require, exports, module, undefined, global) {
-/*@=-ws@1.0.1/lib/Validation.fallback.js-=@*/
+/*@=-ws@1.0.1\lib\Validation.fallback.js-=@*/
 /*!
  * ws: a node.js websocket client
  * Copyright(c) 2011 Einar Otto Stangvik <einaros@gmail.com>
@@ -41926,7 +42029,7 @@ module.exports.Validation = {
 
 },
 function(require, exports, module, undefined, global) {
-/*@=-utf-8-validate@1.2.1/fallback.js-=@*/
+/*@=-utf-8-validate@1.2.1\fallback.js-=@*/
 'use strict';
 
 /*!
@@ -41943,7 +42046,7 @@ module.exports.Validation = {
 
 },
 function(require, exports, module, undefined, global) {
-/*@=-to-array@0.1.4/index.js-=@*/
+/*@=-to-array@0.1.4\index.js-=@*/
 module.exports = toArray
 
 function toArray(list, index) {
@@ -41960,7 +42063,7 @@ function toArray(list, index) {
 
 },
 function(require, exports, module, undefined, global) {
-/*@=-has-binary@0.1.7/index.js-=@*/
+/*@=-has-binary@0.1.7\index.js-=@*/
 var Buffer = require(9).Buffer;
 
 /*

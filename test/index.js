@@ -8,7 +8,7 @@ var fs = require("fs"),
 tape("comn(index : FilePath String, options : Object) some basic asynv chunks", function(assert) {
     var out = comn(filePath.join(__dirname, "test0", "index.js"), {
         rename: function rename(relativePath /* ,fullPath, rootDirname, options */ ) {
-            return filePath.join("build0", relativePath.replace(/\//g, "_"));
+            return filePath.join("build0", relativePath.replace(/\\|\//g, "_"));
         }
     });
 
@@ -27,7 +27,7 @@ tape("comn(index : FilePath String, options : Object) some basic asynv chunks", 
 tape("comn(index : FilePath String, options : Object) cyclic async deps", function(assert) {
     var out = comn(filePath.join(__dirname, "test1", "index.js"), {
         rename: function rename(relativePath /*, fullPath, rootDirname, options */ ) {
-            return filePath.join("build1", relativePath.replace(/\//g, "_"));
+            return filePath.join("build1", relativePath.replace(/\\|\//g, "_"));
         }
     });
 
@@ -47,7 +47,7 @@ tape("comn(index : FilePath String, options : Object) cyclic async deps", functi
 tape("comn(index : FilePath String, options : Object) cyclic async deps with uglify", function(assert) {
     var out = comn(filePath.join(__dirname, "test2", "index.js"), {
         rename: function rename(relativePath /*, fullPath, rootDirname, options */ ) {
-            return filePath.join("build2", relativePath.replace(/\//g, "_"));
+            return filePath.join("build2", relativePath.replace(/\\|\//g, "_"));
         }
     });
 
