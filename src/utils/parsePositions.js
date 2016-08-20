@@ -22,7 +22,7 @@ function parsePositions(source, treeChunk, positions) {
                 positions[positions.length] = {
                     id: id,
                     startIndex: getStartIndex(dependency.extraLines, lexer),
-                    line: lexer.line - 1,
+                    line: lexer.line + 1,
                     column: lexer.column,
                     endIndex: getEndIndex(lexer)
                 };

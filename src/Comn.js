@@ -3,6 +3,7 @@ var fs = require("fs"),
     combine = require("combine-source-map"),
     uuid = require("@nathanfaucett/uuid"),
     arrayForEach = require("@nathanfaucett/array-for_each"),
+    filePath = require("@nathanfaucett/file_path"),
     parsePositions = require("./utils/parsePositions");
 
 
@@ -73,7 +74,7 @@ ComnChunk.prototype.generateSourceMap = function() {
 
             sources.addFile({
                 source: fs.readFileSync(dependency.fullPath).toString("utf-8"),
-                sourceFile: dependency.fullPath
+                sourceFile: filePath.relative(treeChunk.rootDirname, dependency.fullPath)
             }, {
                 line: position.line,
                 column: position.column
