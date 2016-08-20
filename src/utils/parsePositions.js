@@ -26,9 +26,6 @@ function parsePositions(source, treeChunk, positions) {
                     column: lexer.column,
                     endIndex: getEndIndex(lexer)
                 };
-
-                //var p = positions[positions.length - 1];
-                //console.log(source.slice(p.startIndex, p.endIndex));
             }
         }
     }

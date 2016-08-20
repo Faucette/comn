@@ -11,6 +11,7 @@ var options = argv({
     file: ["f", "start file", "string"],
     out: ["o", "out directory/file", "string"],
     ignore: ["i", "ignore paths", "array"],
+    parseAsync: ["a", "parse async require statements", "boolean"],
     exportName: ["e", "export to global scope", "string"]
 }).parse();
 
@@ -23,6 +24,7 @@ if (!options.out) {
 
 var out = comn(options.file, {
     exportName: options.exportName,
+    parseAsync: options.parseAsync,
     ignore: options.ignore
 });
 

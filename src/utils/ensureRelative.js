@@ -5,5 +5,5 @@ module.exports = ensureRelative;
 
 
 function ensureRelative(path) {
-    return isNodeModule(path) ? "./" + path : path;
+    return isNodeModule(path) ? "." + filePath.separator + path : path;
 }

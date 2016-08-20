@@ -1,6 +1,6 @@
 {
   "name": "@nathanfaucett/comn",
-  "version": "0.0.6",
+  "version": "0.0.7",
   "description": "comn is a commonjs compiler",
   "repository": {
     "type": "git",

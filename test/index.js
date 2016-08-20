@@ -44,19 +44,17 @@ tape("comn(index : FilePath String, options : Object) cyclic async deps", functi
     assert.end();
 });
 
-tape("comn(index : FilePath String, options : Object) cyclic async deps with uglify", function(assert) {
-    var out = comn(filePath.join(__dirname, "test2", "index.js"), {
-        rename: function rename(relativePath /*, fullPath, rootDirname, options */ ) {
-            return filePath.join("build2", relativePath.replace(/\\|\//g, "_"));
-        }
+tape("comn(index : FilePath String, options : Object) should compile browserify modules", function(assert) {
+    var out = comn("socket.io-client", {
+        exportName: "io"
     });
 
     out.generateSourceMaps();
 
     out.each(function(chunk) {
-        var jsPath = filePath.join(__dirname, chunk.name),
-            jsMapPath = filePath.join(__dirname, chunk.name + ".map"),
-            jsMapRelativePath = filePath.join("..", chunk.name + ".map"),
+        var jsPath = filePath.join(__dirname, "build0", "socket_io-client.js"),
+            jsMapPath = filePath.join(__dirname, "build0", "socket_io-client.js" + ".map"),
+            jsMapRelativePath = filePath.join("..", "build0", "socket_io-client.js" + ".map"),
             origSourceMap = chunk.sourceMap.toJSON(),
             sourceMap, result;
 
@@ -75,18 +73,6 @@ tape("comn(index : FilePath String, options : Object) cyclic async deps with ugl
 
         sourceMap.sourcesContent = JSON.parse(origSourceMap).sourcesContent;
         fs.writeFileSync(jsMapPath, JSON.stringify(sourceMap));
-    });
-
-    assert.end();
-});
-
-tape("comn(index : FilePath String, options : Object) should compile browserify modules", function(assert) {
-    var out = comn("socket.io-client", {
-        exportName: "io"
-    });
-
-    out.each(function(chunk) {
-        fs.writeFileSync(filePath.join(__dirname, "build0", "socket_io-client.js"), chunk.source);
     });
 
     assert.end();
