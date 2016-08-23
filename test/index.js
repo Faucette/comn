@@ -1,7 +1,7 @@
-var fs = require("fs"),
-    tape = require("tape"),
+var tape = require("tape"),
     uglify = require("uglify-js"),
     filePath = require("@nathanfaucett/file_path"),
+    fileUtils = require("@nathanfaucett/file_utils"),
     comn = require("..");
 
 
@@ -15,7 +15,7 @@ tape("comn(index : FilePath String, options : Object) some basic asynv chunks", 
     out.generateSourceMaps();
 
     out.each(function(chunk) {
-        fs.writeFileSync(
+        fileUtils.writeFileSync(
             filePath.join(__dirname, chunk.name),
             chunk.source + "\n//# sourceMappingURL=data:application/json;base64," + chunk.sourceMap.toBase64()
         );
@@ -34,8 +34,8 @@ tape("comn(index : FilePath String, options : Object) cyclic async deps", functi
     out.generateSourceMaps();
 
     out.each(function(chunk) {
-        fs.writeFileSync(filePath.join(__dirname, chunk.name + ".map"), chunk.sourceMap.toJSON());
-        fs.writeFileSync(
+        fileUtils.writeFileSync(filePath.join(__dirname, chunk.name + ".map"), chunk.sourceMap.toJSON());
+        fileUtils.writeFileSync(
             filePath.join(__dirname, chunk.name),
             chunk.source + "\n//# sourceMappingURL=../" + chunk.name + ".map"
         );
@@ -58,8 +58,8 @@ tape("comn(index : FilePath String, options : Object) should compile browserify 
             origSourceMap = chunk.sourceMap.toJSON(),
             sourceMap, result;
 
-        fs.writeFileSync(jsMapPath, origSourceMap);
-        fs.writeFileSync(jsPath, chunk.source);
+        fileUtils.writeFileSync(jsMapPath, origSourceMap);
+        fileUtils.writeFileSync(jsPath, chunk.source);
 
         result = uglify.minify(jsPath, {
             inSourceMap: jsMapPath,
@@ -69,10 +69,10 @@ tape("comn(index : FilePath String, options : Object) should compile browserify 
         });
         sourceMap = JSON.parse(result.map);
 
-        fs.writeFileSync(jsPath, result.code);
+        fileUtils.writeFileSync(jsPath, result.code);
 
         sourceMap.sourcesContent = JSON.parse(origSourceMap).sourcesContent;
-        fs.writeFileSync(jsMapPath, JSON.stringify(sourceMap));
+        fileUtils.writeFileSync(jsMapPath, JSON.stringify(sourceMap));
     });
 
     assert.end();

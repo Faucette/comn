@@ -12,6 +12,7 @@ var options = argv({
     out: ["o", "out directory/file", "string"],
     ignore: ["i", "ignore paths", "array"],
     parseAsync: ["a", "parse async require statements", "boolean"],
+    sourceMaps: ["m", "parse source maps", "boolean"],
     exportName: ["e", "export to global scope", "string"]
 }).parse();
 
@@ -28,10 +29,31 @@ var out = comn(options.file, {
     ignore: options.ignore
 });
 
+if (options.sourceMaps) {
+    out.generateSourceMaps();
+}
+
 if (out.chunks.length === 1) {
-    fileUtils.writeFileSync(options.out, out.chunks[0].source);
+    var entry = out.entry();
+
+    if (options.sourceMaps) {
+        fileUtils.writeFileSync(options.out + ".map", entry.sourceMap.toJSON());
+        fileUtils.writeFileSync(options.out, entry.source + "\n//# sourceMappingURL=" + options.out + ".map");
+    } else {
+        fileUtils.writeFileSync(filePath.join(options.out, entry.name), entry.source);
+    }
 } else {
-    out.each(function each(chunk) {
-        fileUtils.writeFileSync(filePath.join(options.out, chunk.name), chunk.source);
-    });
+    if (options.sourceMaps) {
+        out.each(function each(chunk) {
+            fileUtils.writeFileSync(filePath.join(options.out, chunk.name + ".map"), chunk.sourceMap.toJSON());
+            fileUtils.writeFileSync(
+                filePath.join(options.out, chunk.name),
+                chunk.source + "\n//# sourceMappingURL=" + chunk.name + ".map"
+            );
+        });
+    } else {
+        out.each(function each(chunk) {
+            fileUtils.writeFileSync(filePath.join(options.out, chunk.name), chunk.source);
+        });
+    }
 }
