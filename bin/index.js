@@ -13,6 +13,7 @@ var options = argv({
     ignore: ["i", "ignore paths", "array"],
     parseAsync: ["a", "parse async require statements", "boolean"],
     sourceMaps: ["m", "parse source maps", "boolean"],
+    sourceMapsDir: ["d", "parse source maps", "string"],
     exportName: ["e", "export to global scope", "string"]
 }).parse();
 
@@ -33,12 +34,15 @@ if (options.sourceMaps) {
     out.generateSourceMaps();
 }
 
+var sourceMapsDir = options.sourceMapsDir || "./";
+
+
 if (out.chunks.length === 1) {
     var entry = out.entry();
 
     if (options.sourceMaps) {
         fileUtils.writeFileSync(options.out + ".map", entry.sourceMap.toJSON());
-        fileUtils.writeFileSync(options.out, entry.source + "\n//# sourceMappingURL=" + options.out + ".map");
+        fileUtils.writeFileSync(options.out, entry.source + "\n//# sourceMappingURL=" + filePath.join(sourceMapsDir, filePath.base(options.out)) + ".map");
     } else {
         fileUtils.writeFileSync(filePath.join(options.out, entry.name), entry.source);
     }
@@ -48,7 +52,7 @@ if (out.chunks.length === 1) {
             fileUtils.writeFileSync(filePath.join(options.out, chunk.name + ".map"), chunk.sourceMap.toJSON());
             fileUtils.writeFileSync(
                 filePath.join(options.out, chunk.name),
-                chunk.source + "\n//# sourceMappingURL=" + chunk.name + ".map"
+                chunk.source + "\n//# sourceMappingURL=" + filePath.join(sourceMapsDir, chunk.name + ".map") + ".map"
             );
         });
     } else {
