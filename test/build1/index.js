@@ -76,7 +76,7 @@
         }
     };
 
-    global["dpmu4H0F-8hc6-4XwL-nrCd-S5qRvw6SekWyq"] = function(asyncDependencies) {
+    global["SA6S7sGF-4wzD-4VQp-HxtW-QZewxCcyQV9ph"] = function(asyncDependencies) {
         var i = -1,
             il = asyncDependencies.length - 1,
             dependency, index;
@@ -115,7 +115,6 @@ window.onload = function onLoad() {
         console.log(a(), ab(), has({}, "key"));
     });
 };
-
 },
 null,
 null,

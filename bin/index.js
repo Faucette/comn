@@ -44,7 +44,7 @@ if (out.chunks.length === 1) {
         fileUtils.writeFileSync(options.out + ".map", entry.sourceMap.toJSON());
         fileUtils.writeFileSync(options.out, entry.source + "\n//# sourceMappingURL=" + filePath.join(sourceMapsDir, filePath.base(options.out)) + ".map");
     } else {
-        fileUtils.writeFileSync(filePath.join(options.out, entry.name), entry.source);
+        fileUtils.writeFileSync(options.out, entry.source);
     }
 } else {
     if (options.sourceMaps) {
