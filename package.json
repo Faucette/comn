@@ -1,6 +1,6 @@
 {
   "name": "@nathanfaucett/comn",
-  "version": "0.0.11",
+  "version": "0.0.12",
   "description": "comn is a commonjs compiler",
   "repository": {
     "type": "git",
@@ -25,7 +25,7 @@
   "devDependencies": {
     "@nathanfaucett/is_object": "^0.0.1",
     "bufferutil": "^1.2.1",
-    "@nathanfaucett/task": "0.0.5",
+    "@nathanfaucett/task": "^0.0.7",
     "gulp-jsbeautifier": "^2.0.3",
     "gulp-jshint": "^2.0.1",
     "jshint": "^2.9.3",
@@ -40,11 +40,11 @@
     "@nathanfaucett/array-for_each": "0.0.1",
     "@nathanfaucett/array-map": "^0.0.1",
     "@nathanfaucett/dependency_tree": "^0.0.4",
-    "@nathanfaucett/extend": "^0.0.1",
-    "@nathanfaucett/file_path": "^0.0.3",
-    "@nathanfaucett/file_utils": "^0.0.4",
+    "@nathanfaucett/extend": "^0.0.2",
+    "@nathanfaucett/file_path": "^0.0.4",
+    "@nathanfaucett/file_utils": "^0.0.5",
     "@nathanfaucett/is_string": "0.0.1",
-    "@nathanfaucett/resolve": "^0.0.3",
+    "@nathanfaucett/resolve": "^0.0.4",
     "@nathanfaucett/template": "^0.0.1",
     "@nathanfaucett/trim": "^0.0.1",
     "@nathanfaucett/uuid": "0.0.1",
