@@ -7,15 +7,50 @@ var comn = require(".."),
     argv = require("@nathanfaucett/argv");
 
 
-var options = argv({
+var optionDefinitions = {
     file: ["f", "start file", "string"],
     out: ["o", "out directory/file", "string"],
     ignore: ["i", "ignore paths", "array"],
     parseAsync: ["a", "parse async require statements", "boolean"],
     sourceMaps: ["m", "parse source maps", "boolean"],
     sourceMapsDir: ["d", "parse source maps", "string"],
-    exportName: ["e", "export to global scope", "string"]
-}).parse();
+    exportName: ["e", "export to global scope", "string"],
+    help: ["h", "show this help information", "boolean"]
+};
+
+var options = argv(optionDefinitions).parse();
+
+function printHelp() {
+
+    var fmt = "comn v0.0.13\n",
+        v, k;
+
+    
+    fmt += "Usage: comn -f [start-file] -o [out-file]\n";
+    fmt += "Options:\n\n";
+
+    for(k in optionDefinitions) {
+
+        v = optionDefinitions[k];
+
+        fmt += "-"+v[0]+", --"+k+"\n";
+        fmt += "\t"+v[1]+"\n\n";
+    }
+
+    fmt += "For bug reporting instructions, please see:\n";
+    fmt += "https://github.com/Faucette/comn";
+
+    console.log(fmt);
+
+    process.exit(0);
+}
+
+if (options.help) {
+
+    printHelp();
+
+}
+
 
 if (!options.file) {
     throw new Error("input file require");
