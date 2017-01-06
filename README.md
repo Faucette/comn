@@ -1,7 +1,26 @@
-comn
-=======
+# comn
 
-comn is a commonjs compiler
+comn is a compiler for common js modules.
+
+## Installation
+
+to install globally on your machine and use inside your terminal
+
+```bash
+npm install -g @nathanfaucett/comn
+```
+
+to use inside a project programmatically, add the following to your `package.json`
+
+```javascript
+{
+  "devDependencies" : {
+    "@nathanfaucett/comn" : "^0.0.13"
+  }
+}
+```
+
+## Usage
 
 ```bash
 $ comn -f ./path/to/file -o ./path/to/out
